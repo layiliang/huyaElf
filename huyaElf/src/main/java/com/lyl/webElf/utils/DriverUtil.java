@@ -21,17 +21,14 @@ public class DriverUtil {
 	public static WebDriver initDriver() {
 		return initDriver("");
 	}
-		public static WebDriver initDriver(String driverType) {
+		public static WebDriver initDriver(String driverClassName,String driverPathKey,String driverPathValue,Map<String,Object> prefs) {
 		if (localDriver.get() == null) {
-			
 			//System.setProperty("webdriver.chrome.driver", "E:/autoTest/chromedriver_win32/chromedriver.exe");
-			System.setProperty("phantomjs.binary.path", "E:/autoTest/phantomjs-2.1.1-windows/bin/phantomjs.exe");
+			//System.setProperty("phantomjs.binary.path", "E:/autoTest/phantomjs-2.1.1-windows/bin/phantomjs.exe");
+			System.setProperty(driverPathKey,driverPathValue);
 			try {
 				ChromeOptions options = new ChromeOptions();
 				options.setPageLoadStrategy(PageLoadStrategy.NORMAL);
-				
-				//options.addArguments("--disable-images","--start-maximized","--disable-video");//禁用插件
-				Map<String, Object> prefs = new HashMap<String, Object>();
 				prefs.put("profile.managed_default_content_settings.images", 2);
 				/*prefs.put("profile.managed_default_content_settings.media_stream", 2);
 				prefs.put("profile.managed_default_content_settings.media_stream_camera", 2);
@@ -39,8 +36,7 @@ public class DriverUtil {
 				
 				options.setExperimentalOption("prefs", prefs);
 				@SuppressWarnings("rawtypes")
-				WebDriver driver1 = new PhantomJSDriver();
-				Class clz = Class.forName("org.openqa.selenium.chrome.ChromeDriver");
+				Class clz = Class.forName(driverClassName);
 				Constructor<WebDriver> dc2 = clz.getDeclaredConstructor(ChromeOptions.class);
 				driver = (WebDriver) dc2.newInstance(options);
 				driver.manage().timeouts().implicitlyWait(5, TimeUnit.SECONDS);
