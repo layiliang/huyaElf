@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.lyl.webElf.mapper.GuessDataMapper">
+	<insert id="insert" parameterType="com.lyl.webElf.domain.GuessData">
+		insert into guess_data(id,gameId,boxTitle,createTime,rate1,guessNum1,guessName1,
+		rate2,guessNum2,guessName2,hostName,guessResult1,guessResult2) values (#{id},#{gameId},#{boxTitle},#{createTime},#{rate1}
+		,#{guessNum1},#{guessName1},#{rate2},#{guessNum2},#{guessName2},#{hostName},#{guessResult1},#{guessResult2})
+	</insert>
+</mapper>

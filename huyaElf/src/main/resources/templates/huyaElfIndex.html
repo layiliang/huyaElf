@@ -1,0 +1,348 @@
+<html>
+<head>
+<meta charset="UTF-8">
+<script type="text/javascript" src="jquery-3.4.1.min.js"></script>
+<script type="text/javascript" src="ajaxUtil.js"></script>
+<title>Insert title here</title>
+</head>
+<body>
+<input type = button value = "初始化驱动" id = "initDriver" onclick="initDriver()"></input>
+<br></br>
+<input type = button value = "打开虎牙直播板块" id = "openHuya" onclick="openHuya()"></input>
+<br></br>
+<input type = button value = "从直播板块登录" id = "login" onclick="login()"></input>
+<input type = button value = "从直播板块退出" id = "exit" onclick="exit()"></input>
+<input type = button value = "全屏" id = "fullscreen" onclick="fullscreen()"></input>
+<!-- <input id = "selector" placeholder = "元素选择器"></input> -->
+<input type = button value = "获取竞猜列表" id = "getGuessList" onclick="getGuessList()"></input>
+<input  id = "hostUrl"></input>
+<input type = button value = "竞猜" id = "guess" onclick="guess()"></input>
+<input type = button value = "测试" id = "test2" onclick="testIndex()"></input>
+<br></br>
+<div id = "guessList"></div>
+<div id = "guessBox"></div>
+</body>
+<script type="text/javascript">
+function openHuya(){
+	debugger
+	$.ajax({
+        //请求方式
+        type : "POST",
+        //请求地址
+        url : "http://localhost:8080/openHuya",
+        //数据，json字符串
+        data : "",
+        //请求成功
+        success : function(result) {
+        	debugger
+			alert("打开虎牙成功");
+        },
+        //请求失败，包含具体的错误信息
+        error : function(e){
+            console.log(e.status);
+            console.log(e.responseText);
+        }
+    });
+}
+function login(){
+	debugger
+	$.ajax({
+        //请求方式
+        type : "POST",
+        //请求地址
+        url : "http://localhost:8080/livePageLogin",
+        //数据，json字符串
+        data : {
+        	name:"2295451338",
+        	pwd:"huya123"
+        },
+        //请求成功
+        success : function(result) {
+			//alert("登录成功");
+        },
+        //请求失败，包含具体的错误信息
+        error : function(e){
+            console.log(e.status);
+            console.log(e.responseText);
+        }
+    });
+}
+function guess(){
+	debugger
+	var hostUrl = $("#hostUrl").val();
+	$.ajax({
+        //请求方式
+        type : "POST",
+        //请求地址
+        url : "http://localhost:8080/guess",
+        //数据，json字符串
+        data: {hostUrl:hostUrl},
+        //请求成功
+        success : function(result) {
+			//alert("登录成功");
+        },
+        //请求失败，包含具体的错误信息
+        error : function(e){
+            console.log(e.status);
+            console.log(e.responseText);
+        }
+    });
+}
+function testIndex(){
+	debugger
+	var url = $("#hostUrl").val();
+	$.ajax({
+        //请求方式
+        type : "POST",
+        //请求地址
+        //url : "http://localhost.fiddler:8080/testIndex",
+        url : "http://localhost:8080/testIndex",
+        //数据，json字符串
+        data: {url:url},
+        //请求成功
+        success : function(result) {
+			//alert("登录成功");
+        },
+        //请求失败，包含具体的错误信息
+        error : function(e){
+        	alert(url);
+            console.log(e.status);
+            console.log(e.responseText);
+        }
+    });
+}
+function exit(){
+	debugger
+	$.ajax({
+        //请求方式
+        type : "POST",
+        //请求的媒体类型
+        contentType: "application/json;charset=UTF-8",
+        //请求地址
+        url : "http://localhost:8080/exit",
+        //数据，json字符串
+        data : "",
+        //请求成功
+        success : function(result) {
+			alert("退出成功");
+        },
+        //请求失败，包含具体的错误信息
+        error : function(e){
+            console.log(e.status);
+            console.log(e.responseText);
+        }
+    });
+}
+function initDriver(){
+	debugger
+	$.ajax({
+        //请求方式
+        type : "POST",
+        //请求的媒体类型
+        contentType: "application/json;charset=UTF-8",
+        //请求地址
+        url : "http://localhost:8080/initDriver",
+        //数据，json字符串
+        data : "",
+        //请求成功
+        success : function(result) {
+        	debugger
+			alert("初始化成功")
+        },
+        //请求失败，包含具体的错误信息
+        error : function(e){
+            console.log(e.status);
+            console.log(e.responseText);
+        }
+    });
+}
+function fullscreen(){
+	$.ajax({
+        //请求方式
+        type : "POST",
+        //请求的媒体类型
+        contentType: "application/json;charset=UTF-8",
+        //请求地址http://localhost.fiddler:8080/huyaElfIndex
+        url : "http://localhost.fiddler:8080/fullscreen",
+        //数据，json字符串
+        data : "",
+        //请求成功
+        success : function(result) {
+			alert(result)
+        },
+        //请求失败，包含具体的错误信息
+        error : function(e){
+            console.log(e.status);
+            console.log(e.responseText);
+        }
+    });
+}
+
+function singleclick(){
+	var selector = $("#selector").val();
+	$.ajax({
+        //请求方式
+        type : "POST",
+        //请求的媒体类型
+        contentType: "application/json;charset=UTF-8",
+        //请求地址
+        url : "http://localhost:8080/singleclick",
+        //数据，json字符串
+        data : selector,
+        //请求成功
+        success : function(result) {
+			alert(result)
+        },
+        //请求失败，包含具体的错误信息
+        error : function(e){
+            console.log(e.status);
+            console.log(e.responseText);
+        }
+    });
+}
+
+function getGuessEle(){
+	$.ajax({
+        //请求方式
+        type : "POST",
+        //请求的媒体类型
+        contentType: "application/json;charset=UTF-8",
+        //请求地址
+        url : "http://localhost:8080/getGuessEle",
+        //数据，json字符串
+        data : "",
+        //请求成功
+        success : function(result) {
+        	$("#guessBox").empty()
+			for(var i = 0 ; i < result.length;i++){
+				debugger
+				var guessInfo = result[i];
+				var div  = "<div  style='float:left;margin-left:50px;'>"+
+							    "<div style='float:left;margin-left:10px;'>"+
+								"<span >"+guessInfo.name+"</span>"+
+						    "</div>"+
+						    "<div style='float:left;margin-left:10px;'>"+
+						        "<p>"+guessInfo.guess1+"</p>"+
+						        "<p>"+guessInfo.amount1+"</p>"+
+						        "<button onclick = bet("+(i*2)+",'"+guessInfo.guess1+"')>"+guessInfo.bet1+"</button>"+
+						    "</div>"+
+						    "<em style='float:left;margin-left:10px;'>VS</em>"+
+						    "<div style='float:left;margin-left:10px;'>"+
+						        "<p>"+guessInfo.guess2+"</p>"+
+						        "<p>"+guessInfo.amount2+"</p>"+
+						        "<button onclick = bet("+(i*2+1)+",'"+guessInfo.guess2+"')>"+guessInfo.bet2+"</button>"+
+						    "</div>"+
+						"</div>"
+				$("#guessBox").append(div);
+			}
+        	alert("获取成功");
+        },
+        //请求失败，包含具体的错误信息
+        error : function(e){
+            console.log(e.status);
+            console.log(e.responseText);
+        }
+    });
+	
+}
+function bet(betIndex,name){
+	debugger
+	jsonData = {betIndex:betIndex,name:name};
+$.ajax({
+    //请求方式
+    type : "POST",
+    //请求的媒体类型
+    contentType: "application/json;charset=UTF-8",
+    //请求地址
+    url : "http://localhost:8080/bet",
+    //数据，json字符串
+    data : JSON.stringify(jsonData),
+    //请求成功
+    success : function(result) {
+    	debugger
+    	alert("参与成功"+ result.title + " " + result.name + " " + result.amount + " " + result.odds);
+    },
+    //请求失败，包含具体的错误信息
+    error : function(e){
+        console.log(e.status);
+        console.log(e.responseText);
+    }
+});
+}
+function getGuessList(){
+	jsonData = {};
+	$.ajax({
+        //请求方式
+        type : "POST",
+        //请求的媒体类型
+        contentType: "application/json;charset=UTF-8",
+        //请求地址
+        url : "http://localhost:8080/getGuessList",
+        //数据，json字符串
+        data : JSON.stringify(jsonData),
+        //请求成功
+        success : function(result) {
+        	debugger
+        	$("#guessList").empty()
+        	var innerHtml = "<ul>";
+			for(var i = 0 ; i < result.length;i++){
+				var guessItem = result[i];
+				//var innerHtml  = innerHtml + "<li ><a href='" +guessItem.url +"'>" +
+				var innerHtml  = innerHtml + "<li ><a href = '"+guessItem.url+"' target = '_blank'>" +
+				guessItem.url +"</a>&" +
+				guessItem.hostName +"&" +
+				"  </li>";
+			}
+			innerHtml = innerHtml + "</ul>";
+			$("#guessList").append(innerHtml);
+        	alert("获取成功");
+        	
+        },
+        //请求失败，包含具体的错误信息
+        error : function(e){
+            console.log(e.status);
+            console.log(e.responseText);
+        }
+    });
+}
+function test(){
+	debugger
+	jsonData = {"name":"aaa","sex":"men"}
+	$.ajax({
+        //请求方式
+        type : "POST",
+        //请求的媒体类型
+        contentType: "application/json;charset=UTF-8",
+        //请求地址
+        url : "http://localhost:8080/test",
+        //数据，json字符串
+        data : JSON.stringify(jsonData),
+        //请求成功
+        success : function(result) {
+        },
+        //请求失败，包含具体的错误信息
+        error : function(e){
+            console.log(e.status);
+            console.log(e.responseText);
+        }
+    });
+	function xxxx(){
+		window.guessDatas=new Array();
+		var index = new Array();
+		var interval = new Array();
+		
+		var guessMainBoxsSize = $('.guess-main-box').length;
+		for(var i = 0 ; i < guessMainBoxsSize;i++){
+			guessDatas[i]=new Array();
+			index[i] = 0 ;
+			interval[i] = 0 ; 
+			var guessDataInterval=setInterval(function(){
+				interval[i]++;
+				var resultFlg1 = $($('#guess-result')[i*2]).attr('class');
+				var resultFlg2 = $($('.guess-btn')[i*2]).text();
+			},100);
+		}
+	}
+}
+</script>
+</html>
