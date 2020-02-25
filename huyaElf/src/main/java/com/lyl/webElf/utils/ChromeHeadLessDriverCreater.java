@@ -9,13 +9,14 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
 
-public class ChromeDriverCreater implements DriverCreater {
+public class ChromeHeadLessDriverCreater implements DriverCreater {
 
 	@Override
 	public WebDriver createDriver() {
-		System.setProperty("webdriver.chrome.driver", "E:/autoTest/chromedriver_win32/chromedriver.exe");
+		System.setProperty("webdriver.chrome.driver", "E:/autoTest/chromedriver_win32/chromedriver_win32_80.0.3987.16/chromedriver.exe");
 		ChromeOptions options = new ChromeOptions();
 		options.setPageLoadStrategy(PageLoadStrategy.NORMAL);
+        options.addArguments("--headless");
 		Map<String, Object> prefs = new HashMap<String, Object>();
 		prefs.put("profile.managed_default_content_settings.images", 2);
 		options.setExperimentalOption("prefs", prefs);
@@ -26,7 +27,7 @@ public class ChromeDriverCreater implements DriverCreater {
 	}
 	
 	public WebDriver createDriver(boolean imageAble) {
-		System.setProperty("webdriver.chrome.driver", "E:/autoTest/chromedriver_win32/chromedriver.exe");
+		System.setProperty("webdriver.chrome.driver", "E:/autoTest/chromedriver_win32/chromedriver_win32_80.0.3987.16/chromedriver.exe");
 		ChromeOptions options = new ChromeOptions();
 		options.setPageLoadStrategy(PageLoadStrategy.NORMAL);
 		Map<String, Object> prefs = new HashMap<String, Object>();

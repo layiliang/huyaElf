@@ -8,7 +8,9 @@ import org.openqa.selenium.WebDriver;
 import org.springframework.stereotype.Service;
 
 import com.lyl.webElf.base.domain.WebPage;
+import com.lyl.webElf.utils.ChromeHeadLessDriverCreater;
 import com.lyl.webElf.utils.DriverUtil;
+import com.lyl.webElf.utils.PhantomjsDriverCreater;
 
 @Service
 public abstract class WebPageService<T extends WebPage> {
@@ -17,7 +19,8 @@ public abstract class WebPageService<T extends WebPage> {
 	protected T webPage;
 
 	public WebPageService(){
-		this.driver = DriverUtil.getDriver();
+		this.driver = DriverUtil.initDriver(new ChromeHeadLessDriverCreater());
+		//this.driver = DriverUtil.getDriver();
 		this.handles = DriverUtil.getHandles();
 	}
 	

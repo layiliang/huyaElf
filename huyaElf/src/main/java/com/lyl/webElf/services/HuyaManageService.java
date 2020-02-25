@@ -6,6 +6,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
@@ -14,8 +15,11 @@ import org.springframework.stereotype.Service;
 import com.lyl.webElf.consts.PageNameConsts;
 import com.lyl.webElf.domain.GuessItem;
 import com.lyl.webElf.domain.LiveItem;
+import com.lyl.webElf.utils.ChromeDriverCreater;
+import com.lyl.webElf.utils.ChromeHeadLessDriverCreater;
 import com.lyl.webElf.utils.DriverUtil;
-@Scope("prototype")
+import com.lyl.webElf.utils.PhantomjsDriverCreater;
+//@Scope("prototype")
 @Service
 public class HuyaManageService {
 	@Autowired
@@ -50,7 +54,13 @@ public class HuyaManageService {
 	}
 
 	public List<GuessItem> getGuessList(int startPage,int pageNum) throws Exception {
+		//WebDriver driver = DriverUtil.getDriver(new ChromeHeadLessDriverCreater());
+		//WebDriver driver = DriverUtil.getDriver();
 		DriverUtil.open("https://www.huya.com/g/wzry");
+		//System.out.println(driver.manage().window().getSize());
+		//driver.manage().window().maximize();
+		//System.out.println(driver.manage().window().getSize());
+		//System.out.println(driver.getCurrentUrl());
 		//livePageService.openLoginWindow();
 		//loginWindowService.loginByAccount("2295451338","huya123");
 		livePageService.initLivePage(false,true);
@@ -62,16 +72,22 @@ public class HuyaManageService {
 		}
 		List<LiveItem>  liveItemList = livePageService.getLiveItemList(startPage, pageNum);
 		Set<GuessItem> tempList = new HashSet<>();
-		for(LiveItem liveItem : liveItemList){
-			// for (int k = 0; k < 15; k++) {
+		//for(LiveItem liveItem : liveItemList){
+		// for (int k = 0; k < liveItemList.size(); k++) {
+			 for (int k = 0; k < 7; k++) {
+				 LiveItem liveItem =  liveItemList.get(k);
 			WebElement link = liveItem.getLink();
 			link.click();
 			DriverUtil.switchToNewWindow();
+
+			System.out.println(DriverUtil.getDriver().getCurrentUrl());
+			System.out.println(k);
 			// hanles.put(PageNameConsts.HOST_PAGE,
 			// driver.getWindowHandle());
 			if (hostPageService.hasGuess()) {
 				GuessItem guessItem = new GuessItem();
 				guessItem.setHostName(liveItem.getHostName());
+				System.out.println();
 				guessItem.setUrl(liveItem.getUrl());
 				guessItem.setNum(liveItem.getNum());
 				guessItem.setOnTv(liveItem.isOnTv());

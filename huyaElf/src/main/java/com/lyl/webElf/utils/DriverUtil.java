@@ -1,17 +1,11 @@
 package com.lyl.webElf.utils;
 
-import java.lang.reflect.Constructor;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
-import java.util.concurrent.TimeUnit;
 
-import org.openqa.selenium.PageLoadStrategy;
 import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.chrome.ChromeDriver;
-import org.openqa.selenium.chrome.ChromeOptions;
-import org.openqa.selenium.phantomjs.PhantomJSDriver;
 
 public class DriverUtil {
 
@@ -22,44 +16,37 @@ public class DriverUtil {
 	public static WebDriver initDriver(DriverCreater driverCreater) {
 		if(localDriver.get() == null){
 			driver = driverCreater.createDriver();
+			driver.manage().window().maximize();
 			localDriver.set(driver);
 		}
 		return localDriver.get();
 	}
 
+	public static WebDriver getDriver() {
+		return driver;
+	}
+
+	public static void setDriver(WebDriver driver) {
+		DriverUtil.driver = driver;
+	}
+
 	public static WebDriver initDriver() {
 		if(localDriver.get() == null){
 			driver = initDriver(new ChromeDriverCreater());
+			driver.manage().window().maximize();
 			localDriver.set(driver);
 		}
 		return localDriver.get();
 	}
-		public static WebDriver initDriver(String driverClassName,String driverPathKey,String driverPathValue,Map<String,Object> prefs) {
-		if (localDriver.get() == null) {
-			//System.setProperty("webdriver.chrome.driver", "E:/autoTest/chromedriver_win32/chromedriver.exe");
-			//System.setProperty("phantomjs.binary.path", "E:/autoTest/phantomjs-2.1.1-windows/bin/phantomjs.exe");
-			System.setProperty(driverPathKey,driverPathValue);
-			try {
-				ChromeOptions options = new ChromeOptions();
-				options.setPageLoadStrategy(PageLoadStrategy.NORMAL);
-				prefs.put("profile.managed_default_content_settings.images", 2);
-				/*prefs.put("profile.managed_default_content_settings.media_stream", 2);
-				prefs.put("profile.managed_default_content_settings.media_stream_camera", 2);
-				prefs.put("profile.managed_default_content_settings.media_stream_mic", 2);*/
-				
-				options.setExperimentalOption("prefs", prefs);
-				@SuppressWarnings("rawtypes")
-				Class clz = Class.forName(driverClassName);
-				Constructor<WebDriver> dc2 = clz.getDeclaredConstructor(ChromeOptions.class);
-				driver = (WebDriver) dc2.newInstance(options);
-				driver.manage().timeouts().implicitlyWait(5, TimeUnit.SECONDS);
-				System.out.println(driver);
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
-			localDriver.set(driver);
-		}
-		return localDriver.get();
+
+	public static WebDriver newDriver() {
+		WebDriver driver = new ChromeDriverCreater().createDriver();
+		return driver;
+	}
+
+	public static WebDriver newDriver(DriverCreater driverCreater) {
+		WebDriver driver = driverCreater.createDriver();
+		return driver;
 	}
 
 	public static void open(String url) {
@@ -72,8 +59,7 @@ public class DriverUtil {
 	 * 转到新打开的窗口，应再加些判断
 	 */
 	public static void switchToNewWindow() {
-		WebDriver driver = getDriver();
-		Set<String> newHandles = getDriver().getWindowHandles();
+		Set<String> newHandles = driver.getWindowHandles();
 		Collection<String> oldHandles = getHandles().values();
 		for (String handle : newHandles) {
 			if (!oldHandles.contains(handle)) {

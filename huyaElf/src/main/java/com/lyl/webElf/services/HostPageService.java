@@ -152,11 +152,14 @@ public class HostPageService extends WebPageService<HostPage> {
 		List<WebElement> guessMainBoxWebElements;
 		WebDriverWait wait = new WebDriverWait(driver, 20);
 		try {
-			wait.until(ExpectedConditions.presenceOfElementLocated(By.className("gift-box-icon")));
-			wait = new WebDriverWait(driver, 2);
+			//wait.until(ExpectedConditions.presenceOfElementLocated(By.className("gift-box-icon")));
+			wait = new WebDriverWait(driver, 5);
+			Thread.sleep(5000);
 			wait.until(ExpectedConditions.presenceOfElementLocated(By.className("guess-main-box")));
 			guessMainBoxWebElements = driver.findElements(By.className("guess-main-box"));
+			System.out.println("guessMainBoxWebElements.size = " + guessMainBoxWebElements.size());
 		} catch (Exception e) {
+			System.out.println("no");
 			return false;
 		}
 		return guessMainBoxWebElements.size() != 0 ? true : false;
