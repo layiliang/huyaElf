@@ -26,13 +26,14 @@ import com.lyl.webElf.utils.DriverUtil;
 //@Scope("prototype")
 @Controller
 public class GuessController {
-	//private static ThreadLocal<HuyaManageService> threadLocal = new ThreadLocal<HuyaManageService>();
+	private static ThreadLocal<HuyaManageService> threadLocal = new ThreadLocal<HuyaManageService>();
 	@Autowired
 	private HuyaManageService huyaManageService;
 	@RequestMapping("getGuessList")
 	@ResponseBody
 	public List<GuessItem> getGuessList() throws Exception {
 		int startPage = 1;
+		System.out.println(Thread.currentThread().getName());
 		return  huyaManageService.getGuessList(startPage, 1);
 
 	}
@@ -40,19 +41,14 @@ public class GuessController {
 	@RequestMapping("guess")
 	@ResponseBody
 	public void guess(String hostUrl) throws InterruptedException {
-		//hostUrls = new String[2];
-		//hostUrls[0] = "https://www.huya.com/haddis";
-		//hostUrls[1] = "https://www.huya.com/housangun";
 		List<String> hostUrls = new ArrayList<String>();
-		//hostUrls.add("https://www.huya.com/131499");
 		hostUrls.add(hostUrl);
-		//hostUrls.add("https://www.huya.com/520123");
 		
 		for (String url : hostUrls) {
 			new Thread(new Runnable() {
 				@Override
 				public void run() {
-					//HuyaManageService huyaManageService = getGuessListServiceLocal();
+					HuyaManageService huyaManageService = getGuessListServiceLocal();
 					try {
 						huyaManageService.guess(url);
 					} catch (Exception e) {
@@ -65,7 +61,7 @@ public class GuessController {
 		}
 	}
 
-/*	private HuyaManageService getGuessListServiceLocal() {
+	private HuyaManageService getGuessListServiceLocal() {
 		
 		HuyaManageService huyaManageService = new HuyaManageService();
 		LivePageService livePageService = new LivePageService();
@@ -78,6 +74,6 @@ public class GuessController {
 		threadLocal.set(huyaManageService);
 		HuyaManageService guessListServiceLocal = threadLocal.get();
 		return guessListServiceLocal;
-	}*/
+	}
 
 }

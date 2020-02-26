@@ -1,18 +1,22 @@
 package com.lyl.webElf.utils;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
 import org.openqa.selenium.WebDriver;
+
+import com.lyl.webElf.test.Test2;
 
 public class DriverUtil {
 
 	private static ThreadLocal<WebDriver> localDriver = new ThreadLocal<WebDriver>();
 	private static ThreadLocal<Map<String,String>> localHandles = new ThreadLocal<Map<String,String>>();
 	private static WebDriver driver;
-
+	
 	public static WebDriver initDriver(DriverCreater driverCreater) {
 		if(localDriver.get() == null){
 			driver = driverCreater.createDriver();
@@ -50,6 +54,7 @@ public class DriverUtil {
 	}
 
 	public static void open(String url) {
+		System.out.println(Thread.currentThread().getName());
 		driver.get(url);
 	}
 
@@ -70,6 +75,7 @@ public class DriverUtil {
 	}
 
 	public static Map<String, String> getHandles() {
+		System.out.println(Thread.currentThread().getName());
 		if (localHandles.get() == null) {
 			Map<String,String> handles = new HashMap<String,String>();
 			localHandles.set(handles);

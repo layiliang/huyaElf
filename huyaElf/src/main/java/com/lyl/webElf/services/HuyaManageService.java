@@ -19,7 +19,7 @@ import com.lyl.webElf.utils.ChromeDriverCreater;
 import com.lyl.webElf.utils.ChromeHeadLessDriverCreater;
 import com.lyl.webElf.utils.DriverUtil;
 import com.lyl.webElf.utils.PhantomjsDriverCreater;
-//@Scope("prototype")
+@Scope("prototype")
 @Service
 public class HuyaManageService {
 	@Autowired
@@ -54,15 +54,8 @@ public class HuyaManageService {
 	}
 
 	public List<GuessItem> getGuessList(int startPage,int pageNum) throws Exception {
-		//WebDriver driver = DriverUtil.getDriver(new ChromeHeadLessDriverCreater());
-		//WebDriver driver = DriverUtil.getDriver();
+		System.out.println(Thread.currentThread().getName());
 		DriverUtil.open("https://www.huya.com/g/wzry");
-		//System.out.println(driver.manage().window().getSize());
-		//driver.manage().window().maximize();
-		//System.out.println(driver.manage().window().getSize());
-		//System.out.println(driver.getCurrentUrl());
-		//livePageService.openLoginWindow();
-		//loginWindowService.loginByAccount("2295451338","huya123");
 		livePageService.initLivePage(false,true);
 		try {
 			Thread.sleep(2222);

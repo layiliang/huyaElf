@@ -1,8 +1,7 @@
 package com.lyl.webElf.base.service;
 
-import java.util.Collection;
+import java.util.HashMap;
 import java.util.Map;
-import java.util.Set;
 
 import org.openqa.selenium.WebDriver;
 import org.springframework.stereotype.Service;
@@ -10,17 +9,27 @@ import org.springframework.stereotype.Service;
 import com.lyl.webElf.base.domain.WebPage;
 import com.lyl.webElf.utils.ChromeHeadLessDriverCreater;
 import com.lyl.webElf.utils.DriverUtil;
-import com.lyl.webElf.utils.PhantomjsDriverCreater;
 
 @Service
 public abstract class WebPageService<T extends WebPage> {
 	protected Map<String, String> handles;
+	protected Map<String,WebDriver> drivers;
 	protected WebDriver driver;
 	protected T webPage;
 
+	public Map<String, WebDriver> getDrivers() {
+		return drivers;
+	}
+
+	public void setDrivers(Map<String, WebDriver> drivers) {
+		this.drivers = drivers;
+	}
+
 	public WebPageService(){
-		this.driver = DriverUtil.initDriver(new ChromeHeadLessDriverCreater());
 		//this.driver = DriverUtil.getDriver();
+		drivers = new HashMap<String,WebDriver>();
+		drivers.put("defaultDriver", new ChromeHeadLessDriverCreater().createDriver());
+		driver = drivers.get("defaultDriver");
 		this.handles = DriverUtil.getHandles();
 	}
 	
@@ -52,28 +61,5 @@ public abstract class WebPageService<T extends WebPage> {
 	public void setHandles(Map<String, String> handles) {
 		this.handles = handles;
 	}
-
-	public WebDriver getDriver() {
-		return driver;
-	}
-
-	public void setDriver(WebDriver driver) {
-		this.driver = driver;
-	}
-
-	// TODO
-	/**
-	 * 转到新打开的窗口，应再加些判断
-	 */
-	public void switchToNewWindow() {
-		Set<String> newHandles = driver.getWindowHandles();
-		Collection<String> oldHandles = handles.values();
-		for (String handle : newHandles) {
-			if (!oldHandles.contains(handle)) {
-				driver.switchTo().window(handle);
-				break;
-			}
-		}
-	}
-
+	
 }
