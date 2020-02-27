@@ -3,11 +3,13 @@ package com.lyl.webElf.services;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 
 import org.apache.log4j.Logger;
 import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
+import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
@@ -36,11 +38,12 @@ public class HostPageService extends WebPageService<HostPage> {
 	}
 
 	public void initHostPage(boolean isLogined) {
+		WebDriver driver = defaultDriverContext.getDriver();
+		Map<String,String> handles = defaultDriverContext.getHandles();
 		Actions action = new Actions(driver);
 		try {
 			Thread.sleep(5000);
 		} catch (InterruptedException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		handles.put(PageNameConsts.HOST_PAGE, driver.getWindowHandle());
@@ -63,7 +66,6 @@ public class HostPageService extends WebPageService<HostPage> {
 		webPage.setHostName(driver.findElement(By.className("host-name")));
 		webPage.setMsgInput(driver.findElement(By.id("pub_msg_input")));
 		webPage.setMsgSendButton(driver.findElement(By.id("msg_send_bt")));
-		// TODO
 		// hostPage.setCloseCreateLayer(closeCreateLayer);
 		wait.until(ExpectedConditions.presenceOfElementLocated(By.id("player-fullscreen-btn")));
 
@@ -148,7 +150,7 @@ public class HostPageService extends WebPageService<HostPage> {
 	}
 
 	public boolean hasGuess() {
-		// TODO Auto-generated method stub
+		WebDriver driver = defaultDriverContext.getDriver();
 		List<WebElement> guessMainBoxWebElements;
 		WebDriverWait wait = new WebDriverWait(driver, 20);
 		try {
@@ -166,6 +168,7 @@ public class HostPageService extends WebPageService<HostPage> {
 	}
 
 	public void guess() throws Exception {
+		WebDriver driver = defaultDriverContext.getDriver();
 		Actions action = new Actions(driver);
 		Thread.sleep(2222);
 		initHostPage(true);
@@ -180,6 +183,7 @@ public class HostPageService extends WebPageService<HostPage> {
 	}
 
 	private void keyM() throws InterruptedException {
+		WebDriver driver = defaultDriverContext.getDriver();
 		List<GuessData> guessDataPerGameList = new ArrayList<GuessData>();
 		try {
 			List<GuessMainBox> guessMainBoxs = webPage.getGuessMainBoxs();
@@ -199,7 +203,8 @@ public class HostPageService extends WebPageService<HostPage> {
 					endFlg = true;
 					guessDataDao.insertList(guessDataPerGameList);
 
-				} else if (index % 50 == 0 && !"结束种豆".equals(driver.findElements(By.className("guess-main-box")).get(0).findElement(By.className("guess-btn")).getText())) {// TODO
+				} else if (index % 50 == 0 && !"结束种豆".equals(driver.findElements(By.className("guess-main-box")).get(0).findElement(By.className("guess-btn")).getText())) {
+					// TODO
 					bet();
 					System.out.println("--------------------------------------------");
 					addGuessData(gameId, guessDataPerGameList);
@@ -213,6 +218,7 @@ public class HostPageService extends WebPageService<HostPage> {
 	}
 
 	private void addGuessData(String gameId, List<GuessData> guessDataPerGameList) {
+		WebDriver driver = defaultDriverContext.getDriver();
 		List<WebElement> guessMainBoxWebElements = driver.findElements(By.className("guess-main-box"));
 		for (WebElement guessMainBoxWebElement : guessMainBoxWebElements) {
 			GuessData guessData = new GuessData();
@@ -252,20 +258,20 @@ public class HostPageService extends WebPageService<HostPage> {
 	}
 
 	public void openLoginWindow() {
+		WebDriver driver = defaultDriverContext.getDriver();
+		Map<String,String> handles = defaultDriverContext.getHandles();
 		// TODO Auto-generated method stub
 		handles.put(PageNameConsts.HOST_PAGE, driver.getWindowHandle());
 		driver.switchTo().window(handles.get(PageNameConsts.HOST_PAGE));
 		try {
 			Thread.sleep(1000);
 		} catch (InterruptedException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		driver.findElement(By.id("nav-login")).click();
 		try {
 			Thread.sleep(1000);
 		} catch (InterruptedException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		driver.switchTo().frame("UDBSdkLgn_iframe");

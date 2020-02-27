@@ -6,34 +6,33 @@ import java.util.Map;
 import org.openqa.selenium.WebDriver;
 import org.springframework.stereotype.Service;
 
+import com.lyl.webElf.base.context.DriverContext;
 import com.lyl.webElf.base.domain.WebPage;
 import com.lyl.webElf.utils.ChromeHeadLessDriverCreater;
 import com.lyl.webElf.utils.DriverUtil;
 
 @Service
 public abstract class WebPageService<T extends WebPage> {
-	protected Map<String, String> handles;
-	protected Map<String,WebDriver> drivers;
-	protected WebDriver driver;
+	protected DriverContext defaultDriverContext;
 	protected T webPage;
 
-	public Map<String, WebDriver> getDrivers() {
-		return drivers;
+	public DriverContext getDefaultDriverContext() {
+		return defaultDriverContext;
 	}
 
-	public void setDrivers(Map<String, WebDriver> drivers) {
-		this.drivers = drivers;
+	public void setDefaultDriverContext(DriverContext defaultDriverContext) {
+		this.defaultDriverContext = defaultDriverContext;
 	}
 
 	public WebPageService(){
 		//this.driver = DriverUtil.getDriver();
-		drivers = new HashMap<String,WebDriver>();
-		drivers.put("defaultDriver", new ChromeHeadLessDriverCreater().createDriver());
-		driver = drivers.get("defaultDriver");
-		this.handles = DriverUtil.getHandles();
+		WebDriver driver = DriverUtil.newDriver(new ChromeHeadLessDriverCreater());
+		Map<String,String> handles = new HashMap<String,String>();
+		this.defaultDriverContext = new DriverContext(driver, handles);
 	}
 	
 	public void setWebPageCommon(){
+		WebDriver driver = defaultDriverContext.getDriver();
 		webPage.setHandle(driver.getWindowHandle());
 		webPage.setTitle(driver.getTitle());
 		webPage.setUrl(driver.getCurrentUrl());
@@ -52,14 +51,6 @@ public abstract class WebPageService<T extends WebPage> {
 
 	public void setWebPage(T webPage) {
 		this.webPage = webPage;
-	}
-
-	public Map<String, String> getHandles() {
-		return handles;
-	}
-
-	public void setHandles(Map<String, String> handles) {
-		this.handles = handles;
 	}
 	
 }
