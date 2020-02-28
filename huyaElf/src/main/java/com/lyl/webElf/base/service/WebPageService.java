@@ -25,8 +25,7 @@ public abstract class WebPageService<T extends WebPage> {
 	}
 
 	public WebPageService(){
-		//this.driver = DriverUtil.getDriver();
-		WebDriver driver = DriverUtil.newDriver(new ChromeHeadLessDriverCreater());
+		WebDriver driver = DriverUtil.getDriver();
 		Map<String,String> handles = new HashMap<String,String>();
 		this.defaultDriverContext = new DriverContext(driver, handles);
 	}

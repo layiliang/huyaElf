@@ -17,6 +17,7 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.lyl.webElf.base.context.DriverContext;
 import com.lyl.webElf.base.service.WebPageService;
 import com.lyl.webElf.consts.PageNameConsts;
 import com.lyl.webElf.dao.GuessDataDao;
@@ -38,8 +39,12 @@ public class HostPageService extends WebPageService<HostPage> {
 	}
 
 	public void initHostPage(boolean isLogined) {
-		WebDriver driver = defaultDriverContext.getDriver();
-		Map<String,String> handles = defaultDriverContext.getHandles();
+		initHostPage(isLogined,defaultDriverContext);
+	}
+
+		public void initHostPage(boolean isLogined,DriverContext driverContext) {
+		WebDriver driver = driverContext.getDriver();
+		Map<String,String> handles = driverContext.getHandles();
 		Actions action = new Actions(driver);
 		try {
 			Thread.sleep(5000);
@@ -149,8 +154,11 @@ public class HostPageService extends WebPageService<HostPage> {
 		}
 	}
 
-	public boolean hasGuess() {
-		WebDriver driver = defaultDriverContext.getDriver();
+		public boolean hasGuess() {
+			return hasGuess(defaultDriverContext);
+		}
+			public boolean hasGuess(DriverContext driverContext) {
+		WebDriver driver = driverContext.getDriver();
 		List<WebElement> guessMainBoxWebElements;
 		WebDriverWait wait = new WebDriverWait(driver, 20);
 		try {
@@ -167,8 +175,11 @@ public class HostPageService extends WebPageService<HostPage> {
 		return guessMainBoxWebElements.size() != 0 ? true : false;
 	}
 
-	public void guess() throws Exception {
-		WebDriver driver = defaultDriverContext.getDriver();
+			public void guess() throws Exception {
+				guess(defaultDriverContext);
+			}
+				public void guess(DriverContext driverContext) throws Exception {
+		WebDriver driver = driverContext.getDriver();
 		Actions action = new Actions(driver);
 		Thread.sleep(2222);
 		initHostPage(true);
@@ -179,11 +190,11 @@ public class HostPageService extends WebPageService<HostPage> {
 		String js = "$('#player-video').empty();setInterval(function(){$('#player-video').empty()},60000);";
 		JavascriptExecutor driver_js = ((JavascriptExecutor) driver);
 		driver_js.executeScript(js);
-		keyM();
+		keyM(driverContext);
 	}
 
-	private void keyM() throws InterruptedException {
-		WebDriver driver = defaultDriverContext.getDriver();
+	private void keyM(DriverContext driverContext) throws InterruptedException {
+		WebDriver driver = driverContext.getDriver();
 		List<GuessData> guessDataPerGameList = new ArrayList<GuessData>();
 		try {
 			List<GuessMainBox> guessMainBoxs = webPage.getGuessMainBoxs();
@@ -199,7 +210,7 @@ public class HostPageService extends WebPageService<HostPage> {
 					// TODO
 					// 记录胜负信息
 					// 将该场游戏的竞猜数据插入数据库
-					addGuessData(gameId, guessDataPerGameList);
+					addGuessData(gameId, guessDataPerGameList,driverContext);
 					endFlg = true;
 					guessDataDao.insertList(guessDataPerGameList);
 
@@ -207,17 +218,17 @@ public class HostPageService extends WebPageService<HostPage> {
 					// TODO
 					bet();
 					System.out.println("--------------------------------------------");
-					addGuessData(gameId, guessDataPerGameList);
+					addGuessData(gameId, guessDataPerGameList,driverContext);
 				}
 			}
 		} catch (Exception e) {
 			logger.info("竞猜信息获取异常", e);
 			// guessDataDao.insertList(guessDataPerGameList);
-			keyM();
+			keyM(driverContext);
 		}
 	}
 
-	private void addGuessData(String gameId, List<GuessData> guessDataPerGameList) {
+	private void addGuessData(String gameId, List<GuessData> guessDataPerGameList,DriverContext driverContext) {
 		WebDriver driver = defaultDriverContext.getDriver();
 		List<WebElement> guessMainBoxWebElements = driver.findElements(By.className("guess-main-box"));
 		for (WebElement guessMainBoxWebElement : guessMainBoxWebElements) {
@@ -258,8 +269,11 @@ public class HostPageService extends WebPageService<HostPage> {
 	}
 
 	public void openLoginWindow() {
-		WebDriver driver = defaultDriverContext.getDriver();
-		Map<String,String> handles = defaultDriverContext.getHandles();
+		openLoginWindow(defaultDriverContext);
+	}
+		public void openLoginWindow(DriverContext driverContext) {
+		WebDriver driver = driverContext.getDriver();
+		Map<String,String> handles = driverContext.getHandles();
 		// TODO Auto-generated method stub
 		handles.put(PageNameConsts.HOST_PAGE, driver.getWindowHandle());
 		driver.switchTo().window(handles.get(PageNameConsts.HOST_PAGE));

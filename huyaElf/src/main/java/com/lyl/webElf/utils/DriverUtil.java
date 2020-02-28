@@ -8,6 +8,7 @@ import java.util.Map;
 import java.util.Set;
 
 import org.openqa.selenium.WebDriver;
+import org.springframework.beans.factory.annotation.Value;
 
 import com.lyl.webElf.test.Test2;
 
@@ -15,8 +16,9 @@ public class DriverUtil {
 
 	private static ThreadLocal<WebDriver> localDriver = new ThreadLocal<WebDriver>();
 	private static ThreadLocal<Map<String,String>> localHandles = new ThreadLocal<Map<String,String>>();
-	private static WebDriver driver;
-	
+	private static WebDriver driver = newDriver();
+	 @Value("${defaultWebDriverCreater}")
+    public static String defaultWebDriverCreater;
 	public static WebDriver initDriver(DriverCreater driverCreater) {
 		if(localDriver.get() == null){
 			driver = driverCreater.createDriver();
@@ -44,8 +46,16 @@ public class DriverUtil {
 	}
 
 	public static WebDriver newDriver() {
-		WebDriver driver = new ChromeDriverCreater().createDriver();
-		return driver;
+		try {
+			Class cls = Class.forName(defaultWebDriverCreater);
+			DriverCreater driverCreater =  (DriverCreater) cls.newInstance();
+			WebDriver driver = driverCreater.createDriver();
+			return driver;
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			return null;
+		}
 	}
 
 	public static WebDriver newDriver(DriverCreater driverCreater) {
