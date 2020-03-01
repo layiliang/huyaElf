@@ -1,24 +1,26 @@
 package com.lyl.webElf.utils;
 
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
 import org.openqa.selenium.WebDriver;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-
-import com.lyl.webElf.test.Test2;
+import org.springframework.core.env.Environment;
 
 public class DriverUtil {
 
 	private static ThreadLocal<WebDriver> localDriver = new ThreadLocal<WebDriver>();
 	private static ThreadLocal<Map<String,String>> localHandles = new ThreadLocal<Map<String,String>>();
 	private static WebDriver driver = newDriver();
-	 @Value("${defaultWebDriverCreater}")
-    public static String defaultWebDriverCreater;
+	 //@Value("${demo.defaultWebDriverCreater}")
+   // public static String defaultWebDriverCreater;
+	 
+	 //@Autowired
+	   // private static Environment environment;
+
 	public static WebDriver initDriver(DriverCreater driverCreater) {
 		if(localDriver.get() == null){
 			driver = driverCreater.createDriver();
@@ -47,8 +49,10 @@ public class DriverUtil {
 
 	public static WebDriver newDriver() {
 		try {
-			Class cls = Class.forName(defaultWebDriverCreater);
-			DriverCreater driverCreater =  (DriverCreater) cls.newInstance();
+			//Class<?> cls = Class.forName(environment.getProperty("demo.defaultWebDriverCreater") );
+			//DriverCreater driverCreater =  (DriverCreater) cls.newInstance();
+			//DriverCreater driverCreater =  new ChromeHeadLessDriverCreater();
+			DriverCreater driverCreater =  new ChromeDriverCreater();
 			WebDriver driver = driverCreater.createDriver();
 			return driver;
 		} catch (Exception e) {

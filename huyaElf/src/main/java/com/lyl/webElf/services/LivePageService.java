@@ -12,7 +12,7 @@ import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.springframework.stereotype.Service;
 
-import com.lyl.webElf.base.context.DriverContext;
+import com.lyl.webElf.base.context.ChromeHeadLessDriverContext;
 import com.lyl.webElf.base.service.WebPageService;
 import com.lyl.webElf.consts.PageNameConsts;
 import com.lyl.webElf.domain.LiveItem;
@@ -29,7 +29,7 @@ public class LivePageService extends WebPageService<LivePage> {
 		initLivePage(isLogined, isFirstPage, defaultDriverContext);
 	}
 
-	public void initLivePage(boolean isLogined, boolean isFirstPage, DriverContext driverContext) {
+	public void initLivePage(boolean isLogined, boolean isFirstPage, ChromeHeadLessDriverContext driverContext) {
 		WebDriver driver = driverContext.getDriver();
 		Map<String, String> handles = driverContext.getHandles();
 		System.out.println(Thread.currentThread().getName());
@@ -66,7 +66,7 @@ public class LivePageService extends WebPageService<LivePage> {
 
 	}
 
-	private List<LiveItem> getLives(DriverContext driverContext) {
+	private List<LiveItem> getLives(ChromeHeadLessDriverContext driverContext) {
 		WebDriver driver = driverContext.getDriver();
 		Map<String, String> handles = driverContext.getHandles();
 		driver.switchTo().window(handles.get(PageNameConsts.LIVE_PAGE));
@@ -97,7 +97,7 @@ public class LivePageService extends WebPageService<LivePage> {
 
 	}
 
-	public void exit(DriverContext driverContext) {
+	public void exit(ChromeHeadLessDriverContext driverContext) {
 		WebDriver driver = driverContext.getDriver();
 		Map<String, String> handles = driverContext.getHandles();
 		driver.switchTo().window(handles.get(PageNameConsts.LIVE_PAGE));
@@ -110,7 +110,7 @@ public class LivePageService extends WebPageService<LivePage> {
 		return getLiveItemList(startPage, pageNum, defaultDriverContext);
 	}
 
-	public List<LiveItem> getLiveItemList(int startPage, int pageNum, DriverContext driverContext) {
+	public List<LiveItem> getLiveItemList(int startPage, int pageNum, ChromeHeadLessDriverContext driverContext) {
 		WebDriver driver = driverContext.getDriver();
 		Map<String, String> handles = driverContext.getHandles();
 		List<LiveItem> liveItemList = null;
@@ -137,7 +137,7 @@ public class LivePageService extends WebPageService<LivePage> {
 		openLoginWindow(defaultDriverContext);
 	}
 
-	public void openLoginWindow(DriverContext driverContext) {
+	public void openLoginWindow(ChromeHeadLessDriverContext driverContext) {
 		WebDriver driver = driverContext.getDriver();
 		Map<String, String> handles = driverContext.getHandles();
 		// TODO Auto-generated method stub

@@ -6,28 +6,25 @@ import java.util.Map;
 import org.openqa.selenium.WebDriver;
 import org.springframework.stereotype.Service;
 
-import com.lyl.webElf.base.context.DriverContext;
+import com.lyl.webElf.base.context.ChromeHeadLessDriverContext;
 import com.lyl.webElf.base.domain.WebPage;
-import com.lyl.webElf.utils.ChromeHeadLessDriverCreater;
 import com.lyl.webElf.utils.DriverUtil;
 
 @Service
 public abstract class WebPageService<T extends WebPage> {
-	protected DriverContext defaultDriverContext;
+	protected ChromeHeadLessDriverContext defaultDriverContext;
 	protected T webPage;
 
-	public DriverContext getDefaultDriverContext() {
+	public ChromeHeadLessDriverContext getDefaultDriverContext() {
 		return defaultDriverContext;
 	}
 
-	public void setDefaultDriverContext(DriverContext defaultDriverContext) {
+	public void setDefaultDriverContext(ChromeHeadLessDriverContext defaultDriverContext) {
 		this.defaultDriverContext = defaultDriverContext;
 	}
 
 	public WebPageService(){
-		WebDriver driver = DriverUtil.getDriver();
-		Map<String,String> handles = new HashMap<String,String>();
-		this.defaultDriverContext = new DriverContext(driver, handles);
+		this.defaultDriverContext = new ChromeHeadLessDriverContext();
 	}
 	
 	public void setWebPageCommon(){

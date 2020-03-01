@@ -1,7 +1,6 @@
 package com.lyl.webElf.services;
 
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
@@ -17,9 +16,11 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.lyl.webElf.base.context.ChromeHeadLessDriverContext;
 import com.lyl.webElf.base.context.DriverContext;
 import com.lyl.webElf.base.service.WebPageService;
 import com.lyl.webElf.consts.PageNameConsts;
+import com.lyl.webElf.controller.TestController;
 import com.lyl.webElf.dao.GuessDataDao;
 import com.lyl.webElf.domain.GuessData;
 import com.lyl.webElf.domain.GuessMainBox;
@@ -39,12 +40,12 @@ public class HostPageService extends WebPageService<HostPage> {
 	}
 
 	public void initHostPage(boolean isLogined) {
-		initHostPage(isLogined,defaultDriverContext);
+		initHostPage(isLogined, defaultDriverContext);
 	}
 
-		public void initHostPage(boolean isLogined,DriverContext driverContext) {
+	public void initHostPage(boolean isLogined, ChromeHeadLessDriverContext driverContext) {
 		WebDriver driver = driverContext.getDriver();
-		Map<String,String> handles = driverContext.getHandles();
+		Map<String, String> handles = driverContext.getHandles();
 		Actions action = new Actions(driver);
 		try {
 			Thread.sleep(5000);
@@ -154,15 +155,16 @@ public class HostPageService extends WebPageService<HostPage> {
 		}
 	}
 
-		public boolean hasGuess() {
-			return hasGuess(defaultDriverContext);
-		}
-			public boolean hasGuess(DriverContext driverContext) {
+	public boolean hasGuess() {
+		return hasGuess(defaultDriverContext);
+	}
+
+	public boolean hasGuess(ChromeHeadLessDriverContext driverContext) {
 		WebDriver driver = driverContext.getDriver();
 		List<WebElement> guessMainBoxWebElements;
 		WebDriverWait wait = new WebDriverWait(driver, 20);
 		try {
-			//wait.until(ExpectedConditions.presenceOfElementLocated(By.className("gift-box-icon")));
+			// wait.until(ExpectedConditions.presenceOfElementLocated(By.className("gift-box-icon")));
 			wait = new WebDriverWait(driver, 5);
 			Thread.sleep(5000);
 			wait.until(ExpectedConditions.presenceOfElementLocated(By.className("guess-main-box")));
@@ -175,12 +177,14 @@ public class HostPageService extends WebPageService<HostPage> {
 		return guessMainBoxWebElements.size() != 0 ? true : false;
 	}
 
-			public void guess() throws Exception {
-				guess(defaultDriverContext);
-			}
-				public void guess(DriverContext driverContext) throws Exception {
+	public void guess(String url) throws Exception {
+		guess(url,defaultDriverContext);
+	}
+
+	public void guess(String url,DriverContext driverContext) throws Exception {
 		WebDriver driver = driverContext.getDriver();
-		Actions action = new Actions(driver);
+		new TestController().testIndex(url, driver);
+		/*Actions action = new Actions(driver);
 		Thread.sleep(2222);
 		initHostPage(true);
 		Thread.sleep(2222);
@@ -190,7 +194,7 @@ public class HostPageService extends WebPageService<HostPage> {
 		String js = "$('#player-video').empty();setInterval(function(){$('#player-video').empty()},60000);";
 		JavascriptExecutor driver_js = ((JavascriptExecutor) driver);
 		driver_js.executeScript(js);
-		keyM(driverContext);
+		keyM(driverContext);*/
 	}
 
 	private void keyM(DriverContext driverContext) throws InterruptedException {
@@ -210,15 +214,16 @@ public class HostPageService extends WebPageService<HostPage> {
 					// TODO
 					// 记录胜负信息
 					// 将该场游戏的竞猜数据插入数据库
-					addGuessData(gameId, guessDataPerGameList,driverContext);
+					addGuessData(gameId, guessDataPerGameList, driverContext);
 					endFlg = true;
 					guessDataDao.insertList(guessDataPerGameList);
 
-				} else if (index % 50 == 0 && !"结束种豆".equals(driver.findElements(By.className("guess-main-box")).get(0).findElement(By.className("guess-btn")).getText())) {
+				} else if (index % 50 == 0 && !"结束种豆".equals(driver.findElements(By.className("guess-main-box")).get(0)
+						.findElement(By.className("guess-btn")).getText())) {
 					// TODO
 					bet();
 					System.out.println("--------------------------------------------");
-					addGuessData(gameId, guessDataPerGameList,driverContext);
+					addGuessData(gameId, guessDataPerGameList, driverContext);
 				}
 			}
 		} catch (Exception e) {
@@ -228,7 +233,7 @@ public class HostPageService extends WebPageService<HostPage> {
 		}
 	}
 
-	private void addGuessData(String gameId, List<GuessData> guessDataPerGameList,DriverContext driverContext) {
+	private void addGuessData(String gameId, List<GuessData> guessDataPerGameList, DriverContext driverContext) {
 		WebDriver driver = defaultDriverContext.getDriver();
 		List<WebElement> guessMainBoxWebElements = driver.findElements(By.className("guess-main-box"));
 		for (WebElement guessMainBoxWebElement : guessMainBoxWebElements) {
@@ -271,9 +276,10 @@ public class HostPageService extends WebPageService<HostPage> {
 	public void openLoginWindow() {
 		openLoginWindow(defaultDriverContext);
 	}
-		public void openLoginWindow(DriverContext driverContext) {
+
+	public void openLoginWindow(ChromeHeadLessDriverContext driverContext) {
 		WebDriver driver = driverContext.getDriver();
-		Map<String,String> handles = driverContext.getHandles();
+		Map<String, String> handles = driverContext.getHandles();
 		// TODO Auto-generated method stub
 		handles.put(PageNameConsts.HOST_PAGE, driver.getWindowHandle());
 		driver.switchTo().window(handles.get(PageNameConsts.HOST_PAGE));

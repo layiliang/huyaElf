@@ -1,12 +1,13 @@
 package com.lyl.webElf.base.context;
 
+import java.util.HashMap;
 import java.util.Map;
 
 import org.openqa.selenium.WebDriver;
 
-public class DriverContext {
-	private WebDriver driver;
-	private Map<String,String> handles;
+public abstract class  DriverContext {
+	protected WebDriver driver;
+	protected Map<String,String> handles = new HashMap<String,String>();
 	
 	public DriverContext() {
 		super();
