@@ -21,9 +21,8 @@ public class TestController {
 	@SuppressWarnings("unchecked")
 	@RequestMapping("testIndex")
 	@ResponseBody
-	public void testIndex(String url) throws InterruptedException{
+	public void testIndex(String url,WebDriver driver) throws InterruptedException{
 		logger.info("tttt");
-		WebDriver driver = DriverUtil.getDriver();
 		driver.get(url);
 		Thread.sleep(1000);
 		JavascriptExecutor driver_js = ((JavascriptExecutor) driver);

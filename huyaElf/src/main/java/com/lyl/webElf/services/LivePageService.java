@@ -47,6 +47,8 @@ public class LivePageService extends WebPageService<LivePage> {
 			pageCommonElement.setExitBtn(driver.findElement(By.className("btn-exit")));
 		} else {// 未登录或者退出后
 			WebDriverWait wait = new WebDriverWait(driver, 20);
+			System.out.println(driver.getCurrentUrl());
+			
 			wait.until(ExpectedConditions.textToBePresentInElementLocated(By.id("login-username"), ""));
 			pageCommonElement.setLoginBtn(driver.findElement(By.id("nav-login")));
 		}

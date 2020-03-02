@@ -69,6 +69,7 @@ public class DriverUtil {
 
 	public static void open(String url) {
 		System.out.println(Thread.currentThread().getName());
+		System.out.println(driver.getCurrentUrl());
 		driver.get(url);
 	}
 

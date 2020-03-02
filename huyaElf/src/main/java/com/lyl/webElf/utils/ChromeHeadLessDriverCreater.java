@@ -13,7 +13,7 @@ public class ChromeHeadLessDriverCreater implements DriverCreater {
 
 	@Override
 	public WebDriver createDriver() {
-		System.setProperty("webdriver.chrome.driver", "E:/autoTest/chromedriver_win32/chromedriver_win32_80.0.3987.16/chromedriver.exe");
+		System.setProperty("webdriver.chrome.driver", "E:/autoTest/chromedriver_win32/chromedriver.exe");
 		ChromeOptions options = new ChromeOptions();
 		options.setPageLoadStrategy(PageLoadStrategy.NORMAL);
         options.addArguments("--headless");
