@@ -181,8 +181,22 @@ public class HostPageService extends WebPageService<HostPage> {
 		guess(url,defaultDriverContext);
 	}
 
-	public void guess(String url,DriverContext driverContext) throws Exception {
+	public void guess(List<String> urls,DriverContext driverContext) throws Exception {
 		WebDriver driver = driverContext.getDriver();
+		
+		buildGuessDatas(urls,driverContext);
+		
+		getGuessDataAndRebuildGuessDatas();
+		/*new Thread(new Runnable(){
+
+			@Override
+			public void run() {
+				for(String url : urls){
+					
+				}
+			}
+			
+		}).start();*/
 		new TestController().testIndex(url, driver);
 		/*Actions action = new Actions(driver);
 		Thread.sleep(2222);
