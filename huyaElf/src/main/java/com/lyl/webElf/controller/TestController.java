@@ -22,7 +22,7 @@ public class TestController {
 	@RequestMapping("testIndex")
 	@ResponseBody
 	public void testIndex(String url,WebDriver driver) throws InterruptedException{
-		logger.info("tttt");
+		logger.info("tttta");
 		driver.get(url);
 		Thread.sleep(1000);
 		JavascriptExecutor driver_js = ((JavascriptExecutor) driver);

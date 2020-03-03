@@ -7,5 +7,6 @@ public class  DefaultDriverContext extends DriverContext{
 	public DefaultDriverContext() {
 		super();
 		driver = DriverUtil.getDefaultDriver();
+		handles= DriverUtil.getDefaultHandles();
 	}
 }

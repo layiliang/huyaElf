@@ -27,7 +27,7 @@ public class ChromeHeadLessDriverCreater implements DriverCreater {
 	}
 	
 	public WebDriver createDriver(boolean imageAble) {
-		System.setProperty("webdriver.chrome.driver", "E:/autoTest/chromedriver_win32/chromedriver_win32_80.0.3987.16/chromedriver.exe");
+		System.setProperty("webdriver.chrome.driver", "E:/autoTest/chromedriver_win32/chromedriver.exe");
 		ChromeOptions options = new ChromeOptions();
 		options.setPageLoadStrategy(PageLoadStrategy.NORMAL);
 		Map<String, Object> prefs = new HashMap<String, Object>();

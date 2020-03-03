@@ -90,7 +90,7 @@ public class HuyaManageService {
 				tempList.add(guessItem);
 			}
 			DriverUtil.getDefaultDriver().close();
-			DriverUtil.getDefaultDriver().switchTo().window(DriverUtil.getHandles().get(PageNameConsts.LIVE_PAGE));
+			DriverUtil.getDefaultDriver().switchTo().window(DriverUtil.getDefaultHandles().get(PageNameConsts.LIVE_PAGE));
 		}
 		List<GuessItem> resultList = new ArrayList<>();
 		for (GuessItem guessItem : tempList) {

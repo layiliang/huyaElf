@@ -15,6 +15,8 @@ public class DriverUtil {
 	private static ThreadLocal<WebDriver> localDriver = new ThreadLocal<WebDriver>();
 	private static ThreadLocal<Map<String,String>> localHandles = new ThreadLocal<Map<String,String>>();
 	private static WebDriver defaultDriver = newDefaultDriver();
+	private static Map<String,String> defaultHandles =new HashMap<String,String>() ;
+	
 	 //@Value("${demo.defaultWebDriverCreater}")
    // public static String defaultWebDriverCreater;
 	 
@@ -39,6 +41,14 @@ public class DriverUtil {
 		}
 		return localDriver.get();
 	}*/
+
+	public static Map<String, String> getDefaultHandles() {
+		return defaultHandles;
+	}
+
+	public static void setDefaultHandles(Map<String, String> defaultHandles) {
+		DriverUtil.defaultHandles = defaultHandles;
+	}
 
 	public static WebDriver newDefaultDriver() {
 		try {
@@ -81,7 +91,7 @@ public class DriverUtil {
 	 */
 	public static void switchToNewWindow() {
 		Set<String> newHandles = defaultDriver.getWindowHandles();
-		Collection<String> oldHandles = getHandles().values();
+		Collection<String> oldHandles = getDefaultHandles().values();
 		for (String handle : newHandles) {
 			if (!oldHandles.contains(handle)) {
 				defaultDriver.switchTo().window(handle);
@@ -90,12 +100,12 @@ public class DriverUtil {
 		}
 	}
 
-	public static Map<String, String> getHandles() {
+	/*public static Map<String, String> getHandles() {
 		System.out.println(Thread.currentThread().getName());
 		if (localHandles.get() == null) {
 			Map<String,String> handles = new HashMap<String,String>();
 			localHandles.set(handles);
 		}
 		return localHandles.get();
-	}
+	}*/
 }
