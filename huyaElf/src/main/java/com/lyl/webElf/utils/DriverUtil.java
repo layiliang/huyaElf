@@ -14,14 +14,16 @@ public class DriverUtil {
 
 	private static ThreadLocal<WebDriver> localDriver = new ThreadLocal<WebDriver>();
 	private static ThreadLocal<Map<String,String>> localHandles = new ThreadLocal<Map<String,String>>();
-	private static WebDriver driver = newDriver();
+	private static WebDriver defaultDriver = newDefaultDriver();
 	 //@Value("${demo.defaultWebDriverCreater}")
    // public static String defaultWebDriverCreater;
 	 
 	 //@Autowired
 	   // private static Environment environment;
+/**/
 
-	public static WebDriver initDriver(DriverCreater driverCreater) {
+
+	/*public static WebDriver initDriver(DriverCreater driverCreater) {
 		if(localDriver.get() == null){
 			driver = driverCreater.createDriver();
 			driver.manage().window().maximize();
@@ -29,15 +31,6 @@ public class DriverUtil {
 		}
 		return localDriver.get();
 	}
-
-	public static WebDriver getDriver() {
-		return driver;
-	}
-
-	public static void setDriver(WebDriver driver) {
-		DriverUtil.driver = driver;
-	}
-
 	public static WebDriver initDriver() {
 		if(localDriver.get() == null){
 			driver = initDriver(new ChromeDriverCreater());
@@ -45,9 +38,9 @@ public class DriverUtil {
 			localDriver.set(driver);
 		}
 		return localDriver.get();
-	}
+	}*/
 
-	public static WebDriver newDriver() {
+	public static WebDriver newDefaultDriver() {
 		try {
 			//Class<?> cls = Class.forName(environment.getProperty("demo.defaultWebDriverCreater") );
 			//DriverCreater driverCreater =  (DriverCreater) cls.newInstance();
@@ -62,6 +55,14 @@ public class DriverUtil {
 		}
 	}
 
+	public static WebDriver getDefaultDriver() {
+		return defaultDriver;
+	}
+
+	public static void setDefaultDriver(WebDriver defaultDriver) {
+		DriverUtil.defaultDriver = defaultDriver;
+	}
+
 	public static WebDriver newDriver(DriverCreater driverCreater) {
 		WebDriver driver = driverCreater.createDriver();
 		return driver;
@@ -69,8 +70,8 @@ public class DriverUtil {
 
 	public static void open(String url) {
 		System.out.println(Thread.currentThread().getName());
-		System.out.println(driver.getCurrentUrl());
-		driver.get(url);
+		System.out.println(defaultDriver.getCurrentUrl());
+		defaultDriver.get(url);
 	}
 
 
@@ -79,11 +80,11 @@ public class DriverUtil {
 	 * 转到新打开的窗口，应再加些判断
 	 */
 	public static void switchToNewWindow() {
-		Set<String> newHandles = driver.getWindowHandles();
+		Set<String> newHandles = defaultDriver.getWindowHandles();
 		Collection<String> oldHandles = getHandles().values();
 		for (String handle : newHandles) {
 			if (!oldHandles.contains(handle)) {
-				driver.switchTo().window(handle);
+				defaultDriver.switchTo().window(handle);
 				break;
 			}
 		}

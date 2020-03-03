@@ -74,7 +74,7 @@ public class HuyaManageService {
 			link.click();
 			DriverUtil.switchToNewWindow();
 
-			System.out.println(DriverUtil.getDriver().getCurrentUrl());
+			System.out.println(DriverUtil.getDefaultDriver().getCurrentUrl());
 			System.out.println(k);
 			// hanles.put(PageNameConsts.HOST_PAGE,
 			// driver.getWindowHandle());
@@ -89,8 +89,8 @@ public class HuyaManageService {
 				guessItem.setType(liveItem.getType());
 				tempList.add(guessItem);
 			}
-			DriverUtil.getDriver().close();
-			DriverUtil.getDriver().switchTo().window(DriverUtil.getHandles().get(PageNameConsts.LIVE_PAGE));
+			DriverUtil.getDefaultDriver().close();
+			DriverUtil.getDefaultDriver().switchTo().window(DriverUtil.getHandles().get(PageNameConsts.LIVE_PAGE));
 		}
 		List<GuessItem> resultList = new ArrayList<>();
 		for (GuessItem guessItem : tempList) {

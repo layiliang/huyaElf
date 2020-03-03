@@ -7,24 +7,28 @@ import org.openqa.selenium.WebDriver;
 import org.springframework.stereotype.Service;
 
 import com.lyl.webElf.base.context.ChromeHeadLessDriverContext;
+import com.lyl.webElf.base.context.DefaultDriverContext;
+import com.lyl.webElf.base.context.DriverContext;
 import com.lyl.webElf.base.domain.WebPage;
 import com.lyl.webElf.utils.DriverUtil;
 
 @Service
 public abstract class WebPageService<T extends WebPage> {
-	protected ChromeHeadLessDriverContext defaultDriverContext;
+	protected DriverContext defaultDriverContext;
 	protected T webPage;
 
-	public ChromeHeadLessDriverContext getDefaultDriverContext() {
+	
+
+	public DriverContext getDefaultDriverContext() {
 		return defaultDriverContext;
 	}
 
-	public void setDefaultDriverContext(ChromeHeadLessDriverContext defaultDriverContext) {
+	public void setDefaultDriverContext(DriverContext defaultDriverContext) {
 		this.defaultDriverContext = defaultDriverContext;
 	}
 
 	public WebPageService(){
-		this.defaultDriverContext = new ChromeHeadLessDriverContext();
+		this.defaultDriverContext = new DefaultDriverContext();
 	}
 	
 	public void setWebPageCommon(){

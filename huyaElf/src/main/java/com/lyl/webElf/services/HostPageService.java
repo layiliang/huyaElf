@@ -43,7 +43,7 @@ public class HostPageService extends WebPageService<HostPage> {
 		initHostPage(isLogined, defaultDriverContext);
 	}
 
-	public void initHostPage(boolean isLogined, ChromeHeadLessDriverContext driverContext) {
+	public void initHostPage(boolean isLogined, DriverContext driverContext) {
 		WebDriver driver = driverContext.getDriver();
 		Map<String, String> handles = driverContext.getHandles();
 		Actions action = new Actions(driver);
@@ -159,7 +159,7 @@ public class HostPageService extends WebPageService<HostPage> {
 		return hasGuess(defaultDriverContext);
 	}
 
-	public boolean hasGuess(ChromeHeadLessDriverContext driverContext) {
+	public boolean hasGuess(DriverContext driverContext) {
 		WebDriver driver = driverContext.getDriver();
 		List<WebElement> guessMainBoxWebElements;
 		WebDriverWait wait = new WebDriverWait(driver, 20);
@@ -277,7 +277,7 @@ public class HostPageService extends WebPageService<HostPage> {
 		openLoginWindow(defaultDriverContext);
 	}
 
-	public void openLoginWindow(ChromeHeadLessDriverContext driverContext) {
+	public void openLoginWindow(DriverContext driverContext) {
 		WebDriver driver = driverContext.getDriver();
 		Map<String, String> handles = driverContext.getHandles();
 		// TODO Auto-generated method stub

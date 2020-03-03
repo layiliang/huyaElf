@@ -9,6 +9,7 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 import org.springframework.stereotype.Service;
 
 import com.lyl.webElf.base.context.ChromeHeadLessDriverContext;
+import com.lyl.webElf.base.context.DriverContext;
 import com.lyl.webElf.base.service.WebPageService;
 import com.lyl.webElf.domain.LoginWindow;
 
@@ -22,7 +23,7 @@ public class LoginWindowService extends WebPageService<LoginWindow> {
 		initLoginWindow(defaultDriverContext);
 	}
 
-	public void initLoginWindow(ChromeHeadLessDriverContext driverContext) throws Exception {
+	public void initLoginWindow(DriverContext driverContext) throws Exception {
 		WebDriver driver = driverContext.getDriver();
 		WebDriverWait wait = new WebDriverWait(driver, 20);
 		try {
@@ -42,7 +43,7 @@ public class LoginWindowService extends WebPageService<LoginWindow> {
 		loginByAccount(account, pwd, defaultDriverContext);
 	}
 
-	public void loginByAccount(String account, String pwd, ChromeHeadLessDriverContext driverContext) throws Exception {
+	public void loginByAccount(String account, String pwd, DriverContext driverContext) throws Exception {
 		WebDriver driver = driverContext.getDriver();
 		initLoginWindow();
 		webPage.getAccount().sendKeys(account);
