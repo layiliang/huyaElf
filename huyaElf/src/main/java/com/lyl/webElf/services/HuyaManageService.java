@@ -13,6 +13,7 @@ import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Service;
 
 import com.lyl.webElf.base.context.ChromeDriverContext;
+import com.lyl.webElf.base.context.DriverContext;
 import com.lyl.webElf.consts.PageNameConsts;
 import com.lyl.webElf.domain.GuessItem;
 import com.lyl.webElf.domain.LiveItem;
@@ -107,12 +108,12 @@ public class HuyaManageService {
 		return resultList;
 	}
 
-	public void guess(String hostUrl) throws Exception {
+	public void guess(List<String> hostUrls,DriverContext driverContext) throws Exception {
 		//DriverUtil.open(hostUrl);
 
 		//hostPageService.openLoginWindow();
 		//loginWindowService.loginByAccount("2295451338","huya123");
-		hostPageService.guess(hostUrl,new ChromeDriverContext());
+		hostPageService.guess(hostUrls,driverContext);
 	}
 	
 }

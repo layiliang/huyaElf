@@ -21,7 +21,7 @@ public class TestController {
 	@SuppressWarnings("unchecked")
 	@RequestMapping("testIndex")
 	@ResponseBody
-	public void testIndex(String url,WebDriver driver) throws InterruptedException{
+	public void buildGuessDatas(String url,WebDriver driver) throws InterruptedException{
 		logger.info("tttta");
 		driver.get(url);
 		Thread.sleep(1000);
@@ -92,6 +92,10 @@ public class TestController {
 		"buildGuessDatas(j);"+
 		"}";
 		driver_js.executeScript(buildGuessDatasJs);
+		getGuessDatas(driver);
+	}
+	public void getGuessDatas(WebDriver driver) throws InterruptedException {
+		JavascriptExecutor driver_js = ((JavascriptExecutor) driver);
 		while(true){
 			Thread.sleep(3000);
 			if(driver.findElements(By.className("guessResult")) !=null && driver.findElements(By.className("guessResult")).size()>0){

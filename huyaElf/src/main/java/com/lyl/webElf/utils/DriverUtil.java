@@ -89,6 +89,21 @@ public class DriverUtil {
 	/**
 	 * 转到新打开的窗口，应再加些判断
 	 */
+	public static void switchToNewWindow(WebDriver driver,Map<String,String> handles) {
+		Set<String> newHandles = driver.getWindowHandles();
+		Collection<String> oldHandles = handles.values();
+		for (String handle : newHandles) {
+			if (!oldHandles.contains(handle)) {
+				defaultDriver.switchTo().window(handle);
+				break;
+			}
+		}
+	}
+
+	// TODO
+	/**
+	 * 转到新打开的窗口，应再加些判断
+	 */
 	public static void switchToNewWindow() {
 		Set<String> newHandles = defaultDriver.getWindowHandles();
 		Collection<String> oldHandles = getDefaultHandles().values();

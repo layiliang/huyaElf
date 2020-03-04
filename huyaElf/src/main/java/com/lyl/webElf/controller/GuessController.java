@@ -14,6 +14,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.lyl.webElf.base.context.ChromeDriverContext;
+import com.lyl.webElf.base.context.DriverContext;
 import com.lyl.webElf.domain.GuessItem;
 import com.lyl.webElf.mapper.GuessDataMapper;
 import com.lyl.webElf.services.HostPageService;
@@ -35,30 +37,17 @@ public class GuessController {
 		int startPage = 1;
 		System.out.println(Thread.currentThread().getName());
 		return  huyaManageService.getGuessList(startPage, 1);
-
 	}
 
 	@RequestMapping("guess")
 	@ResponseBody
-	public void guess(String hostUrl) throws InterruptedException {
+	public void guess(String hostUrl) throws Exception {
+		DriverContext driverContext = new ChromeDriverContext();
 		List<String> hostUrls = new ArrayList<String>();
-		hostUrls.add(hostUrl);
-		
-		for (String url : hostUrls) {
-			new Thread(new Runnable() {
-				@Override
-				public void run() {
-					HuyaManageService huyaManageService = getGuessListServiceLocal();
-					try {
-						huyaManageService.guess(url);
-					} catch (Exception e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
-					}
-				}
-			}).start();
-			Thread.sleep(60000);
-		}
+		//hostUrls.add(hostUrl);
+		hostUrls.add("https://www.huya.com/131499");
+		hostUrls.add("https://www.huya.com/588332");
+		huyaManageService.guess(hostUrls,driverContext);
 	}
 
 	private HuyaManageService getGuessListServiceLocal() {
