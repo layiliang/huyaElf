@@ -217,10 +217,13 @@ static{
 			robot.keyRelease(KeyEvent.VK_CONTROL);
 			robot.delay(20);
 			robot.keyRelease(KeyEvent.VK_T);
+			System.out.println(driver.getCurrentUrl());
+			System.out.println(driver.getWindowHandles().size());
 			DriverUtil.switchToNewWindow(driver, handles);
+			System.out.println(driver.getCurrentUrl());
 		}
 		driver.get(url);
-		handles.put(url, driver.getCurrentUrl());
+		handles.put(url, driver.getWindowHandle());
 	}
 	public void buildGuessDatas(WebDriver driver) throws InterruptedException{
 		logger.info("tttta");

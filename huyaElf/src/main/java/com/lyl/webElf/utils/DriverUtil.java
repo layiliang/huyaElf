@@ -94,7 +94,7 @@ public class DriverUtil {
 		Collection<String> oldHandles = handles.values();
 		for (String handle : newHandles) {
 			if (!oldHandles.contains(handle)) {
-				defaultDriver.switchTo().window(handle);
+				driver.switchTo().window(handle);
 				break;
 			}
 		}
