@@ -322,7 +322,7 @@ public class HostPageService extends WebPageService<HostPage> {
 								}
 							}
 							
-						});
+						}).start();
 						String resetJs = "$('#guessResult"+index+"').remove();";
 						driver_js.executeScript(resetJs);
 						String buildGuessDatasJs2 = "buildGuessDatas("+index+");";
