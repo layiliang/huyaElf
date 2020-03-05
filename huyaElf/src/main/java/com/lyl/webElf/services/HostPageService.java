@@ -1,7 +1,8 @@
 package com.lyl.webElf.services;
 
 import java.awt.AWTException;
-import java.awt.event.KeyEvent;
+import java.lang.reflect.Field;
+import java.lang.reflect.Modifier;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -188,6 +189,7 @@ public class HostPageService extends WebPageService<HostPage> {
 				for(String url : urls){
 					open(url,driverContext);
 					try {
+						Thread.sleep(10000);
 						buildGuessDatas(driver);
 					} catch (InterruptedException e) {
 						e.printStackTrace();
@@ -199,26 +201,13 @@ public class HostPageService extends WebPageService<HostPage> {
 		
 		getGuessDataAndRebuildGuessDatas(driverContext);
 	}
-static{
-
-	System.setProperty("java.awt.headless", "false");
-}
+	
 	private void open(String url,DriverContext driverContext) throws AWTException {
 		WebDriver driver = driverContext.getDriver();
 		Map<String,String> handles = driverContext.getHandles();
 		// TODO Auto-generated method stub
 		if(handles.size()!=0){
-			java.awt.Robot robot = new java.awt.Robot();
-			robot.delay(20);
-			robot.keyPress(KeyEvent.VK_CONTROL);
-			robot.delay(20);
-			robot.keyPress(KeyEvent.VK_T);
-			robot.delay(20);
-			robot.keyRelease(KeyEvent.VK_CONTROL);
-			robot.delay(20);
-			robot.keyRelease(KeyEvent.VK_T);
-			System.out.println(driver.getCurrentUrl());
-			System.out.println(driver.getWindowHandles().size());
+			((JavascriptExecutor) driver).executeScript("arguments[0].click();",driver.findElement(By.className("toAnchor")));
 			DriverUtil.switchToNewWindow(driver, handles);
 			System.out.println(driver.getCurrentUrl());
 		}
@@ -297,12 +286,12 @@ static{
 		"}";
 		driver_js.executeScript(buildGuessDatasJs);
 	}
-	public void getGuessDataAndRebuildGuessDatas(DriverContext driverContext) throws InterruptedException {
+	public void getGuessDataAndRebuildGuessDatas(DriverContext driverContext) throws Exception {
 		WebDriver driver = driverContext.getDriver();
 		Map<String,String> handles = driverContext.getHandles();
 		JavascriptExecutor driver_js = ((JavascriptExecutor) driver);
 		while(true){
-			Thread.sleep(3000);
+			Thread.sleep(30000);
 			for(Entry<String,String> handleMap : handles.entrySet()){
 				String url = (String) handleMap.getKey();
 				String handle = (String) handleMap.getValue();
@@ -315,10 +304,22 @@ static{
 						String idName = guessResults.get(i).getAttribute("id");
 						int index = Integer.parseInt(idName.substring(idName.length()-1, idName.length()));
 						String getGuessDataJs = "return guessDatas["+index+"];";
-						List<String> guessDatas = (List<String>)driver_js.executeScript(getGuessDataJs);
+						List<Map<String,Object>> guessDatas = (List<Map<String,Object>>)driver_js.executeScript(getGuessDataJs);
 						//JSONObject.fromObject(jsonResult);
 						String getResultJs = "return $('#guessResult"+index+"').text();";
 						String result = (String)driver_js.executeScript(getResultJs);
+						new Thread(new Runnable(){
+
+							@Override
+							public void run() {
+								try {
+									saveGuessDatas(guessDatas,result);
+								} catch (Exception e) {
+									e.printStackTrace();
+								}
+							}
+							
+						});
 						String resetJs = "$('#guessResult"+index+"').remove();";
 						driver_js.executeScript(resetJs);
 						String buildGuessDatasJs2 = "buildGuessDatas("+index+");";
@@ -331,7 +332,37 @@ static{
 			}
 		}
 	}
+	
+	private void saveGuessDatas(List<Map<String, Object>> guessDatas, String result) throws Exception {
+		for(int k = 0 ; k <guessDatas.size();k++){
+			Map<String,Object> guessDataMap = guessDatas.get(k);
+			GuessData guessData = new GuessData();
+			guessData = (GuessData) map2Obj(guessDataMap, guessData.getClass());
+			System.out.println(guessData.getBoxTitle());
+		}
+	}
 
+public static void main(String[] args) {
+	List<String> list = new ArrayList<String>();
+	list.add("aaa");
+	list.add("bbb");
+	list.add("c");
+	list.add("d");
+	System.out.println(list);
+}
+	public Object map2Obj(Map<String,Object> map,Class<?> clz) throws Exception{
+		Object obj = clz.newInstance();
+		Field[] declaredFields = obj.getClass().getDeclaredFields();
+		for(Field field:declaredFields){
+			int mod = field.getModifiers();
+			if(Modifier.isStatic(mod) || Modifier.isFinal(mod)){
+				continue;
+			}
+			field.setAccessible(true);
+			field.set(obj, map.get(field.getName()));
+		}
+		return obj;
+	}
 	private void keyM(DriverContext driverContext) throws InterruptedException {
 		WebDriver driver = driverContext.getDriver();
 		List<GuessData> guessDataPerGameList = new ArrayList<GuessData>();

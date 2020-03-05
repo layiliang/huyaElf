@@ -44,9 +44,11 @@ public class GuessController {
 	public void guess(String hostUrl) throws Exception {
 		DriverContext driverContext = new ChromeDriverContext();
 		List<String> hostUrls = new ArrayList<String>();
-		//hostUrls.add(hostUrl);
-		hostUrls.add("https://www.huya.com/818929");
-		hostUrls.add("https://www.huya.com/678398");
+		hostUrls.add(hostUrl);
+		//hostUrls.add("https://www.huya.com/wjz520cx");
+		//hostUrls.add("https://www.huya.com/588332");
+		//hostUrls.add("https://www.huya.com/housangun");
+		
 		huyaManageService.guess(hostUrls,driverContext);
 	}
 
