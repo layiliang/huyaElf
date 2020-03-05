@@ -30,12 +30,15 @@ import com.lyl.webElf.domain.GuessPlan;
 import com.lyl.webElf.domain.HostPage;
 import com.lyl.webElf.domain.PageCommonElement;
 import com.lyl.webElf.domain.PlayerPanelGuessOpen;
+import com.lyl.webElf.mapper.GuessDataMapper;
 import com.lyl.webElf.utils.DriverUtil;
 
 @Service
 public class HostPageService extends WebPageService<HostPage> {
 	@Autowired
 	private GuessDataDao guessDataDao;
+	@Autowired
+	private GuessDataMapper guessDataMapper; 
 	Logger logger = Logger.getLogger(HostPageService.class);
 
 	public HostPageService() {
@@ -334,12 +337,15 @@ public class HostPageService extends WebPageService<HostPage> {
 	}
 	
 	private void saveGuessDatas(List<Map<String, Object>> guessDatas, String result) throws Exception {
+		List<GuessData> list = new ArrayList<>();
 		for(int k = 0 ; k <guessDatas.size();k++){
 			Map<String,Object> guessDataMap = guessDatas.get(k);
 			GuessData guessData = new GuessData();
 			guessData = (GuessData) map2Obj(guessDataMap, guessData.getClass());
+			list.add(guessData);
 			System.out.println(guessData.getBoxTitle());
 		}
+		guessDataMapper.insertBatch(list);
 	}
 
 public static void main(String[] args) {
