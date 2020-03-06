@@ -10,7 +10,7 @@ public class GuessData {
 	//每盘的id
 	private String gameId;
 	//创建时间
-	private Date createTime;
+	private String createTime;
 	//竞猜主题
 	private String boxTitle ;//class="box-title"
 	//比率1
@@ -45,10 +45,11 @@ public class GuessData {
 	public void setGameId(String gameId) {
 		this.gameId = gameId;
 	}
-	public Date getCreateTime() {
+
+	public String getCreateTime() {
 		return createTime;
 	}
-	public void setCreateTime(Date createTime) {
+	public void setCreateTime(String createTime) {
 		this.createTime = createTime;
 	}
 	public String getBoxTitle() {

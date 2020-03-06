@@ -4,6 +4,7 @@ import java.awt.AWTException;
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
@@ -342,19 +343,56 @@ public class HostPageService extends WebPageService<HostPage> {
 			Map<String,Object> guessDataMap = guessDatas.get(k);
 			GuessData guessData = new GuessData();
 			guessData = (GuessData) map2Obj(guessDataMap, guessData.getClass());
+			
+			guessData.setBoxTitle("aaa");
+			guessData.setCreateTime("fff");
+			guessData.setGameId("1111");
+			guessData.setGuessName1("ddd");
+			guessData.setGuessName2("fff");
+			guessData.setGuessNum1("ff");
+			guessData.setGuessNum2("ffff");
+			guessData.setGuessResult1("fff");
+			guessData.setGuessResult2("vvv");
+			guessData.setHostName("ggg");
+			guessData.setId("fff");
+			guessData.setRate1("fff");
+			guessData.setRate2("fff");
+			
+			
 			list.add(guessData);
-			System.out.println(guessData.getBoxTitle());
 		}
-		guessDataMapper.insertBatch(list);
+		for(int k = 0 ; k <list.size();k= k+100){
+			List<GuessData> guessDatasInsert = new ArrayList<>();
+			for(int j = k ; j <k+100 && j < list.size();j++ ){
+				guessDatasInsert.add(list.get(j));
+			}
+			guessDataMapper.insertAll(guessDatasInsert);
+		}
 	}
 
 public static void main(String[] args) {
-	List<String> list = new ArrayList<String>();
-	list.add("aaa");
-	list.add("bbb");
-	list.add("c");
-	list.add("d");
-	System.out.println(list);
+	List<GuessData> list = new ArrayList<>();
+	for(int k = 0 ; k <100;k++){
+	GuessData guessData = new GuessData();
+	
+	guessData.setBoxTitle("aaa");
+	guessData.setCreateTime("fff");
+	guessData.setGameId("1111");
+	guessData.setGuessName1("ddd");
+	guessData.setGuessName2("fff");
+	guessData.setGuessNum1("ff");
+	guessData.setGuessNum2("ffff");
+	guessData.setGuessResult1("fff");
+	guessData.setGuessResult2("vvv");
+	guessData.setHostName("ggg");
+	guessData.setId("fff");
+	guessData.setRate1("fff");
+	guessData.setRate2("fff");
+	
+	
+	list.add(guessData);
+	//guessDataMapper.insertAll(list);
+}
 }
 	public Object map2Obj(Map<String,Object> map,Class<?> clz) throws Exception{
 		Object obj = clz.newInstance();
