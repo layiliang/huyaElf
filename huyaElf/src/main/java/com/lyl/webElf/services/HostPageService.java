@@ -1,8 +1,6 @@
 package com.lyl.webElf.services;
 
 import java.awt.AWTException;
-import java.lang.reflect.Field;
-import java.lang.reflect.Modifier;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -28,11 +26,14 @@ import com.lyl.webElf.dao.GuessDataDao;
 import com.lyl.webElf.domain.GuessData;
 import com.lyl.webElf.domain.GuessMainBox;
 import com.lyl.webElf.domain.GuessPlan;
+import com.lyl.webElf.domain.GuessResult;
 import com.lyl.webElf.domain.HostPage;
 import com.lyl.webElf.domain.PageCommonElement;
 import com.lyl.webElf.domain.PlayerPanelGuessOpen;
 import com.lyl.webElf.mapper.GuessDataMapper;
+import com.lyl.webElf.mapper.GuessResultMapper;
 import com.lyl.webElf.utils.DriverUtil;
+import com.lyl.webElf.utils.FileUtil;
 
 @Service
 public class HostPageService extends WebPageService<HostPage> {
@@ -40,6 +41,8 @@ public class HostPageService extends WebPageService<HostPage> {
 	private GuessDataDao guessDataDao;
 	@Autowired
 	private GuessDataMapper guessDataMapper; 
+	@Autowired
+	private GuessResultMapper guessResultMapper; 
 	Logger logger = Logger.getLogger(HostPageService.class);
 
 	public HostPageService() {
@@ -218,76 +221,13 @@ public class HostPageService extends WebPageService<HostPage> {
 		driver.get(url);
 		handles.put(url, driver.getWindowHandle());
 	}
-	public void buildGuessDatas(WebDriver driver) throws InterruptedException{
+	public void buildGuessDatas(WebDriver driver) throws Exception{
 		logger.info("tttta");
 		//driver.get(url);
 		Thread.sleep(1000);
 		JavascriptExecutor driver_js = ((JavascriptExecutor) driver);
-		String buildGuessDatasJs = 
-		"window.guessDatas=new Array();"+
-		"window.index=new Array();"+
-		"window.interval=new Array();"+
-		"window.guessDataInterval=new Array();"+
-		"window.resultFlg1=new Array();"+
-		"window.resultFlg2=new Array();"+
-		"window.endFlg=new Array();"+
-		"window.rate1=new Array();"+
-		"window.rate2=new Array();"+
-		"window.num1=new Array();"+
-		"window.num2=new Array();"+
-		"window.name1=new Array();"+
-		"window.name2=new Array();"+
-		"window.idName=new Array();"+
-		"window.result=new Array();"+
-		"window.title=new Array();"+
-		"window.createtime=new Array();"+
-		"window.startedFlg=new Array();"+
-		"window.guessMainBoxsSize = $('.guess-main-box').length;"+
-		"console.log('size'+guessMainBoxsSize);"+
-		"window.buildGuessDatas= function(i){"+
-			"guessDatas[i] = new Array();"+
-			"guessData = new Array();"+
-			"index[i]=0;"+
-			"interval[i]=0;"+
-			"startedFlg[i]=false;"+
-			"guessDataInterval[i]=setInterval(function(){"+
-				"interval[i]++;"+
-				"resultFlg1[i] = $($('.guess-unit span')[i*2]).attr('class')?true:false;"+
-				"resultFlg2[i] = $($('.guess-btn')[i*2]).text()=='流局'?true:false;"+
-				"endFlg[i] = $($('.guess-btn')[i*2]).text()=='结束种豆'?true:false;"+
-				"console.log($($('.guess-btn')[i*2]).text());"+
-				"if((resultFlg1[i] || resultFlg2[i]) && startedFlg[i]){"+
-						"if(resultFlg1[i]){"+
-							"result[i] = $($('.guess-unit span')[i*2]).attr('class');"+
-						"}else{"+
-							"result[i] = '流局';"+
-						"}"+
-						"console.log(result[i]);"+
-						"idName[i] = 'guessResult'+i;"+
-						"$(\"#msg_send_bt\").append(\"<p class ='guessResult' id ='\"+ idName[i]+\"'>\"+result[i] + \"</p>\");"+
-						"clearInterval(guessDataInterval[i]);"+
-				"}"+
-				"if(!endFlg[i] && interval[i]%20==0 && !(resultFlg1[i] || resultFlg2[i])){"+
-					"startedFlg[i]=true;"+
-					"createtime[i] = (new Date()).toTimeString();"+
-					"rate1[i] = $($('.guess-btn')[i*2]).text();"+
-					"rate2[i] = $($('.guess-btn')[i*2+1]).text();"+
-					"num1[i] = $($('.process-num')[i*2]).text();"+
-					"num2[i] = $($('.process-num')[i*2+1]).text();"+
-					"name1[i] = $($('.process-name')[i*2]).text();"+
-					"name2[i] = $($('.process-name')[i*2+1]).text();"+
-					"result[i] = $($('.guess-unit span')[i*2]).attr('class');"+
-					"title[i] = $($('.box-title .name')[i]).text();"+
-					"guessData[i] = { 'rate1': rate1[i],'rate2': rate2[i],'num1': num1[i],'num2': num2[i],"+
-							"'name1': name1[i],'name2': name2[i],'title': title[i],'result1': result[i],'createtime': createtime[i]};"+
-					"guessDatas[i].push(guessData[i]);"+
-					"index[i]++"+
-				"}"+
-			"},50);"+
-		"};"+
-		"for(let j = 0 ; j < guessMainBoxsSize;j++){"+
-		"buildGuessDatas(j);"+
-		"}";
+		String path = this.getClass().getClassLoader().getResource("templates/buildGuessData.js").getPath();
+		String buildGuessDatasJs = FileUtil.getTemplateContent(path);
 		driver_js.executeScript(buildGuessDatasJs);
 	}
 	public void getGuessDataAndRebuildGuessDatas(DriverContext driverContext) throws Exception {
@@ -308,7 +248,7 @@ public class HostPageService extends WebPageService<HostPage> {
 						String idName = guessResults.get(i).getAttribute("id");
 						int index = Integer.parseInt(idName.substring(idName.length()-1, idName.length()));
 						String getGuessDataJs = "return guessDatas["+index+"];";
-						List<Map<String,Object>> guessDatas = (List<Map<String,Object>>)driver_js.executeScript(getGuessDataJs);
+						List<Map<String,String>> guessDatas = (List<Map<String,String>>)driver_js.executeScript(getGuessDataJs);
 						//JSONObject.fromObject(jsonResult);
 						String getResultJs = "return $('#guessResult"+index+"').text();";
 						String result = (String)driver_js.executeScript(getResultJs);
@@ -317,7 +257,7 @@ public class HostPageService extends WebPageService<HostPage> {
 							@Override
 							public void run() {
 								try {
-									saveGuessDatas(guessDatas,result);
+									saveGuessDatas(guessDatas,result,driver);
 								} catch (Exception e) {
 									e.printStackTrace();
 								}
@@ -337,134 +277,57 @@ public class HostPageService extends WebPageService<HostPage> {
 		}
 	}
 	
-	private void saveGuessDatas(List<Map<String, Object>> guessDatas, String result) throws Exception {
+	private void saveGuessDatas(List<Map<String, String>> guessDatas, String result, WebDriver driver) throws Exception {
+
+		String guessId = UUID.randomUUID().toString();
+		String[] resultArr = result.split(",");
+		GuessResult guessResult = new GuessResult();
+		Date createTime = new Date();
+		guessResult.setCreateTime(createTime);
+		guessResult.setStartTime(new Date(Long.parseLong(resultArr[0])));
+		guessResult.setEndTime(new Date(Long.parseLong(resultArr[1])));
+		guessResult.setHostName(driver.findElement(By.className("host-name")).getText());
+		guessResult.setId(guessId);
+		guessResult.setName1(resultArr[3]);
+		guessResult.setName2(resultArr[4]);
+		guessResult.setResult(resultArr[2]);
+		guessResult.setTitle(resultArr[5]);
+		guessResult.setUrl(driver.getCurrentUrl());
+		guessResultMapper.insert(guessResult);
 		List<GuessData> list = new ArrayList<>();
 		for(int k = 0 ; k <guessDatas.size();k++){
-			Map<String,Object> guessDataMap = guessDatas.get(k);
+			String dataId = UUID.randomUUID().toString();
+			Map<String,String> guessDataMap = guessDatas.get(k);
 			GuessData guessData = new GuessData();
-			guessData = (GuessData) map2Obj(guessDataMap, guessData.getClass());
-			
-			guessData.setBoxTitle("aaa");
-			guessData.setCreateTime("fff");
-			guessData.setGameId("1111");
-			guessData.setGuessName1("ddd");
-			guessData.setGuessName2("fff");
-			guessData.setGuessNum1("ff");
-			guessData.setGuessNum2("ffff");
-			guessData.setGuessResult1("fff");
-			guessData.setGuessResult2("vvv");
-			guessData.setHostName("ggg");
-			guessData.setId("fff");
-			guessData.setRate1("fff");
-			guessData.setRate2("fff");
-			
-			
+			guessData.setCreateTime(createTime);
+			guessData.setGuessId(guessId);
+			guessData.setId(dataId);
+			guessData.setNum1(stringToInt(guessDataMap.get("num1")));
+			guessData.setNum2(stringToInt(guessDataMap.get("num2")));
+			String rate1 =  guessDataMap.get("rate1");
+			if("马上开种".equals(rate1 )){
+				guessData.setRate1(0);
+			}else{
+				guessData.setRate1(Double.parseDouble(rate1.substring(rate1.length()-3, rate1.length())));
+			}
+			String rate2 =  guessDataMap.get("rate2");
+			if("马上开种".equals(rate2 )){
+				guessData.setRate2(0);
+			}else{
+				guessData.setRate1(Double.parseDouble(rate2.substring(rate2.length()-3, rate2.length())));
+			}
+			guessDataMapper.insert(guessData);
 			list.add(guessData);
 		}
-		for(int k = 0 ; k <list.size();k= k+100){
+		/*for(int k = 0 ; k <list.size();k= k+100){
 			List<GuessData> guessDatasInsert = new ArrayList<>();
 			for(int j = k ; j <k+100 && j < list.size();j++ ){
 				guessDatasInsert.add(list.get(j));
 			}
 			guessDataMapper.insertAll(guessDatasInsert);
-		}
+		}*/
 	}
-
-public static void main(String[] args) {
-	List<GuessData> list = new ArrayList<>();
-	for(int k = 0 ; k <100;k++){
-	GuessData guessData = new GuessData();
 	
-	guessData.setBoxTitle("aaa");
-	guessData.setCreateTime("fff");
-	guessData.setGameId("1111");
-	guessData.setGuessName1("ddd");
-	guessData.setGuessName2("fff");
-	guessData.setGuessNum1("ff");
-	guessData.setGuessNum2("ffff");
-	guessData.setGuessResult1("fff");
-	guessData.setGuessResult2("vvv");
-	guessData.setHostName("ggg");
-	guessData.setId("fff");
-	guessData.setRate1("fff");
-	guessData.setRate2("fff");
-	
-	
-	list.add(guessData);
-	//guessDataMapper.insertAll(list);
-}
-}
-	public Object map2Obj(Map<String,Object> map,Class<?> clz) throws Exception{
-		Object obj = clz.newInstance();
-		Field[] declaredFields = obj.getClass().getDeclaredFields();
-		for(Field field:declaredFields){
-			int mod = field.getModifiers();
-			if(Modifier.isStatic(mod) || Modifier.isFinal(mod)){
-				continue;
-			}
-			field.setAccessible(true);
-			field.set(obj, map.get(field.getName()));
-		}
-		return obj;
-	}
-	private void keyM(DriverContext driverContext) throws InterruptedException {
-		WebDriver driver = driverContext.getDriver();
-		List<GuessData> guessDataPerGameList = new ArrayList<GuessData>();
-		try {
-			List<GuessMainBox> guessMainBoxs = webPage.getGuessMainBoxs();
-			String gameId = UUID.randomUUID().toString();
-			int index = 0;
-			while (true) {
-				index++;
-				boolean endFlg = false;
-				Thread.sleep(100);
-				String resultFlg = driver.findElements(By.id("guess-result")).get(0).getAttribute("class");
-				System.out.println(resultFlg);
-				if (!"".equals(resultFlg) && !endFlg) {
-					// TODO
-					// 记录胜负信息
-					// 将该场游戏的竞猜数据插入数据库
-					addGuessData(gameId, guessDataPerGameList, driverContext);
-					endFlg = true;
-					guessDataDao.insertList(guessDataPerGameList);
-
-				} else if (index % 50 == 0 && !"结束种豆".equals(driver.findElements(By.className("guess-main-box")).get(0)
-						.findElement(By.className("guess-btn")).getText())) {
-					// TODO
-					bet();
-					System.out.println("--------------------------------------------");
-					addGuessData(gameId, guessDataPerGameList, driverContext);
-				}
-			}
-		} catch (Exception e) {
-			logger.info("竞猜信息获取异常", e);
-			// guessDataDao.insertList(guessDataPerGameList);
-			keyM(driverContext);
-		}
-	}
-
-	private void addGuessData(String gameId, List<GuessData> guessDataPerGameList, DriverContext driverContext) {
-		WebDriver driver = defaultDriverContext.getDriver();
-		List<WebElement> guessMainBoxWebElements = driver.findElements(By.className("guess-main-box"));
-		for (WebElement guessMainBoxWebElement : guessMainBoxWebElements) {
-			GuessData guessData = new GuessData();
-			guessData.setGameId(gameId);
-			guessData.setId(UUID.randomUUID().toString());
-			guessData.setBoxTitle(guessMainBoxWebElement.findElement(By.className("box-title")).getText());
-			guessData.setRate1(guessMainBoxWebElement.findElements(By.className("guess-btn")).get(0).getText());
-			guessData.setRate2(guessMainBoxWebElement.findElements(By.className("guess-btn")).get(1).getText());
-			guessData.setGuessName1(guessMainBoxWebElement.findElements(By.className("process-name")).get(0).getText());
-			guessData.setGuessName2(guessMainBoxWebElement.findElements(By.className("process-name")).get(1).getText());
-			guessData.setGuessNum1(guessMainBoxWebElement.findElements(By.className("process-num")).get(0).getText());
-			guessData.setGuessNum2(guessMainBoxWebElement.findElements(By.className("process-num")).get(1).getText());
-			guessData.setHostName(driver.findElement(By.className("host-name")).getText());
-			guessData.setGuessResult1(
-					guessMainBoxWebElement.findElements(By.id("guess-result")).get(0).getAttribute("class"));
-			guessData.setGuessResult2(
-					guessMainBoxWebElement.findElements(By.id("guess-result")).get(1).getAttribute("class"));
-			guessDataPerGameList.add(guessData);
-		}
-	}
 
 	private void bet() {
 		// TODO Auto-generated method stub
@@ -474,7 +337,13 @@ public static void main(String[] args) {
 	private int stringToInt(String beans) {
 		int result = 0;
 		if (beans.contains("亿")) {
-			result = (int) (Double.parseDouble(beans.split("亿")[0]) * 100000000);
+			String[] strArr = beans.split("亿");
+			int result1 = (int) (Double.parseDouble(strArr[0]) * 100000000);
+			result = result + result1;
+			if(strArr.length>1){
+				int result2 = (int) (Double.parseDouble(strArr[1].split("万")[0]) * 10000);
+				result = result + result2;
+			}
 		} else if (beans.contains("万")) {
 			result = (int) (Double.parseDouble(beans.split("万")[0]) * 10000);
 		} else {
