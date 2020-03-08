@@ -298,7 +298,7 @@ public class HostPageService extends WebPageService<HostPage> {
 			String dataId = UUID.randomUUID().toString();
 			Map<String,String> guessDataMap = guessDatas.get(k);
 			GuessData guessData = new GuessData();
-			guessData.setRecordTime(new Date(Long.parseLong(guessDataMap.get("recordTime"))));
+			guessData.setRecordTime(new Date(Long.parseLong(guessDataMap.get("recordTime").toString())));
 			guessData.setCreateTime(createTime);
 			guessData.setGuessId(guessId);
 			guessData.setId(dataId);
