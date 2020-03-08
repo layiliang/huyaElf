@@ -9,12 +9,21 @@ public class GuessData {
 	private String guessId;
 	//创建时间
 	private Date createTime;
+	//创建时间
+	private Date recordTime;
 	//比率1
 	private double rate1;//class="guess-btn"
 	//该选项已种豆数
 	private int num1;//class="process-num"
 	private double rate2;
 	private int num2;
+	
+	public Date getRecordTime() {
+		return recordTime;
+	}
+	public void setRecordTime(Date recordTime) {
+		this.recordTime = recordTime;
+	}
 	public String getId() {
 		return id;
 	}

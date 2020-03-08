@@ -3,13 +3,5 @@
 
 taskkill /f /im chromedriver.exe
 
-https://bbs.csdn.net/topics/390615608   批量插入数据
 
 
-<insert id ="insertBatch" parameterType="java.util.List">
-  INSERT ALL 
-  <foreach collection ="itemList" item= "item">
-    INTO TABLEAAA (C1, C2) values (#{item.c1},#{item.c2})
-  </foreach >
-  SELECT * FROM dual
-</insert >

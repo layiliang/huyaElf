@@ -261,8 +261,7 @@ public class HostPageService extends WebPageService<HostPage> {
 								} catch (Exception e) {
 									e.printStackTrace();
 								}
-							}
-							
+							}	
 						}).start();
 						String resetJs = "$('#guessResult"+index+"').remove();";
 						driver_js.executeScript(resetJs);
@@ -299,6 +298,7 @@ public class HostPageService extends WebPageService<HostPage> {
 			String dataId = UUID.randomUUID().toString();
 			Map<String,String> guessDataMap = guessDatas.get(k);
 			GuessData guessData = new GuessData();
+			guessData.setRecordTime(new Date(Long.parseLong(guessDataMap.get("recordTime"))));
 			guessData.setCreateTime(createTime);
 			guessData.setGuessId(guessId);
 			guessData.setId(dataId);
@@ -314,7 +314,7 @@ public class HostPageService extends WebPageService<HostPage> {
 			if("马上开种".equals(rate2 )){
 				guessData.setRate2(0);
 			}else{
-				guessData.setRate1(Double.parseDouble(rate2.substring(rate2.length()-3, rate2.length())));
+				guessData.setRate2(Double.parseDouble(rate2.substring(rate2.length()-3, rate2.length())));
 			}
 			guessDataMapper.insert(guessData);
 			list.add(guessData);
