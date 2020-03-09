@@ -30,6 +30,8 @@ public class HuyaManageService {
 	private HostPageService hostPageService;
 	@Autowired
 	private LoginWindowService loginWindowService;
+	@Autowired
+	private TestService testService;
 	
 	public LivePageService getLivePageService() {
 		return livePageService;
@@ -113,7 +115,8 @@ public class HuyaManageService {
 
 		//hostPageService.openLoginWindow();
 		//loginWindowService.loginByAccount("2295451338","huya123");
-		hostPageService.guess(hostUrls,driverContext);
+		//hostPageService.guess(hostUrls,driverContext);
+		testService.guess(hostUrls,driverContext);
 	}
 	
 }
