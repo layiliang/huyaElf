@@ -29,21 +29,22 @@
 	
 	
 
-	
-	
 function sleep(ms) {
   	return new Promise(resolve => setTimeout(resolve, ms));
 }
 
 (async function() {
+	var starttime =new Date();
+	console.log(starttime);
 	for(var i = 0 ; i < 10 ; i ++){
-		debugger
+		//debugger
 		console.log(i);
 		var leftBean1;
 		var leftBean2;
 		var leftBean = $($(".left-bean")[0]).text().substring(5);
 		await sleep(20);
 		$($(".guess-btn")[0]).click();
+		console.log(new Date()-starttime);
 		while(true){
 			leftBean1 = $($(".left-bean")[0]).text().substring(5);
 			console.log("leftBean1的初始值：  "+leftBean1);
@@ -55,6 +56,7 @@ function sleep(ms) {
 		}
 		await sleep(20);
 		$($(".guess-btn")[1]).click();
+		console.log(new Date()-starttime);
 		while(true){
 			leftBean2 = $($(".left-bean")[0]).text().substring(5);
 			console.log("leftBean2的初始值：  "+leftBean2);
@@ -67,4 +69,19 @@ function sleep(ms) {
 		console.log("leftBean1，2的真实值分别是：  "+leftBean1 + "," + leftBean2)
 		await sleep(2);
 	}
+	console.log(new Date()-starttime);
 })()
+
+
+
+
+setInterval(function(){
+	function sleep(ms) {
+	  	return new Promise(resolve => setTimeout(resolve, ms));
+	}
+	(async function() {
+			//debugger
+			console.log("aaaa");
+			await sleep(20222);
+	})()
+},1111)
