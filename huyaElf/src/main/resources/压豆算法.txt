@@ -1,35 +1,35 @@
 ﻿赔率1  rate1
 赔率2  rate2
 
-压豆数1 num1 
-压豆数2 num2 
+压豆数1 beanPlan1 
+压豆数2 beanPlan2 
 
 
 
-如果1号竞猜胜利 则得到豆子  num1 + num1*0.95*rate1 
-赢得的豆子为 (num1 + num1*0.95*rate1) - (num1+num2) = num1*0.95*rate1 - num2
+如果1号竞猜胜利 则得到豆子  beanPlan1 + beanPlan1*0.95*rate1 
+赢得的豆子为 (beanPlan1 + beanPlan1*0.95*rate1) - (beanPlan1+beanPlan2) = beanPlan1*0.95*rate1 - beanPlan2
 
-如果2号竞猜胜利 则得到豆子   num2 + num2*0.95*rate2
-赢得的豆子为 (num2 + num2*0.95*rate2) - (num1+num2) = num2*0.95*rate1 - num1
+如果2号竞猜胜利 则得到豆子   beanPlan2 + beanPlan2*0.95*rate2
+赢得的豆子为 (beanPlan2 + beanPlan2*0.95*rate2) - (beanPlan1+beanPlan2) = beanPlan2*0.95*rate1 - beanPlan1
 
 
 
 不论输赢，赢得豆子数相同 
-num1*0.95*rate1 - num2 = num2*0.95*rate2 - num1 
-num1*0.95*rate1 +num1 =num2 + num2*0.95*rate2
-num1(0.95*rate1 + 1) = num2(0.95*rate2 + 1)
+beanPlan1*0.95*rate1 - beanPlan2 = beanPlan2*0.95*rate2 - beanPlan1 
+beanPlan1*0.95*rate1 +beanPlan1 =beanPlan2 + beanPlan2*0.95*rate2
+beanPlan1(0.95*rate1 + 1) = beanPlan2(0.95*rate2 + 1)
 
 所以
-num2 = num1*(0.95*rate1 + 1)/(0.95*rate2 + 1)
-num1 = num2*(0.95*rate2 + 1)/(0.95*rate1 + 1)
+beanPlan2 = beanPlan1*(0.95*rate1 + 1)/(0.95*rate2 + 1)
+beanPlan1 = beanPlan2*(0.95*rate2 + 1)/(0.95*rate1 + 1)
 
 
 任将上述值代入赢得豆子表达式中
-以num1为例   (num1 + num1*0.95*rate1) - (num1 + num1*(0.95*rate1 + 1)/(0.95*rate2 + 1))
-				= num1*(0.95*rate1 - (0.95*rate1 + 1)/(0.95*rate2 + 1))
+以beanPlan1为例   (beanPlan1 + beanPlan1*0.95*rate1) - (beanPlan1 + beanPlan1*(0.95*rate1 + 1)/(0.95*rate2 + 1))
+				= beanPlan1*(0.95*rate1 - (0.95*rate1 + 1)/(0.95*rate2 + 1))
 				
-以num2为例   (num2 + num2*0.95*rate1) - (num2 + num2*(0.95*rate2 + 1)/(0.95*rate1 + 1))
-				= num2*(0.95*rate2 - (0.95*rate2 + 1)/(0.95*rate1 + 1))
+以beanPlan2为例   (beanPlan2 + beanPlan2*0.95*rate1) - (beanPlan2 + beanPlan2*(0.95*rate2 + 1)/(0.95*rate1 + 1))
+				= beanPlan2*(0.95*rate2 - (0.95*rate2 + 1)/(0.95*rate1 + 1))
 
 若要盈利，则以上二式大于0，则rate1*rate2>1.108
 
@@ -39,19 +39,19 @@ num1 = num2*(0.95*rate2 + 1)/(0.95*rate1 + 1)
 总结：
 if(rate1*rate2>1.108){
 	myBean;//我的剩余豆子数目
-	num1 = myBean/(1+(0.95*rate1 + 1)/(0.95*rate2 + 1));//竞猜1最多能压的豆子数
-	num2 = myBean-num1;//竞猜2最多能压的豆子数
+	beanPlan1 = myBean/(1+(0.95*rate1 + 1)/(0.95*rate2 + 1));//竞猜1最多能压的豆子数
+	beanPlan2 = myBean-beanPlan1;//竞猜2最多能压的豆子数
 	
-	leftBean1,leftBean2;//实时获取剩余压豆数1和2
-	if(leftBean1*(0.95*rate1 + 1)/(0.95*rate2 + 1)<leftBean2){//竞猜1剩豆不足，竞猜2剩都充足，以竞猜1剩豆为准（leftBean1）
-		if(leftBean1<num1){//竞猜1剩豆不足，以竞猜1剩豆为准
-			num1 = leftBean1;
-			num2 = num1*(0.95*rate1 + 1)/(0.95*rate2 + 1);
+	num1,num2;//实时获取剩余压豆数1和2
+	if(num1*(0.95*rate1 + 1)/(0.95*rate2 + 1)<num2){//竞猜1剩豆不足，竞猜2剩都充足，以竞猜1剩豆为准（num1）
+		if(num1<beanPlan1){//竞猜1剩豆不足，以竞猜1剩豆为准
+			beanPlan1 = num1;
+			beanPlan2 = beanPlan1*(0.95*rate1 + 1)/(0.95*rate2 + 1);
 		}
-	}else{以竞猜2剩豆为准（leftBean2）
-		if(leftBean2<num2){//竞猜2剩豆不足，以竞猜2剩豆为准
-			num2 = leftBean2;
-			num1 = num2*(0.95*rate2 + 1)/(0.95*rate1 + 1)
+	}else{//以竞猜2剩豆为准（num2）
+		if(num2<beanPlan2){//竞猜2剩豆不足，以竞猜2剩豆为准
+			beanPlan2 = num2;
+			beanPlan1 = beanPlan2*(0.95*rate2 + 1)/(0.95*rate1 + 1)
 		}
 	}
 	

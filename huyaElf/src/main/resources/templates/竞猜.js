@@ -75,13 +75,16 @@ function sleep(ms) {
 
 
 
-setInterval(function(){
 	function sleep(ms) {
 	  	return new Promise(resolve => setTimeout(resolve, ms));
 	}
-	(async function() {
+	var test = async function(i) {
 			//debugger
-			console.log("aaaa");
-			await sleep(20222);
-	})()
-},1111)
+			console.log( i);
+			await sleep(2222);
+			console.log("aaaa" + i);
+	}
+
+	test(1);
+	test(2);
+	test(21);
