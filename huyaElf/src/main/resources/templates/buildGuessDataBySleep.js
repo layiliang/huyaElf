@@ -97,6 +97,9 @@ window.buildGuessDatas= async function(i){
 				}
 			}
 			//种beanPlan2，确认是否成功种豆，如果成功，种beanPlan1，如果不成功，重新判断r1*r2
+			$('.guess-plan input').text(beanPlan2[i]);
+			await sleep(2);
+			
 		}
 		if(!endFlg[i] && !resultFlg1[i] && !resultFlg2[i] && interval[i]%20==0){
 			if(index[i]==0){
