@@ -1,6 +1,29 @@
 window.sleep = function(ms) {
   	return new Promise(resolve => setTimeout(resolve, ms));
 }
+window.test1 = async function(){
+	await sleep(2222);
+}
+window.test2 = async function(){
+	console.log('start')
+	await sleep(2222);
+	console.log('2sec later')
+	test1();
+	console.log('2sec later')
+}
+test2();
+
+
+window.clickGuessBtn = async function(index,message){
+	$('.choice-color').text('beforeClick');
+	$($(".guess-btn")[index]).click();
+	console.log(message + "btn1click" + index)
+	//while($('.choice-color').text()!=name1[i]){
+	while($('.choice-color').text()=='beforeClick'){
+		await sleep(2);
+	}
+}
+window.betingFlg=false;
 window.guessDatas=new Array();
 window.index=new Array();
 window.interval=new Array();
@@ -60,22 +83,16 @@ window.buildGuessDatas= async function(i){
 		rate2[i] = $($('.guess-btn')[i*2+1]).text();
 		rate1[i] = rate1[i].substring(rate1[i].length-3, rate1[i].length);
 		rate2[i] = rate2[i].substring(rate2[i].length-3, rate2[i].length);
-		console.log(rate1[i] + ',' + rate2[i]);
-		//if(rate1[i]*rate2[i]>1.108){
-		if(rate1[i]*rate2[i]<1.108 && rate1[i] !="上开中" && rate2[i] !="上开中" ){
+		//console.log(rate1[i] + ',' + rate2[i]);
+		//if(rate1[i]*rate2[i]>1.108 && betingFlg==false){
+		if(rate1[i]*rate2[i]<1.108 && rate1[i] !="上开中" && rate2[i] !="上开中" && betingFlg==false){
+			betingFlg=true;
 			//debugger;
 			await sleep(2);
-			$($(".guess-btn")[i*2]).click();
-			while($('.choice-color').text()!=name1[i]){
-				await sleep(2);
-			}
+			clickGuessBtn(i*2);
 			leftBean1[i] = $($(".left-bean")[0]).text().substring(5);
 			await sleep(2);
-			$($(".guess-btn")[i*2+1]).click();
-
-			while($('.choice-color').text()!=name2[i]){
-				await sleep(2);
-			}
+			clickGuessBtn(i*2+1);
 			leftBean2[i] = $($(".left-bean")[0]).text().substring(5);
 			
 			var myBean = $('#J_huyaNavUserCardAssetsTk').text();
@@ -98,23 +115,17 @@ window.buildGuessDatas= async function(i){
 			//种beanPlan2，确认是否成功种豆，如果成功，种beanPlan1，如果不成功，重新判断r1*r2
 			$('.guess-plan input').val(beanPlan2[i]);
 			$('.guess-plan button').click();
+			//console.log("btn2click,bet2")
 			for(var j = 0 ; j < 200 ; j ++){
 				await sleep(5);
 				if($('.rspTips').css('display')=='block'){//种豆成功
-					leftBean2[i] = $($(".left-bean")[0]).text().substring(5);
-					$($(".guess-btn")[i*2]).click();
-
-					while(true){
-						leftBean1[i] = $($(".left-bean")[0]).text().substring(5);
-						if(leftBean1[i] != leftBean2[i]){
-							console.log("leftBean1的真实值：  "+leftBean1[i]);
-							$('.guess-plan input').val(beanPlan1[i]);
-							$('.guess-plan button').click();
-							//判断是否种豆成功
-							break;
-						}
-						await sleep(2);
-					}
+					clickGuessBtn(i*2);
+					//console.log("leftBean1的真实值：  "+leftBean1[i]);
+					$('.guess-plan input').val(beanPlan1[i]);
+					$('.guess-plan button').click();
+					betingFlg=false;
+					//判断是否种豆成功
+					await sleep(2);
 					break;
 				}
 				if($('#player-panel-alert').css('display')=='block'){//种豆不成功
