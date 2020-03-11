@@ -24,6 +24,8 @@ window.startedFlg=new Array();
 window.beanPlan1=new Array();
 window.beanPlan2=new Array();
 window.leftBean=new Array();
+window.leftBean1=new Array();
+window.leftBean2=new Array();
 window.buildGuessDatas= async function(i){
 	guessDatas[i] = new Array();
 	guessData = new Array();
@@ -42,7 +44,7 @@ window.buildGuessDatas= async function(i){
 		resultFlg1[i] = $($('.guess-unit span')[i*2]).attr('class')?true:false;
 		resultFlg2[i] = $($('.guess-btn')[i*2]).text()=='流局'?true:false;
 		endFlg[i] = $($('.guess-btn')[i*2]).text()=='结束种豆'?true:false;
-		console.log($($('.guess-btn')[i*2]).text());
+		//console.log($($('.guess-btn')[i*2]).text());
 		if((resultFlg1[i] || resultFlg2[i]) && startedFlg[i]){
 				if(resultFlg1[i]){
 					result[i] = $($('.guess-unit span')[i*2]).attr('class');
@@ -56,31 +58,25 @@ window.buildGuessDatas= async function(i){
 		}
 		rate1[i] = $($('.guess-btn')[i*2]).text();
 		rate2[i] = $($('.guess-btn')[i*2+1]).text();
-		if(rate1[i]*rate2[i]>1.108){
-			
-			var leftBean[i] = $($(".left-bean")[0]).text().substring(5);
+		rate1[i] = rate1[i].substring(rate1[i].length-3, rate1[i].length);
+		rate2[i] = rate2[i].substring(rate2[i].length-3, rate2[i].length);
+		console.log(rate1[i] + ',' + rate2[i]);
+		//if(rate1[i]*rate2[i]>1.108){
+		if(rate1[i]*rate2[i]<1.108 && rate1[i] !="上开中" && rate2[i] !="上开中" ){
+			//debugger;
 			await sleep(2);
 			$($(".guess-btn")[i*2]).click();
-			while(true){
-				leftBean1[i] = $($(".left-bean")[0]).text().substring(5);
-				console.log("leftBean1的初始值：  "+leftBean1);
-				if(leftBean1[i] != leftBean[i]){
-					console.log("leftBean1的真实值：  "+leftBean1[i]);
-					break;
-				}
+			while($('.choice-color').text()!=name1[i]){
 				await sleep(2);
 			}
+			leftBean1[i] = $($(".left-bean")[0]).text().substring(5);
 			await sleep(2);
 			$($(".guess-btn")[i*2+1]).click();
-			while(true){
-				leftBean2[i] = $($(".left-bean")[0]).text().substring(5);
-				console.log("leftBean2的初始值：  "+leftBean2[i]);
-				if(leftBean2[i] != leftBean1[i]){
-					console.log("leftBean2的真实值：  "+leftBean2[i]);
-					break;
-				}
+
+			while($('.choice-color').text()!=name2[i]){
 				await sleep(2);
 			}
+			leftBean2[i] = $($(".left-bean")[0]).text().substring(5);
 			
 			var myBean = $('#J_huyaNavUserCardAssetsTk').text();
 			beanPlan1[i] = myBean/(1+(0.95*rate1[i] + 1)/(0.95*rate2[i] + 1));//竞猜1最多能压的豆子数
@@ -96,10 +92,37 @@ window.buildGuessDatas= async function(i){
 					beanPlan1[i] = beanPlan2[i]*(0.95*rate2[i] + 1)/(0.95*rate1[i] + 1)
 				}
 			}
+			console.log("beanPlan"+beanPlan1[i] + ',' + beanPlan2[i])
+			beanPlan1[i] = 1;
+			beanPlan2[i] = 1;
 			//种beanPlan2，确认是否成功种豆，如果成功，种beanPlan1，如果不成功，重新判断r1*r2
-			$('.guess-plan input').text(beanPlan2[i]);
+			$('.guess-plan input').val(beanPlan2[i]);
+			$('.guess-plan button').click();
+			for(var j = 0 ; j < 200 ; j ++){
+				await sleep(5);
+				if($('.rspTips').css('display')=='block'){//种豆成功
+					leftBean2[i] = $($(".left-bean")[0]).text().substring(5);
+					$($(".guess-btn")[i*2]).click();
+
+					while(true){
+						leftBean1[i] = $($(".left-bean")[0]).text().substring(5);
+						if(leftBean1[i] != leftBean2[i]){
+							console.log("leftBean1的真实值：  "+leftBean1[i]);
+							$('.guess-plan input').val(beanPlan1[i]);
+							$('.guess-plan button').click();
+							//判断是否种豆成功
+							break;
+						}
+						await sleep(2);
+					}
+					break;
+				}
+				if($('#player-panel-alert').css('display')=='block'){//种豆不成功
+					
+				}
+			}
 			await sleep(2);
-			
+			break;
 		}
 		if(!endFlg[i] && !resultFlg1[i] && !resultFlg2[i] && interval[i]%20==0){
 			if(index[i]==0){
