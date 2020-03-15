@@ -37,7 +37,7 @@ window.buildGuessDatas= function(i){
 		resultFlg2[i] = $($('.guess-btn')[i*2]).text()=='流局'?true:false;
 		endFlg[i] = $($('.guess-btn')[i*2]).text()=='结束种豆'?true:false;
 		console.log($($('.guess-btn')[i*2]).text());
-		if((resultFlg1[i] || resultFlg2[i]) && startedFlg[i]){
+		if((resultFlg1[i] || resultFlg2[i]) && startedFlg[i]){$("#msg_send_bt").click((function(){$(this).hasClass("enable")&&e.send()})),
 				if(resultFlg1[i]){
 					result[i] = $($('.guess-unit span')[i*2]).attr('class');
 				}else{

@@ -85,6 +85,28 @@ function sleep(ms) {
 			console.log("aaaa" + i);
 	}
 
-	test(1);
-	test(2);
-	test(21);
+
+setInterval(test1,1111);
+function test1(){
+	
+	console.log("test1");
+	setInterval(test2,1111);
+	
+}
+
+function test2(){
+	console.log("test2");
+	
+}
+
+
+
+
+
+
+
+
+
+
+
+
