@@ -73,9 +73,15 @@ window.buildGuessDatas= async function(i){
 		rate2[i] = $($('.guess-btn')[i*2+1]).text();
 		rate1[i] = rate1[i].substring(rate1[i].length-3, rate1[i].length);
 		rate2[i] = rate2[i].substring(rate2[i].length-3, rate2[i].length);
+		if(isNaN(rate1[i])){
+			rate1[i] = 0;
+		}
+		if(isNaN(rate2[i])){
+			rate2[i] = 0;
+		}
 		//console.log(rate1[i] + ',' + rate2[i]);
 		//if(rate1[i]*rate2[i]>1.108 && betingFlg==false){
-		if(rate1[i] =="上开种" || rate2[i] =="上开种"){
+		/*if(rate1[i] =="上开种" || rate2[i] =="上开种"){
 			return;
 		}
 		if(rate1[i]*rate2[i]<1.108 && rate1[i] !="上开种" && rate2[i] !="上开种" && betingFlg==false){
@@ -135,9 +141,9 @@ window.buildGuessDatas= async function(i){
 			await sleep(2);
 			//种beanPlan2，确认是否成功种豆，如果成功，种beanPlan1，如果不成功，重新判断r1*r2
 			$('.guess-plan input').val(beanPlan2[i]);
-			/*while($('.win-bean') != '幸运可得0'){
+			while($('.win-bean') != '幸运可得0'){
 				await sleep(2);
-			}*/
+			}
 			//点击确认种豆按钮
 			$('.guess-plan button').click();
 			//console.log("btn2click,bet2")
@@ -153,9 +159,9 @@ window.buildGuessDatas= async function(i){
 					await sleep(2);
 					//console.log("leftBean1的真实值：  "+leftBean1[i]);
 					$('.guess-plan input').val(beanPlan1[i]);
-					/*while($('.win-bean') != '幸运可得0'){
+					while($('.win-bean') != '幸运可得0'){
 						await sleep(2);
-					}*/
+					}
 					//点击确认种豆按钮
 					$('.guess-plan button').click();
 					betingFlg=false;
@@ -171,7 +177,7 @@ window.buildGuessDatas= async function(i){
 			}
 			await sleep(2);
 			break;
-		}
+		}*/
 		if(!endFlg[i] && !resultFlg1[i] && !resultFlg2[i] && interval[i]%20==0){
 			if(index[i]==0){
 				startTime[i] = new Date().getTime();
@@ -189,7 +195,6 @@ window.buildGuessDatas= async function(i){
 	}	
 }
 window.guessMainBoxsSize = $('.guess-main-box').length;
-console.log('size'+guessMainBoxsSize);
 //for(let i = 0 ; i < guessMainBoxsSize;i++){
 	buildGuessDatas(0);
 //}
