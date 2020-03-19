@@ -33,6 +33,9 @@ public class HuyaManageService {
 	@Autowired
 	private TestService testService;
 	
+	private List<LiveItem> allLiveItemList = new ArrayList<LiveItem>();
+	private LiveItemDao liveItemDao;
+	
 	public LivePageService getLivePageService() {
 		return livePageService;
 	}
@@ -57,57 +60,84 @@ public class HuyaManageService {
 		this.loginWindowService = loginWindowService;
 	}
 
-	public List<GuessItem> getGuessList(int startPage,int pageNum) throws Exception {
-		System.out.println(Thread.currentThread().getName());
-		DriverUtil.open("https://www.huya.com/g/wzry");
-		livePageService.initLivePage(false,true);
-		try {
+	public void getGuessList(int pageNum) throws Exception {
+		while(true){
+			for(int i = 0;i<pageNum;i++){
+				boolean isFirstPage;
+				if(i == 0){
+					DriverUtil.open("https://www.huya.com/l");
+					isFirstPage= true;
+				}else{
+					checkPrePages(i);
+					isFirstPage = false;
+					livePageService.nextPage();
+				}
+				livePageService.initLivePage(false, isFirstPage);
+				Thread.sleep(2222);
+				List<LiveItem>  liveItemListCurPage = livePageService.getLiveItemList();
+				
+
+				for (int k = 0; k < liveItemListCurPage.size(); k++) {
+					LiveItem liveItem =  liveItemListCurPage.get(k);
+					WebElement link = liveItem.getLink();
+					link.click();
+					DriverUtil.switchToNewWindow();
+
+					System.out.println(DriverUtil.getDefaultDriver().getCurrentUrl());
+					System.out.println(k);
+					// hanles.put(PageNameConsts.HOST_PAGE,
+					// driver.getWindowHandle());
+					if (hostPageService.hasGuess()) {
+						liveItem.setGuess(true);
+					}
+					DriverUtil.getDefaultDriver().close();
+					DriverUtil.getDefaultDriver().switchTo().window(DriverUtil.getDefaultHandles().get(PageNameConsts.LIVE_PAGE));
+				}
+				allLiveItemList.addAll(liveItemListCurPage);
+				liveItemDao.insertList(liveItemListCurPage);
+				
+			}
+		}
+	}
+
+	private void checkPrePages(int curPageNum) {
+		for(int i = 0;i<curPageNum;i++){
+			boolean isFirstPage;
+			if(i == 0){
+				DriverUtil.open("https://www.huya.com/l");
+				isFirstPage= true;
+			}else{
+				isFirstPage = false;
+				livePageService.nextPage();
+			}
+			livePageService.initLivePage(false, isFirstPage);
 			Thread.sleep(2222);
-		} catch (InterruptedException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		List<LiveItem>  liveItemList = livePageService.getLiveItemList(startPage, pageNum);
-		Set<GuessItem> tempList = new HashSet<>();
-		//for(LiveItem liveItem : liveItemList){
-		// for (int k = 0; k < liveItemList.size(); k++) {
-			 for (int k = 0; k < 7; k++) {
-				 LiveItem liveItem =  liveItemList.get(k);
-			WebElement link = liveItem.getLink();
-			link.click();
-			DriverUtil.switchToNewWindow();
+			List<LiveItem>  liveItemListCurPage = livePageService.getLiveItemList();
 
-			System.out.println(DriverUtil.getDefaultDriver().getCurrentUrl());
-			System.out.println(k);
-			// hanles.put(PageNameConsts.HOST_PAGE,
-			// driver.getWindowHandle());
-			if (hostPageService.hasGuess()) {
-				GuessItem guessItem = new GuessItem();
-				guessItem.setHostName(liveItem.getHostName());
-				System.out.println();
-				guessItem.setUrl(liveItem.getUrl());
-				guessItem.setNum(liveItem.getNum());
-				guessItem.setOnTv(liveItem.isOnTv());
-				guessItem.setTitle(liveItem.getTitle());
-				guessItem.setType(liveItem.getType());
-				tempList.add(guessItem);
-			}
-			DriverUtil.getDefaultDriver().close();
-			DriverUtil.getDefaultDriver().switchTo().window(DriverUtil.getDefaultHandles().get(PageNameConsts.LIVE_PAGE));
-		}
-		List<GuessItem> resultList = new ArrayList<>();
-		for (GuessItem guessItem : tempList) {
-			resultList.add(guessItem);
-		}
-		resultList.sort(new Comparator<GuessItem>() {
+			for (int k = 0; k < liveItemListCurPage.size(); k++) {
+				LiveItem liveItem =  liveItemListCurPage.get(k);
+				if(!allLiveItemList.contains(liveItem)){
 
-			@Override
-			public int compare(GuessItem o1, GuessItem o2) {
-				// TODO Auto-generated method stub
-				return o1.getNum().compareTo(o2.getNum());
+					WebElement link = liveItem.getLink();
+					link.click();
+					DriverUtil.switchToNewWindow();
+
+					System.out.println(DriverUtil.getDefaultDriver().getCurrentUrl());
+					System.out.println(k);
+					// hanles.put(PageNameConsts.HOST_PAGE,
+					// driver.getWindowHandle());
+					if (hostPageService.hasGuess()) {
+						liveItem.setGuess(true);
+					}
+					DriverUtil.getDefaultDriver().close();
+					DriverUtil.getDefaultDriver().switchTo().window(DriverUtil.getDefaultHandles().get(PageNameConsts.LIVE_PAGE));
+					allLiveItemList.add(liveItem);
+					liveItemDao.insert(liveItem);
+				}
 			}
-		});
-		return resultList;
+			
+		}
+		
 	}
 
 	public void guess(List<String> hostUrls,DriverContext driverContext) throws Exception {

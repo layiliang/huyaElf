@@ -42,27 +42,26 @@ public class TestService extends WebPageService<HostPage> {
 
 	public void guess(List<String> urls,DriverContext driverContext) throws Exception {
 		WebDriver driver = driverContext.getDriver();
-		Map<String,String> handles = driverContext.getHandles();
-		/*new Thread(new Runnable(){
+		new Thread(new Runnable(){
 			@Override
-			public void run() {*/
+			public void run() {
 				for(String url : urls){
-					open(url,driverContext);
 					try {
+						buildGuessDatas(url,driverContext);
 						Thread.sleep(10000);
-						buildGuessDatas(driver);
-					} catch (InterruptedException e) {
+						//buildGuessDatas(driver);
+					} catch (Exception e) {
 						e.printStackTrace();
 					}
 				}
-			/*}
+			}
 			
-		}).start();*/
+		}).start();
 		Thread.sleep(10000);
 		getGuessDataAndRebuildGuessDatas(driverContext);
 	}
 	
-	private void open(String url,DriverContext driverContext) throws AWTException {
+	private void buildGuessDatas(String url,DriverContext driverContext) throws Exception {
 		WebDriver driver = driverContext.getDriver();
 		Map<String,String> handles = driverContext.getHandles();
 		// TODO Auto-generated method stub
@@ -73,8 +72,6 @@ public class TestService extends WebPageService<HostPage> {
 		}
 		driver.get(url);
 		handles.put(url, driver.getWindowHandle());
-	}
-	public void buildGuessDatas(WebDriver driver) throws Exception{
 		logger.info("tttta");
 		//driver.get(url);
 		Thread.sleep(1000);
@@ -83,6 +80,15 @@ public class TestService extends WebPageService<HostPage> {
 		String buildGuessDatasJs = FileUtil.getTemplateContent(path);
 		driver_js.executeScript(buildGuessDatasJs);
 	}
+	/*public void buildGuessDatas(WebDriver driver) throws Exception{
+		logger.info("tttta");
+		//driver.get(url);
+		Thread.sleep(1000);
+		JavascriptExecutor driver_js = ((JavascriptExecutor) driver);
+		String path = this.getClass().getClassLoader().getResource("templates/buildGuessData.js").getPath();
+		String buildGuessDatasJs = FileUtil.getTemplateContent(path);
+		driver_js.executeScript(buildGuessDatasJs);
+	}*/
 	
 	public void getGuessDataAndRebuildGuessDatas(DriverContext driverContext) throws Exception {
 		WebDriver driver = driverContext.getDriver();

@@ -109,22 +109,17 @@ public class LivePageService extends WebPageService<LivePage> {
 		driver.findElement(By.className("btn-exit")).click();
 	}
 
-	public List<LiveItem> getLiveItemList(int startPage, int pageNum) {
-		return getLiveItemList(startPage, pageNum, defaultDriverContext);
+	public List<LiveItem> getLiveItemList() {
+		return getLiveItemList(defaultDriverContext);
 	}
 
-	public List<LiveItem> getLiveItemList(int startPage, int pageNum, DriverContext driverContext) {
+	public List<LiveItem> getLiveItemList(DriverContext driverContext) {
 		WebDriver driver = driverContext.getDriver();
 		Map<String, String> handles = driverContext.getHandles();
 		List<LiveItem> liveItemList = null;
 		driver.switchTo().window(handles.get(PageNameConsts.LIVE_PAGE));
-		for (int i = startPage; i < startPage + pageNum; i++) {
-			if (i != startPage) {
-				webPage.getNextPage().click();
 				initLivePage(true, false);
-			}
 			liveItemList = webPage.getLives();
-		}
 		return liveItemList;
 
 	}
@@ -161,5 +156,10 @@ public class LivePageService extends WebPageService<LivePage> {
 		}
 		driver.switchTo().frame("UDBSdkLgn_iframe");
 
+	}
+
+	public void nextPage() {
+		// TODO Auto-generated method stub
+		
 	}
 }

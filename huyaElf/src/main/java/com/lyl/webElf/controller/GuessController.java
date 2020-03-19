@@ -33,10 +33,9 @@ public class GuessController {
 	private HuyaManageService huyaManageService;
 	@RequestMapping("getGuessList")
 	@ResponseBody
-	public List<GuessItem> getGuessList() throws Exception {
-		int startPage = 1;
+	public void getGuessList() throws Exception {
 		System.out.println(Thread.currentThread().getName());
-		return  huyaManageService.getGuessList(startPage, 1);
+		huyaManageService.getGuessList(2);
 	}
 
 	@RequestMapping("guess")
