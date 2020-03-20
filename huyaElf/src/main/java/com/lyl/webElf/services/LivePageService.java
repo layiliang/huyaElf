@@ -109,16 +109,9 @@ public class LivePageService extends WebPageService<LivePage> {
 		driver.findElement(By.className("btn-exit")).click();
 	}
 
-	public List<LiveItem> getLiveItemList() {
-		return getLiveItemList(defaultDriverContext);
-	}
 
-	public List<LiveItem> getLiveItemList(DriverContext driverContext) {
-		WebDriver driver = driverContext.getDriver();
-		Map<String, String> handles = driverContext.getHandles();
+	public List<LiveItem> getLiveItemList() {
 		List<LiveItem> liveItemList = null;
-		driver.switchTo().window(handles.get(PageNameConsts.LIVE_PAGE));
-				initLivePage(true, false);
 			liveItemList = webPage.getLives();
 		return liveItemList;
 
@@ -160,6 +153,6 @@ public class LivePageService extends WebPageService<LivePage> {
 
 	public void nextPage() {
 		// TODO Auto-generated method stub
-		
+		webPage.getNextPage().click();
 	}
 }

@@ -5,6 +5,7 @@ import java.util.Comparator;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.UUID;
 
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
@@ -15,8 +16,10 @@ import org.springframework.stereotype.Service;
 import com.lyl.webElf.base.context.ChromeDriverContext;
 import com.lyl.webElf.base.context.DriverContext;
 import com.lyl.webElf.consts.PageNameConsts;
+import com.lyl.webElf.dao.LiveItemDao;
 import com.lyl.webElf.domain.GuessItem;
 import com.lyl.webElf.domain.LiveItem;
+import com.lyl.webElf.mapper.LiveItemMapper;
 import com.lyl.webElf.utils.ChromeDriverCreater;
 import com.lyl.webElf.utils.ChromeHeadLessDriverCreater;
 import com.lyl.webElf.utils.DriverUtil;
@@ -34,7 +37,8 @@ public class HuyaManageService {
 	private TestService testService;
 	
 	private List<LiveItem> allLiveItemList = new ArrayList<LiveItem>();
-	private LiveItemDao liveItemDao;
+	@Autowired
+	private LiveItemMapper liveItemMapper;
 	
 	public LivePageService getLivePageService() {
 		return livePageService;
@@ -62,6 +66,7 @@ public class HuyaManageService {
 
 	public void getGuessList(int pageNum) throws Exception {
 		while(true){
+			String groupId = UUID.randomUUID().toString();
 			for(int i = 0;i<pageNum;i++){
 				boolean isFirstPage;
 				if(i == 0){
@@ -76,31 +81,32 @@ public class HuyaManageService {
 				Thread.sleep(2222);
 				List<LiveItem>  liveItemListCurPage = livePageService.getLiveItemList();
 				
-
+				
 				for (int k = 0; k < liveItemListCurPage.size(); k++) {
 					LiveItem liveItem =  liveItemListCurPage.get(k);
-					WebElement link = liveItem.getLink();
-					link.click();
-					DriverUtil.switchToNewWindow();
-
-					System.out.println(DriverUtil.getDefaultDriver().getCurrentUrl());
-					System.out.println(k);
-					// hanles.put(PageNameConsts.HOST_PAGE,
-					// driver.getWindowHandle());
-					if (hostPageService.hasGuess()) {
-						liveItem.setGuess(true);
+					if(!allLiveItemList.contains(liveItem)){
+						liveItem.setGroupId(groupId);
+						WebElement link = liveItem.getLink();
+						link.click();
+						DriverUtil.switchToNewWindow();
+						System.out.println(DriverUtil.getDefaultDriver().getCurrentUrl());
+						System.out.println(k);
+						// hanles.put(PageNameConsts.HOST_PAGE,
+						// driver.getWindowHandle());
+						if (hostPageService.hasGuess()) {
+							liveItem.setGuess(true);
+						}
+						DriverUtil.getDefaultDriver().close();
+						DriverUtil.getDefaultDriver().switchTo().window(DriverUtil.getDefaultHandles().get(PageNameConsts.LIVE_PAGE));
+						allLiveItemList.add(liveItem);
+						liveItemMapper.insert(liveItem);
 					}
-					DriverUtil.getDefaultDriver().close();
-					DriverUtil.getDefaultDriver().switchTo().window(DriverUtil.getDefaultHandles().get(PageNameConsts.LIVE_PAGE));
 				}
-				allLiveItemList.addAll(liveItemListCurPage);
-				liveItemDao.insertList(liveItemListCurPage);
-				
 			}
 		}
 	}
 
-	private void checkPrePages(int curPageNum) {
+	private void checkPrePages(int curPageNum) throws Exception {
 		for(int i = 0;i<curPageNum;i++){
 			boolean isFirstPage;
 			if(i == 0){
@@ -117,11 +123,9 @@ public class HuyaManageService {
 			for (int k = 0; k < liveItemListCurPage.size(); k++) {
 				LiveItem liveItem =  liveItemListCurPage.get(k);
 				if(!allLiveItemList.contains(liveItem)){
-
 					WebElement link = liveItem.getLink();
 					link.click();
 					DriverUtil.switchToNewWindow();
-
 					System.out.println(DriverUtil.getDefaultDriver().getCurrentUrl());
 					System.out.println(k);
 					// hanles.put(PageNameConsts.HOST_PAGE,
@@ -132,12 +136,10 @@ public class HuyaManageService {
 					DriverUtil.getDefaultDriver().close();
 					DriverUtil.getDefaultDriver().switchTo().window(DriverUtil.getDefaultHandles().get(PageNameConsts.LIVE_PAGE));
 					allLiveItemList.add(liveItem);
-					liveItemDao.insert(liveItem);
+					liveItemMapper.insert(liveItem);
 				}
 			}
-			
 		}
-		
 	}
 
 	public void guess(List<String> hostUrls,DriverContext driverContext) throws Exception {
