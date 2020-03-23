@@ -1,7 +1,7 @@
 ﻿setInterval(
 function(){
 $(".btn-wrap span").click();
-if(){
+if(!$(".liveRoom_treasureChest").length){
 	window.close();
 }
 }

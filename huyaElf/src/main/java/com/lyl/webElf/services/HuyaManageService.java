@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.Set;
 import java.util.UUID;
 
+import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,6 +16,7 @@ import org.springframework.stereotype.Service;
 
 import com.lyl.webElf.base.context.ChromeDriverContext;
 import com.lyl.webElf.base.context.DriverContext;
+import com.lyl.webElf.base.service.WebPageService;
 import com.lyl.webElf.consts.PageNameConsts;
 import com.lyl.webElf.dao.LiveItemDao;
 import com.lyl.webElf.domain.GuessItem;
@@ -26,7 +28,7 @@ import com.lyl.webElf.utils.DriverUtil;
 import com.lyl.webElf.utils.PhantomjsDriverCreater;
 @Scope("prototype")
 @Service
-public class HuyaManageService {
+public class HuyaManageService extends WebPageService{
 	@Autowired
 	private LivePageService livePageService;
 	@Autowired
@@ -149,6 +151,18 @@ public class HuyaManageService {
 		//loginWindowService.loginByAccount("2295451338","huya123");
 		//hostPageService.guess(hostUrls,driverContext);
 		testService.guess(hostUrls,driverContext);
+	}
+	
+	public void login() throws Exception{
+		login(DriverUtil.getDefaultDriver());
+	}
+	
+	public void login(WebDriver driver) throws Exception{
+		Thread.sleep(1000);
+		driver.findElement(By.id("nav-login")).click();
+		Thread.sleep(1000);
+		driver.switchTo().frame("UDBSdkLgn_iframe");
+		loginWindowService.loginByAccount("2253812186", "MMxph550701");
 	}
 	
 }

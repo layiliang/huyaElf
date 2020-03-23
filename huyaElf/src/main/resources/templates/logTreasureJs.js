@@ -12,7 +12,7 @@ test = async function(){
 			console.log($(".player-banner-gift").html());
 			//console.log($("body").html());
 			if($(".player-banner-gift").html().indexOf("藏宝图") || $(".player-banner-gift").html().indexOf("战神号")){
-				$(".player-banner-gift").click();
+				//$(".player-banner-gift").click();
 			}
 		}
 	}

@@ -15,8 +15,32 @@ public class DigBeanController {
 	@RequestMapping("digBean")
 	@ResponseBody
 	public void guess() throws Exception {
-		digBeanService.open();
-		digBeanService.digBean();
+		new Thread(new Runnable(){
+
+			@Override
+			public void run() {
+				try {
+					digBeanService.open();
+				} catch (Exception e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+			
+		}).start();
+		new Thread(new Runnable(){
+
+			@Override
+			public void run() {
+				try {
+					digBeanService.close();
+				} catch (InterruptedException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+			
+		}).start();
 	}
 
 
