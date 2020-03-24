@@ -162,7 +162,7 @@ public class HuyaManageService extends WebPageService{
 		driver.findElement(By.id("nav-login")).click();
 		Thread.sleep(1000);
 		driver.switchTo().frame("UDBSdkLgn_iframe");
-		loginWindowService.loginByAccount("2253812186", "MMxph550701");
+		loginWindowService.loginByAccount("2295451338", "huya123");
 	}
 	
 }

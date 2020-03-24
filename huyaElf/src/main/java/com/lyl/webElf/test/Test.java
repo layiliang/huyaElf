@@ -13,12 +13,9 @@ import com.lyl.webElf.utils.PhantomjsDriverCreater;
 
 public class Test{
 	public static void main(String[] args) throws InterruptedException {
-		System.setProperty("webdriver.chrome.driver", "E:/autoTest/chromedriver_win32/chromedriver.exe");
-
-		WebDriver driver = new ChromeDriver();
-		driver.get("https://blog.csdn.net/u013613428/article/details/82491576");
-		WebDriver driver2 = new ChromeDriver();
-		driver2.get("http://ask.zol.com.cn/x/7150369.html");
+		
+		String aa = "悲歌一首》 在 影娱幻音丶芯蕊 直播间开启藏宝图";
+		System.out.println(aa.split(" ").length);
 		
 	}
 }

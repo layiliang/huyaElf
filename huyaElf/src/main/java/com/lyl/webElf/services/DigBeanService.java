@@ -1,6 +1,8 @@
 package com.lyl.webElf.services;
 
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -33,12 +35,12 @@ public class DigBeanService {
 	//private DigBeanWebDriverContext digBeanWebDriverContext; //此driver查找元素的时候默认不做任何等待。
 	@Autowired
 	private HuyaManageService huyaManageService ;
-	private Set<Treasure> treasures = new HashSet<Treasure>();
+	private Set<String> treasureHosts = new HashSet<String>();
 	private final String DEFAULT_URL = "https://www.huya.com/11342412";
 	Logger logger = Logger.getLogger(DigBeanService.class);
 	public void open() throws Exception {
 		WebDriver driver = DriverUtil.getDefaultDriver();
-		
+		//driver.get(DEFAULT_URL);
 		Map<String,String> handles = DriverUtil.getDefaultHandles();
 		JavascriptExecutor driver_js = ((JavascriptExecutor) driver);
 		for(String handle : driver.getWindowHandles()){
@@ -57,112 +59,80 @@ public class DigBeanService {
 		//handles.put(DEFAULT_URL, driver.getWindowHandle());
 		//每当有挖豆机会的时候，判断重复，并记录主播名字，大哥名字，礼物名称。
 		while(true){
-			Thread.sleep(1111);
-			String test = "console.log('aaa')";
-			driver_js.executeScript(test);
-			List<WebElement> huyayihao = driver.findElements(By.className("huyayihao"));
-			//其他宝藏
-			List<WebElement> otherTreasures = driver.findElements(By.className("player-banner-gift"));
-			for(WebElement we : huyayihao){
-				logger.info(we.getText());
-				List<WebElement> info = we.findElements(By.tagName("c4"));
-				Treasure treasure = new Treasure();
-				logger.info(info.get(0).getText());
-				logger.info(info.get(1).getText());
-				treasure.setBoss(info.get(0).getText());
-				treasure.setHost(info.get(1).getText());
-				treasure.setType("虎牙一号");
-				
-				if(!treasures.contains(treasure)){
-					String className = we.getAttribute("class");
-					logger.info(className);
-					String clickJs = "$('."+ className + "').click()";
-					driver_js.executeScript(clickJs);
-					Thread.sleep(111);
-					DriverUtil.switchToNewWindow(driver,handles);
-					String hostUrl = driver.getCurrentUrl();
-					handles.put(hostUrl, driver.getWindowHandle());
-					treasure.setHostUrl(hostUrl);
-					String handle = driver.getWindowHandle();
-					treasure.setHandle(handle);
-					treasures.add(treasure);
-					//挖豆的js脚本，挖豆、关闭
-					path = this.getClass().getClassLoader().getResource("templates/digBean.js").getPath();
-					String digBeanJs = FileUtil.getTemplateContent(path);
-					driver_js.executeScript(digBeanJs);
-					driver.switchTo().window(handles.get(DEFAULT_URL));
+			List<WebElement> newTreasureHosts =  new ArrayList<WebElement>();
+			try {
+				//logger.info("开始查找：" + new Date());
+				//虎牙一号
+				List<WebElement> huyayihao = driver.findElements(By.className("huyayihao"));
+				//藏宝图
+				List<WebElement> cangbaotu = driver.findElements(By.className("player-banner-text-12"));
+				//战神号
+				List<WebElement> zhanshenhao = driver.findElements(By.className("player-banner-text-20303"));
+				if(huyayihao!=null && huyayihao.size()>0){
+					newTreasureHosts.add(huyayihao.get(0));
 				}
-			}
-			for(WebElement we :otherTreasures){
-				logger.info(we.getText());
-				String text = we.getText();
-				String type=null;
-				if(text.indexOf("藏宝图")>0 ||text.indexOf("空投")>0 ||text.indexOf("战神号")>0 ||text.indexOf("钞票枪")>0){
-					type = "藏宝图";
-				}else if(text.indexOf("空投")>0){
-					type = "虎牙一号";
-				}else if(text.indexOf("战神号")>0){
-					type = "战神号";
-				}else if(text.indexOf("钞票枪")>0){
-					type = "钞票枪";
+				if(cangbaotu!=null && cangbaotu.size()>0){
+					newTreasureHosts.add(cangbaotu.get(0));
 				}
-				if(type!=null){
-					List<WebElement> info = we.findElements(By.tagName("c1"));
-					Treasure treasure = new Treasure();
-					logger.info(info.get(0).getText());
-					logger.info(info.get(1).getText());
-					treasure.setBoss(info.get(0).getText());
-					treasure.setHost(info.get(1).getText());
-					treasure.setType(type);
-					if(!treasures.contains(treasure)){
-						//we.click();
-						String className = we.getAttribute("class");
+				if(zhanshenhao!=null && zhanshenhao.size()>0){
+					newTreasureHosts.add(zhanshenhao.get(0));
+				}
+				for(int i = 0 ; i < newTreasureHosts.size();i++){
+					WebElement ele = newTreasureHosts.get(i);
+					logger.info("内容为" + ele.getAttribute("innerText"));
+					logger.info("分解后的数组长度" + ele.getAttribute("innerText").split(" ").length);
+					String host = ele.getAttribute("innerText").split(" ")[2];
+					if(!treasureHosts.contains(host)){
+						String className = ele.getAttribute("class");
 						logger.info(className);
 						String clickJs = "$('."+ className + "').click()";
 						driver_js.executeScript(clickJs);
-						Thread.sleep(111);
-						DriverUtil.switchToNewWindow(driver,handles);
-						String hostUrl = driver.getCurrentUrl();
-						handles.put(hostUrl, driver.getWindowHandle());
-						treasure.setHostUrl(hostUrl);
-						String handle = driver.getWindowHandle();
-						treasure.setHandle(handle);
-						treasures.add(treasure);
-						//挖豆的js脚本，挖豆、关闭
+						treasureHosts.add(host);
+						DriverUtil.switchToNewWindow();
 						path = this.getClass().getClassLoader().getResource("templates/digBean.js").getPath();
 						String digBeanJs = FileUtil.getTemplateContent(path);
-						driver_js.executeScript(digBeanJs);
+						driver_js.executeScript(digBeanJs);	
 						driver.switchTo().window(handles.get(DEFAULT_URL));
 					}
 				}
+			} catch (Exception e) {
+				e.printStackTrace();
 			}
 		}
 	}
 
-	public void close() throws InterruptedException {
+	public void digBean() throws Exception {
 		WebDriver driver = DriverUtil.getDefaultDriver();
+		JavascriptExecutor driver_js = ((JavascriptExecutor) driver);
 		Map<String,String> handles = DriverUtil.getDefaultHandles();
-		Collection<Entry<String, String>> oldHandles = handles.entrySet();
+		//Collection<Entry<String, String>> oldHandles = handles.entrySet();
 		while(true){
-			Set<Treasure> tempTreasures = new HashSet<Treasure>();
-			Map<String,String> tempHandles = new HashMap<String,String>();
-			Thread.sleep(1111);
+			Thread.sleep(20000);
 			Set<String> handleList = driver.getWindowHandles();
 			for(String handle : handleList){
-				for(Treasure treasure:treasures){
-					if(treasure.getHandle().equals(handle)){
-						tempTreasures.add(treasure);
+				if(!handle.equals(handles.get(DEFAULT_URL))){
+					driver.switchTo().window(handle);
+					if(driver.findElements(By.className("digBeanFlg"))==null || driver.findElements(By.className("digBeanFlg")).size()==0){
+						String path = this.getClass().getClassLoader().getResource("templates/digBean.js").getPath();
+						String digBeanJs = FileUtil.getTemplateContent(path);
+						driver_js.executeScript(digBeanJs);	
 					}
-				}
-				for(Entry<String, String> handleEntry:oldHandles){
-					if(handleEntry.getValue().equals(handle)){
-						tempHandles.put(handleEntry.getKey(), handleEntry.getValue());
+					if(driver.findElements(By.className("closeFlg"))!=null || driver.findElements(By.className("closeFlg")).size()!=0){
+						String host = driver.findElement(By.className("host-name")).getText();
+						for(String hostByshort : treasureHosts){
+							if(host.indexOf(hostByshort)>=0 || hostByshort.indexOf(host)>=0){
+								treasureHosts.remove(hostByshort);
+								driver.close();
+								break;
+							}
+						}
 					}
 				}
 			}
-			treasures = tempTreasures;
-			handles = tempHandles;
+			if(!driver.getWindowHandle().equals(handles.get(DEFAULT_URL))){
+				driver.switchTo().window(handles.get(DEFAULT_URL));
+			}
+			Thread.sleep(1000);
 		}
 	}
-
 }
