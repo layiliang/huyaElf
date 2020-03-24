@@ -6,6 +6,10 @@
 			}
 			,500)
 }
+//删除播放窗口
+function del(){
+	$("#player-video").empty();
+}
 close = function(){
 	closeInterval = setInterval(function(){
 		if(!$(".liveRoom_treasureChest").length){
@@ -15,7 +19,8 @@ close = function(){
 	},1000)
 }
 dig();
-setTimeout(close,10000);
+setTimeout(close,30000);
+setTimeout(del,10000);
 $("body").append("<p class ='digBeanFlg'>digBeaning<p/>");
 window.sleep = function(ms) {
   	return new Promise(resolve => setTimeout(resolve, ms));

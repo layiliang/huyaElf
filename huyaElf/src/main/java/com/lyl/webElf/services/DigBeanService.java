@@ -54,11 +54,16 @@ public class DigBeanService {
 		String path = this.getClass().getClassLoader().getResource("templates/logTreasureJs.js").getPath();
 		String logTreasureJs = FileUtil.getTemplateContent(path);
 		driver_js.executeScript(logTreasureJs);
+		path = this.getClass().getClassLoader().getResource("templates/digBean.js").getPath();
+		String digBeanJs = FileUtil.getTemplateContent(path);
 		//driver.get(DEFAULT_URL);
 		//huyaManageService.login();
 		//handles.put(DEFAULT_URL, driver.getWindowHandle());
 		//每当有挖豆机会的时候，判断重复，并记录主播名字，大哥名字，礼物名称。
+		long start = System.currentTimeMillis();
+		int index = 1;
 		while(true){
+			index++;
 			List<WebElement> newTreasureHosts =  new ArrayList<WebElement>();
 			try {
 				//logger.info("开始查找：" + new Date());
@@ -79,25 +84,37 @@ public class DigBeanService {
 				}
 				for(int i = 0 ; i < newTreasureHosts.size();i++){
 					WebElement ele = newTreasureHosts.get(i);
-					logger.info("内容为" + ele.getAttribute("innerText"));
-					logger.info("分解后的数组长度" + ele.getAttribute("innerText").split(" ").length);
-					String host = ele.getAttribute("innerText").split(" ")[2];
-					if(!treasureHosts.contains(host)){
+					String hostByshort = ele.getAttribute("innerText").split(" ")[2];
+					logger.info("删除之前"+hostByshort);
+					if(hostByshort.indexOf("...")>0){
+						hostByshort.replace("...", "");
+					}
+					logger.info("删除之后"+hostByshort);
+					if(!treasureHosts.contains(hostByshort)){
+						logger.info("新打开页面");
 						String className = ele.getAttribute("class");
-						logger.info(className);
 						String clickJs = "$('."+ className + "').click()";
 						driver_js.executeScript(clickJs);
-						treasureHosts.add(host);
+						treasureHosts.add(hostByshort);
+
+						logger.info(treasureHosts);
 						DriverUtil.switchToNewWindow();
-						path = this.getClass().getClassLoader().getResource("templates/digBean.js").getPath();
-						String digBeanJs = FileUtil.getTemplateContent(path);
 						driver_js.executeScript(digBeanJs);	
-						driver.switchTo().window(handles.get(DEFAULT_URL));
+						handles.put(hostByshort, driver.getWindowHandle());
 					}
+				}
+				if(index%666==0){
+					long time = System.currentTimeMillis()-start;
+					logger.info(index + " : " + time);
+					digBean();
+				}
+				if(!driver.getWindowHandle().equals(handles.get(DEFAULT_URL))){
+					driver.switchTo().window(handles.get(DEFAULT_URL));
 				}
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
+			
 		}
 	}
 
@@ -106,8 +123,8 @@ public class DigBeanService {
 		JavascriptExecutor driver_js = ((JavascriptExecutor) driver);
 		Map<String,String> handles = DriverUtil.getDefaultHandles();
 		//Collection<Entry<String, String>> oldHandles = handles.entrySet();
-		while(true){
-			Thread.sleep(20000);
+		//while(true){
+			//Thread.sleep(20000);
 			Set<String> handleList = driver.getWindowHandles();
 			for(String handle : handleList){
 				if(!handle.equals(handles.get(DEFAULT_URL))){
@@ -119,6 +136,8 @@ public class DigBeanService {
 					}
 					if(driver.findElements(By.className("closeFlg"))!=null || driver.findElements(By.className("closeFlg")).size()!=0){
 						String host = driver.findElement(By.className("host-name")).getText();
+						logger.info("关闭页面 host : " + host);
+						logger.info(treasureHosts);
 						for(String hostByshort : treasureHosts){
 							if(host.indexOf(hostByshort)>=0 || hostByshort.indexOf(host)>=0){
 								treasureHosts.remove(hostByshort);
@@ -132,7 +151,7 @@ public class DigBeanService {
 			if(!driver.getWindowHandle().equals(handles.get(DEFAULT_URL))){
 				driver.switchTo().window(handles.get(DEFAULT_URL));
 			}
-			Thread.sleep(1000);
+			//Thread.sleep(1000);
 		}
-	}
+	//}
 }
