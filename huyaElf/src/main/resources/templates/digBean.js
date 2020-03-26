@@ -1,46 +1,59 @@
-﻿dig = function(){
-	setInterval(
+﻿console.log("digging");
+$("body").append("<p class ='digBeanFlg'>digBeaning<p/>");
+window.closeFlg=0;
+window.harvest = new Array();
+var i = 0;
+window.digResultRecordFlg = false;//是否已经记录领取结果
+window.dig = function(){
+	digInterval = setInterval(
 			function(){
-				//console.log('digdig: ' + new Date())
-			$(".btn-wrap span").click();
+				$(".btn-wrap span").click();
+				digResult = $(".treasureChest-tips").text();//领取结果
+				if(digResult){//出现领取结果
+					if(!digResultRecordFlg){//还没有记录
+						harvest[i] = { 'host': $(".host-name").text(),'digResult': digResult,'time': new Date()};
+						i++;
+					}
+					digResultRecordFlg=true;//记录完毕
+				}else{//领取结果消失
+					digResultRecordFlg = false;//没有记录
+				}
 			}
 			,500)
 }
 //删除播放窗口
-function del(){
-	$("#player-video").empty();
+window.del = function(){
+	setIntetval(function(){
+		$("#player-video").empty();
+	},5000);
 }
-close = function(){
+window.close = function(){
 	closeInterval = setInterval(function(){
-		if(!$(".liveRoom_treasureChest").length){
-			$("body").append("<p class ='closeFlg'>closeWindow<p/>");
-			clearInterval(closeInterval);
+		if($(".liveRoom_treasureChest").length){
+			//有宝藏，
+			closeFlg=0;
+		}else{
+			//没有宝藏
+			closeFlg=1;
 		}
 	},1000)
 }
 dig();
 setTimeout(close,30000);
 setTimeout(del,10000);
-$("body").append("<p class ='digBeanFlg'>digBeaning<p/>");
 window.sleep = function(ms) {
   	return new Promise(resolve => setTimeout(resolve, ms));
 }
-logTreasure = async function(){
+window.chat = async function(){
 	while(true){
-		await sleep(1111);
-		if($(".huyayihao").length>0){
-			console.log($(".huyayihao").html());
-		}
-		if($(".player-banner-gift").length>0){
-			//debugger
-			console.log($(".player-banner-gift").html());
-			//console.log($("body").html());
-			if($(".player-banner-gift").html().indexOf("藏宝图") || $(".player-banner-gift").html().indexOf("战神号")){
-				//$(".player-banner-gift").click();
-			}
-		}
+		$("#pub_msg_input").val("挖宝大军驾临");
+		await sleep(500);
+		$("#msg_send_bt").addClass("enable");
+		await sleep(500);
+		$("#msg_send_bt").click();
+		await sleep(5000);
 	}
 }
-logTreasure();
+chat();
 
 

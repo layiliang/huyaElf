@@ -12,6 +12,9 @@ if(!$(".liveRoom_treasureChest").length){
 
 <div id="J_treasureChestContainer" class="treasureChestContainer"></div>
 
+setInterval(function(){
+	console.log($(".treasureChestContainer").html());
+	},100);
 
 setInterval(
 function(){
