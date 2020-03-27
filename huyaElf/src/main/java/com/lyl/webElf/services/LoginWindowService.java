@@ -3,6 +3,7 @@ package com.lyl.webElf.services;
 import java.util.Map;
 
 import org.openqa.selenium.By;
+import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
@@ -48,8 +49,13 @@ public class LoginWindowService extends WebPageService<LoginWindow> {
 		initLoginWindow();
 		webPage.getAccount().sendKeys(account);
 		webPage.getPwd().sendKeys(pwd);
-		webPage.getLoginButton().click();
+		JavascriptExecutor driver_js = ((JavascriptExecutor) driver);
+		Thread.sleep(1000);
+		//driver.findElement(By.id("nav-login")).click();
+		String clickJs = "$('#login-btn').click()";
+		driver_js.executeScript(clickJs);
+		//webPage.getLoginButton().click();
 		driver.switchTo().defaultContent();
 	}
-
+	
 }

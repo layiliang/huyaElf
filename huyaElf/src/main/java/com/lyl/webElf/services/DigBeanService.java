@@ -30,6 +30,8 @@ public class DigBeanService {
 	Logger logger = Logger.getLogger(DigBeanService.class);
 	List<Map<String, String>> allHarvest = new ArrayList<Map<String,String>>();
 	List<Map<String, String>> successHarvest = new ArrayList<Map<String,String>>();
+	int allHarvestNumGold=0;
+	int allHarvestNumSilver=0;
 	public void open() throws Exception {
 		WebDriver driver = DriverUtil.getDefaultDriver();
 		//driver.get(DEFAULT_URL);
@@ -46,6 +48,9 @@ public class DigBeanService {
 		String path = this.getClass().getClassLoader().getResource("templates/logTreasureJs.js").getPath();
 		String logTreasureJs = FileUtil.getTemplateContent(path);
 		driver_js.executeScript(logTreasureJs);
+		path = this.getClass().getClassLoader().getResource("templates/delVideo.js").getPath();
+		String delVideoJs = FileUtil.getTemplateContent(path);
+		driver_js.executeScript(delVideoJs);
 		path = this.getClass().getClassLoader().getResource("templates/digBean.js").getPath();
 		String digBeanJs = FileUtil.getTemplateContent(path);
 		//driver.get(DEFAULT_URL);
@@ -107,8 +112,9 @@ public class DigBeanService {
 						logger.info("handles数目"+handles.size()+"，handles列表:"+handles);
 					}
 				}
-				if(index%1000==0){
-					long time = System.currentTimeMillis()-start;
+				long time = System.currentTimeMillis()-start;
+				if(time>60000){
+					start = System.currentTimeMillis();
 					logger.info(index + " : " + time);
 					digBean();
 				}
@@ -140,34 +146,44 @@ public class DigBeanService {
 				String closeFlgJs = "return closeFlg;";
 				long closeFlg =  (long) driver_js.executeScript(closeFlgJs);
 				int treasureSize = driver.findElements(By.className("liveRoom_treasureChest")).size();
+				String getHarvest = "return harvest;";
+				List<Map<String, String>> curHarvest = (List<Map<String, String>>) driver_js
+						.executeScript(getHarvest);
 				if(closeFlg==1 || treasureSize==0){
 					for(String hostByshort : treasureHosts){
 						if(host.indexOf(hostByshort)>=0 || hostByshort.indexOf(host)>=0){
 							treasureHosts.remove(hostByshort);
-
-							String getHarvest = "return harvest;";
-							List<Map<String, String>> curHarvest = (List<Map<String, String>>) driver_js
-									.executeScript(getHarvest);
 							if(curHarvest.size()==0){
 								logger.info("挖豆结果不应该是0");
 							}
 							for(Map<String, String> digResult : curHarvest){
 
-								logger.info("挖豆结果:" + digResult.get("digResult"));
-								if(digResult.get("digResult").indexOf("手气不佳")==-1){
-									successHarvest.add(digResult);
+								//恭喜你获得银豆1000！
+								String digResultStr = digResult.get("digResult");
+								logger.info("挖豆结果:" + digResultStr);
+								if(digResultStr.indexOf("手气不佳")==-1){
+									successHarvest.add(0,digResult);
+									int num = Integer.parseInt(digResultStr.substring(7, digResultStr.length()-1));
+									if(digResultStr.indexOf("银豆")>=0){
+										allHarvestNumSilver+=num;
+									}else{
+										allHarvestNumGold+=num;
+									}
 								}
 							}
-							allHarvest.addAll(curHarvest);
+							allHarvest.addAll(0, curHarvest);
+							//allHarvest.addAll(curHarvest);
 							logger.info("closeFlg:"+closeFlg);
 							logger.info("treasureSize:"+treasureSize);
 							logger.info(host + "的直播间挖豆已经结束");
-							logger.info("此页面挖豆结果 : " + curHarvest);
 							logger.info("此页面挖豆次数 : " + curHarvest.size());
-							logger.info("总挖豆结果 : " + allHarvest);
+							logger.info("------此页面挖豆结果 : " + curHarvest);
 							logger.info("总挖豆次数 : " + allHarvest.size());
-							logger.info("成功挖豆的结果 : " + successHarvest);
+							logger.info("总挖豆结果 : " + allHarvest);
 							logger.info("成功挖豆次数 : " + successHarvest.size());
+							logger.info("成功挖豆的结果 : " + successHarvest);
+							logger.info("总挖豆数 银: " + allHarvestNumSilver);
+							logger.info("总挖豆数 金: " + allHarvestNumGold);
 							driver.close();
 							handles.remove(hostByshort);
 							logger.info("关闭页面 host : " + host);
@@ -178,7 +194,10 @@ public class DigBeanService {
 					}
 				}else{
 					logger.info(host + "的直播间正在挖豆");
+					logger.info("还有" +treasureSize +"个宝藏待挖");
+					logger.info("当前挖豆结果 : " + curHarvest);
 				}
+				logger.info("---------------------------------------------------");
 			}
 		}
 		driver.switchTo().window(handles.get(DEFAULT_URL));

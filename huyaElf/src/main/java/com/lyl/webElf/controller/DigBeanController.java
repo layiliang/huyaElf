@@ -30,7 +30,11 @@ public class DigBeanController {
 	}
 	@RequestMapping("digBean")
 	@ResponseBody
-	public void guess() throws Exception {
+	public void digBean() throws Exception {
+		DriverUtil.open("https://www.huya.com/11342412");
+		Thread.sleep(20000);
+		huyaManageService.login();
+		Thread.sleep(5000);
 		new Thread(new Runnable(){
 
 			@Override

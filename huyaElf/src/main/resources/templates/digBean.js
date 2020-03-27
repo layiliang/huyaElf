@@ -4,6 +4,7 @@ window.closeFlg=0;
 window.harvest = new Array();
 var i = 0;
 window.digResultRecordFlg = false;//是否已经记录领取结果
+window.treasureNum;
 window.dig = function(){
 	digInterval = setInterval(
 			function(){
@@ -23,7 +24,7 @@ window.dig = function(){
 }
 //删除播放窗口
 window.del = function(){
-	setIntetval(function(){
+	setInterval(function(){
 		$("#player-video").empty();
 	},5000);
 }
@@ -32,6 +33,7 @@ window.close = function(){
 		if($(".liveRoom_treasureChest").length){
 			//有宝藏，
 			closeFlg=0;
+			treasureNum = $(".liveRoom_treasureChest .num").text();
 		}else{
 			//没有宝藏
 			closeFlg=1;
@@ -45,8 +47,8 @@ window.sleep = function(ms) {
   	return new Promise(resolve => setTimeout(resolve, ms));
 }
 window.chat = async function(){
-	while(true){
-		$("#pub_msg_input").val("挖宝大军驾临");
+	for(var i = 0 ; i < 20;i++){
+		$("#pub_msg_input").val("没有感情的挖豆机器");
 		await sleep(500);
 		$("#msg_send_bt").addClass("enable");
 		await sleep(500);

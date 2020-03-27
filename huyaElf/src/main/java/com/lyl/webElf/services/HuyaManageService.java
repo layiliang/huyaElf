@@ -8,6 +8,7 @@ import java.util.Set;
 import java.util.UUID;
 
 import org.openqa.selenium.By;
+import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -158,11 +159,16 @@ public class HuyaManageService extends WebPageService{
 	}
 	
 	public void login(WebDriver driver) throws Exception{
+		JavascriptExecutor driver_js = ((JavascriptExecutor) driver);
 		Thread.sleep(1000);
-		driver.findElement(By.id("nav-login")).click();
+		//driver.findElement(By.id("nav-login")).click();
+		String clickJs = "$('#nav-login').click()";
+		driver_js.executeScript(clickJs);
 		Thread.sleep(1000);
 		driver.switchTo().frame("UDBSdkLgn_iframe");
-		loginWindowService.loginByAccount("2295451338", "huya123");
+		//loginWindowService.loginByAccount("2295451338", "huya123");//beasty
+		loginWindowService.loginByAccount("2253812186", "huya1234");//拉伊亮
+		//loginWindowService.loginByAccount("hy_16226407", "MMxph550701");//一颗小虎牙
 	}
 	
 }

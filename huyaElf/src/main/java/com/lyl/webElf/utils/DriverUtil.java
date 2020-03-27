@@ -54,8 +54,8 @@ public class DriverUtil {
 		try {
 			//Class<?> cls = Class.forName(environment.getProperty("demo.defaultWebDriverCreater") );
 			//DriverCreater driverCreater =  (DriverCreater) cls.newInstance();
-			//DriverCreater driverCreater =  new ChromeHeadLessDriverCreater();
-			DriverCreater driverCreater =  new ChromeDriverCreater();
+			//DriverCreater driverCreater =  new ChromeDriverCreater();
+			DriverCreater driverCreater =  new ChromeHeadLessDriverCreater();
 			WebDriver driver = driverCreater.createDriver();
 			return driver;
 		} catch (Exception e) {

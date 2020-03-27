@@ -21,7 +21,7 @@ public class ChromeHeadLessDriverCreater implements DriverCreater {
 		prefs.put("profile.managed_default_content_settings.images", 2);
 		options.setExperimentalOption("prefs", prefs);
 		WebDriver driver = new ChromeDriver(options);
-		driver.manage().timeouts().implicitlyWait(5, TimeUnit.SECONDS);
+		//driver.manage().timeouts().implicitlyWait(5, TimeUnit.SECONDS);
 		System.out.println(driver);
 		return driver;
 	}
