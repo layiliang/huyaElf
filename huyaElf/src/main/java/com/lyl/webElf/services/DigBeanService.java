@@ -61,7 +61,7 @@ public class DigBeanService {
 		int index = 1;
 		int count = 0 ; 
 		while(true){
-			
+			Thread.sleep(1000);
 			index++;
 			try {
 				List<WebElement> newTreasureHosts =  new ArrayList<WebElement>();

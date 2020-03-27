@@ -2,6 +2,7 @@ package com.lyl.webElf.services;
 
 import java.util.Map;
 
+import org.apache.log4j.Logger;
 import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
@@ -16,6 +17,7 @@ import com.lyl.webElf.domain.LoginWindow;
 
 @Service
 public class LoginWindowService extends WebPageService<LoginWindow> {
+	Logger logger = Logger.getLogger(WebPageService.class);
 	public LoginWindowService() {
 		webPage = new LoginWindow();
 	}
@@ -56,6 +58,7 @@ public class LoginWindowService extends WebPageService<LoginWindow> {
 		driver_js.executeScript(clickJs);
 		//webPage.getLoginButton().click();
 		driver.switchTo().defaultContent();
+		logger.info(account+"登录成功");
 	}
 	
 }

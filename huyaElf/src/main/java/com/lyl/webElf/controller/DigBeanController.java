@@ -32,9 +32,9 @@ public class DigBeanController {
 	@ResponseBody
 	public void digBean() throws Exception {
 		DriverUtil.open("https://www.huya.com/11342412");
-		Thread.sleep(20000);
+		Thread.sleep(60000);
 		huyaManageService.login();
-		Thread.sleep(5000);
+		Thread.sleep(30000);
 		new Thread(new Runnable(){
 
 			@Override
