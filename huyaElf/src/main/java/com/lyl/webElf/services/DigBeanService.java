@@ -1,7 +1,7 @@
 package com.lyl.webElf.services;
 
 import java.util.ArrayList;
-import java.util.HashSet;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -25,10 +25,10 @@ import com.lyl.webElf.utils.FileUtil;
  */
 @Service
 public class DigBeanService {
-	private Set<String> treasureHosts = new HashSet<String>();
+	private Map<String,String> treasureHosts = new HashMap<String,String>();
 	private final String DEFAULT_URL = "https://www.huya.com/11342412";
 	Logger logger = Logger.getLogger(DigBeanService.class);
-	List<Map<String, String>> allHarvest = new ArrayList<Map<String,String>>();
+	//List<Map<String, String>> allHarvest = new ArrayList<Map<String,String>>();
 	List<Map<String, String>> successHarvest = new ArrayList<Map<String,String>>();
 	int allHarvestNumGold=0;
 	int allHarvestNumSilver=0;
@@ -58,11 +58,10 @@ public class DigBeanService {
 		//handles.put(DEFAULT_URL, driver.getWindowHandle());
 		//每当有挖豆机会的时候，判断重复，并记录主播名字，大哥名字，礼物名称。
 		long start = System.currentTimeMillis();
-		int index = 1;
+		long refreshStart = System.currentTimeMillis();
 		int count = 0 ; 
 		while(true){
 			Thread.sleep(1000);
-			index++;
 			try {
 				List<WebElement> newTreasureHosts =  new ArrayList<WebElement>();
 				//logger.info("开始查找：" + new Date());
@@ -97,13 +96,13 @@ public class DigBeanService {
 					if(hostByshort.indexOf("...")>0){
 						hostByshort = hostByshort.replace("...", "");
 					}
-					if(!treasureHosts.contains(hostByshort)){
+					if(!treasureHosts.containsKey(hostByshort)){
 						count++;
 						String className = ele.getAttribute("class");
 						String clickJs = "$('."+ className + "').click()";
 						driver_js.executeScript(clickJs);
-						treasureHosts.add(hostByshort);
 						DriverUtil.switchToNewWindow();
+						treasureHosts.put(hostByshort,driver.getCurrentUrl());
 						driver_js.executeScript(digBeanJs);	
 						handles.put(hostByshort, driver.getWindowHandle());
 						logger.info("第"+count + "次发现宝藏");
@@ -113,10 +112,15 @@ public class DigBeanService {
 					}
 				}
 				long time = System.currentTimeMillis()-start;
+				long refreshTime = System.currentTimeMillis()-refreshStart;
 				if(time>60000){
+					logger.info("当前页面为" + driver.getCurrentUrl());
 					start = System.currentTimeMillis();
-					logger.info(index + " : " + time);
 					digBean();
+				}
+				if(refreshTime>6000000){
+					refreshStart = System.currentTimeMillis();
+					refresh();
 				}
 				if(!driver.getWindowHandle().equals(handles.get(DEFAULT_URL))){
 					driver.switchTo().window(handles.get(DEFAULT_URL));
@@ -126,6 +130,16 @@ public class DigBeanService {
 			}
 			
 		}
+	}
+
+	private void refresh() {
+		WebDriver driver = DriverUtil.getDefaultDriver();
+		Set<String> handleList = driver.getWindowHandles();
+		for(String handle : handleList){
+			driver.switchTo().window(handle);
+			driver.navigate().refresh();
+		}
+		
 	}
 
 	public void digBean() throws Exception {
@@ -150,7 +164,7 @@ public class DigBeanService {
 				List<Map<String, String>> curHarvest = (List<Map<String, String>>) driver_js
 						.executeScript(getHarvest);
 				if(closeFlg==1 || treasureSize==0){
-					for(String hostByshort : treasureHosts){
+					for(String hostByshort : treasureHosts.keySet()){
 						if(host.indexOf(hostByshort)>=0 || hostByshort.indexOf(host)>=0){
 							treasureHosts.remove(hostByshort);
 							if(curHarvest.size()==0){
@@ -171,15 +185,15 @@ public class DigBeanService {
 									}
 								}
 							}
-							allHarvest.addAll(0, curHarvest);
+							//allHarvest.addAll(0, curHarvest);
 							//allHarvest.addAll(curHarvest);
-							logger.info("closeFlg:"+closeFlg);
-							logger.info("treasureSize:"+treasureSize);
+							//logger.info("closeFlg:"+closeFlg);
+							//logger.info("treasureSize:"+treasureSize);
 							logger.info(host + "的直播间挖豆已经结束");
 							logger.info("此页面挖豆次数 : " + curHarvest.size());
 							logger.info("------此页面挖豆结果 : " + curHarvest);
-							logger.info("总挖豆次数 : " + allHarvest.size());
-							logger.info("总挖豆结果 : " + allHarvest);
+							//logger.info("总挖豆次数 : " + allHarvest.size());
+							//logger.info("总挖豆结果 : " + allHarvest);
 							logger.info("成功挖豆次数 : " + successHarvest.size());
 							logger.info("成功挖豆的结果 : " + successHarvest);
 							logger.info("总挖豆数 银: " + allHarvestNumSilver);
@@ -193,8 +207,9 @@ public class DigBeanService {
 						}
 					}
 				}else{
+					String leftTreasureSize = String.valueOf( driver_js.executeScript("return leftTreasureSize"));	
 					logger.info(host + "的直播间正在挖豆");
-					logger.info("还有" +treasureSize +"个宝藏待挖");
+					logger.info("还有" +leftTreasureSize +"个宝藏待挖");
 					logger.info("当前挖豆结果 : " + curHarvest);
 				}
 				logger.info("---------------------------------------------------");

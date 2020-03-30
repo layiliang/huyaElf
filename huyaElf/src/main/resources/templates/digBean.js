@@ -2,12 +2,14 @@
 $("body").append("<p class ='digBeanFlg'>digBeaning<p/>");
 window.closeFlg=0;
 window.harvest = new Array();
+window.leftTreasureSize;
 var i = 0;
 window.digResultRecordFlg = false;//是否已经记录领取结果
 window.treasureNum;
 window.dig = function(){
 	digInterval = setInterval(
 			function(){
+				leftTreasureSize = $("#J_treasureChestContainer .num").text();
 				$(".btn-wrap span").click();
 				digResult = $(".treasureChest-tips").text();//领取结果
 				if(digResult){//出现领取结果
@@ -26,6 +28,7 @@ window.dig = function(){
 window.del = function(){
 	setInterval(function(){
 		$("#player-video").empty();
+		
 	},5000);
 }
 window.close = function(){
@@ -47,13 +50,13 @@ window.sleep = function(ms) {
   	return new Promise(resolve => setTimeout(resolve, ms));
 }
 window.chat = async function(){
-	for(var i = 0 ; i < 20;i++){
-		$("#pub_msg_input").val("没有感情的挖豆机器");
+	for(var i = 0 ; i < 2;i++){
+		$("#pub_msg_input").val("主播盛世美颜！");
 		await sleep(500);
 		$("#msg_send_bt").addClass("enable");
 		await sleep(500);
 		$("#msg_send_bt").click();
-		await sleep(5000);
+		await sleep(10000);
 	}
 }
 chat();

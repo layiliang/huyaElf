@@ -166,9 +166,9 @@ public class HuyaManageService extends WebPageService{
 		driver_js.executeScript(clickJs);
 		Thread.sleep(1000);
 		driver.switchTo().frame("UDBSdkLgn_iframe");
-		//loginWindowService.loginByAccount("2295451338", "huya123");//beasty
-		loginWindowService.loginByAccount("2253812186", "huya1234");//拉伊亮
-		//loginWindowService.loginByAccount("hy_16226407", "MMxph550701");//一颗小虎牙
+		//loginWindowService.loginByAccount("2295451338", "huya123", "Beasty");//beasty
+		loginWindowService.loginByAccount("2253812186", "huya1234", "拉伊亮");//拉伊亮
+		//loginWindowService.loginByAccount("hy_16226407", "MMxph550701", "一颗小虎牙");//一颗小虎牙
 	}
 	
 }

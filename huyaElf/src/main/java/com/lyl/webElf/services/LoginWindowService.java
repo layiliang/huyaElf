@@ -1,19 +1,20 @@
 package com.lyl.webElf.services;
 
-import java.util.Map;
+import java.util.List;
 
 import org.apache.log4j.Logger;
 import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.springframework.stereotype.Service;
 
-import com.lyl.webElf.base.context.ChromeHeadLessDriverContext;
 import com.lyl.webElf.base.context.DriverContext;
 import com.lyl.webElf.base.service.WebPageService;
 import com.lyl.webElf.domain.LoginWindow;
+import com.lyl.webElf.utils.DriverUtil;
 
 @Service
 public class LoginWindowService extends WebPageService<LoginWindow> {
@@ -42,11 +43,11 @@ public class LoginWindowService extends WebPageService<LoginWindow> {
 		webPage.setPwd(driver.findElement(By.className("udb-input-pw")));
 	}
 
-	public void loginByAccount(String account, String pwd) throws Exception {
-		loginByAccount(account, pwd, defaultDriverContext);
+	public void loginByAccount(String account, String pwd, String name) throws Exception {
+		loginByAccount(account, pwd, name, defaultDriverContext);
 	}
 
-	public void loginByAccount(String account, String pwd, DriverContext driverContext) throws Exception {
+	public void loginByAccount(String account, String pwd, String name,DriverContext driverContext) throws Exception {
 		WebDriver driver = driverContext.getDriver();
 		initLoginWindow();
 		webPage.getAccount().sendKeys(account);
@@ -58,7 +59,14 @@ public class LoginWindowService extends WebPageService<LoginWindow> {
 		driver_js.executeScript(clickJs);
 		//webPage.getLoginButton().click();
 		driver.switchTo().defaultContent();
-		logger.info(account+"登录成功");
+		Thread.sleep(30000);
+		List<WebElement> title = DriverUtil.getDefaultDriver().findElements(By.className("nav-user-title"));
+		if(title!=null && title.size()>0 && title.get(0).getAttribute("innerText").indexOf(name)>=0){
+			logger.info(name+"登录成功");
+		}else{
+			logger.info("登录失败");
+		}
+		
 	}
 	
 }

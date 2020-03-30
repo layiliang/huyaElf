@@ -1,5 +1,6 @@
 package com.lyl.webElf.controller;
 
+import org.openqa.selenium.By;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -34,7 +35,9 @@ public class DigBeanController {
 		DriverUtil.open("https://www.huya.com/11342412");
 		Thread.sleep(60000);
 		huyaManageService.login();
-		Thread.sleep(30000);
+		Thread.sleep(5000);
+		
+		
 		new Thread(new Runnable(){
 
 			@Override

@@ -42,13 +42,13 @@ public class HuyaController {
 	}
 	@RequestMapping("login")
 	@ResponseBody
-	public void login(String name,String pwd,String pageSource) throws Exception{
+	public void login(String id,String pwd,String name,String pageSource) throws Exception{
 		if("livePage".equals(pageSource)){
 			livePageService.openLoginWindow();
 		}else{
 			hostPageService.openLoginWindow();
 		}
-		loginWindowService.loginByAccount(name,pwd);
+		loginWindowService.loginByAccount(id,pwd,name);
 	}
 	@RequestMapping("livePageExit")
 	@ResponseBody
