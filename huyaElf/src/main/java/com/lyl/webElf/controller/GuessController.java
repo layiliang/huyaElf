@@ -48,19 +48,4 @@ public class GuessController {
 		huyaManageService.guess(hostUrls,driverContext);
 	}
 
-	private HuyaManageService getGuessListServiceLocal() {
-		
-		HuyaManageService huyaManageService = new HuyaManageService();
-		LivePageService livePageService = new LivePageService();
-		LoginWindowService loginWindowService = new LoginWindowService();
-		HostPageService hostPageService = new HostPageService();
-		//hostPageService.setGuessDataMapper((GuessDataMapper)(ApplicationContextRegister.getApplicationContext().getBean("guessDataMapper")));
-		huyaManageService.setLivePageService(livePageService);
-		huyaManageService.setHostPageService(hostPageService);
-		huyaManageService.setLoginWindowService(loginWindowService);
-		threadLocal.set(huyaManageService);
-		HuyaManageService guessListServiceLocal = threadLocal.get();
-		return guessListServiceLocal;
-	}
-
 }

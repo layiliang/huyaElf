@@ -16,6 +16,7 @@ public class ChromeHeadLessDriverCreater implements DriverCreater {
 		System.setProperty("webdriver.chrome.driver", "E:/autoTest/chromedriver_win32/chromedriver.exe");
 		ChromeOptions options = new ChromeOptions();
 		options.setPageLoadStrategy(PageLoadStrategy.NORMAL);
+		//options.setPageLoadStrategy(PageLoadStrategy.NONE);
         options.addArguments("--headless");
 		Map<String, Object> prefs = new HashMap<String, Object>();
 		prefs.put("profile.managed_default_content_settings.images", 2);

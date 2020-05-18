@@ -1,9 +1,5 @@
-window.sleep = function(ms) {
-  	return new Promise(resolve => setTimeout(resolve, ms));
-}
-test = async function(){
-	while(true){
-		await sleep(1111);
+log = function(){
+	setInterval(function(){
 		if($(".huyayihao").length>0){
 			console.log($(".huyayihao").html());
 		}
@@ -14,8 +10,7 @@ test = async function(){
 			if($(".player-banner-gift").html().indexOf("藏宝图") || $(".player-banner-gift").html().indexOf("战神号")){
 				//$(".player-banner-gift").click();
 			}
-		}
-	}
+		}},1000);
 }
-test();
+log();
 

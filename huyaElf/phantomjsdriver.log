@@ -957,3 +957,178 @@ ng on port 23351
   J (https://a.msstatic.com/huya/main3/common/polyfill_cef32.js:1)
   (anonymous function) (https://a.msstatic.com/huya/hd/cdn_libs/performance_report-min.js?v=2020%E5%B9%B43%E6%9C%8827%E6%97%A5:5)
   (anonymous function) (https://a.msstatic.com/huya/hd/cdn_libs/performance_report-min.js?v=2020%E5%B9%B43%E6%9C%8827%E6%97%A5:5)
+[INFO  - 2020-04-06T08:51:35.569Z] GhostDriver - Main - running on port 22752
+[INFO  - 2020-04-06T08:51:36.473Z] Session [d2b61010-77e3-11ea-8818-8f221a0b1cf8] - page.settings - {"XSSAuditingEnabled":false,"javascriptCanCloseWindows":true,"javascriptCanOpenWindows":true,"javascriptEnabled":true,"loadImages":true,"localToRemoteUrlAccessEnabled":false,"userAgent":"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/538.1 (KHTML, like Gecko) PhantomJS/2.1.1 Safari/538.1","webSecurityEnabled":true}
+[INFO  - 2020-04-06T08:51:36.473Z] Session [d2b61010-77e3-11ea-8818-8f221a0b1cf8] - page.customHeaders:  - {}
+[INFO  - 2020-04-06T08:51:36.473Z] Session [d2b61010-77e3-11ea-8818-8f221a0b1cf8] - Session.negotiatedCapabilities - {"browserName":"phantomjs","version":"2.1.1","driverName":"ghostdriver","driverVersion":"1.2.0","platform":"windows-7-32bit","javascriptEnabled":true,"takesScreenshot":true,"handlesAlerts":false,"databaseEnabled":false,"locationContextEnabled":false,"applicationCacheEnabled":false,"browserConnectionEnabled":false,"cssSelectorsEnabled":true,"webStorageEnabled":false,"rotatable":false,"acceptSslCerts":false,"nativeEvents":true,"proxy":{"proxyType":"direct"}}
+[INFO  - 2020-04-06T08:51:36.473Z] SessionManagerReqHand - _postNewSessionCommand - New Session Created: d2b61010-77e3-11ea-8818-8f221a0b1cf8
+[ERROR - 2020-04-06T08:51:48.270Z] Session [d2b61010-77e3-11ea-8818-8f221a0b1cf8] - page.onError - msg: TypeError: Attempting to change access mechanism for an unconfigurable property.
+[ERROR - 2020-04-06T08:51:48.270Z] Session [d2b61010-77e3-11ea-8818-8f221a0b1cf8] - page.onError - stack:
+  defineProperty (https://a.msstatic.com/huya/main3/common/polyfill_cef32.js:1)
+  J (https://a.msstatic.com/huya/main3/common/polyfill_cef32.js:1)
+  (anonymous function) (https://a.msstatic.com/huya/hd/cdn_libs/performance_report-min.js?v=2020%E5%B9%B44%E6%9C%886%E6%97%A5:5)
+  (anonymous function) (https://a.msstatic.com/huya/hd/cdn_libs/performance_report-min.js?v=2020%E5%B9%B44%E6%9C%886%E6%97%A5:5)
+[ERROR - 2020-04-06T08:52:49.629Z] Session [d2b61010-77e3-11ea-8818-8f221a0b1cf8] - page.onError - msg: TypeError: Attempting to change access mechanism for an unconfigurable property.
+[ERROR - 2020-04-06T08:52:49.631Z] Session [d2b61010-77e3-11ea-8818-8f221a0b1cf8] - page.onError - stack:
+  defineProperty (https://a.msstatic.com/huya/hd/cdn_libs/performance_report-min.js?version=1586160000000:5)
+  (anonymous function) (https://a.msstatic.com/huya/hd/cdn_libs/performance_report-min.js?version=1586160000000:5)
+  (anonymous function) (https://a.msstatic.com/huya/hd/cdn_libs/performance_report-min.js?version=1586160000000:5)
+[ERROR - 2020-04-06T08:52:57.751Z] Session [d2b61010-77e3-11ea-8818-8f221a0b1cf8] - page.onError - msg: TypeError: Attempting to change access mechanism for an unconfigurable property.
+[ERROR - 2020-04-06T08:52:57.751Z] Session [d2b61010-77e3-11ea-8818-8f221a0b1cf8] - page.onError - stack:
+  defineProperty (https://a.msstatic.com/huya/main3/common/polyfill_cef32.js:1)
+  J (https://a.msstatic.com/huya/main3/common/polyfill_cef32.js:1)
+  (anonymous function) (https://a.msstatic.com/huya/hd/cdn_libs/performance_report-min.js?v=2020%E5%B9%B44%E6%9C%886%E6%97%A5:5)
+  (anonymous function) (https://a.msstatic.com/huya/hd/cdn_libs/performance_report-min.js?v=2020%E5%B9%B44%E6%9C%886%E6%97%A5:5)
+[INFO  - 2020-04-06T08:56:35.565Z] SessionManagerReqHand - _cleanupWindowlessSessions - Asynchronous Sessions clean-up phase starting NOW
+[INFO  - 2020-04-06T09:01:35.597Z] SessionManagerReqHand - _cleanupWindowlessSessions - Asynchronous Sessions clean-up phase starting NOW
+[ERROR - 2020-04-06T09:03:35.060Z] Session [d2b61010-77e3-11ea-8818-8f221a0b1cf8] - page.onError - msg: TypeError: Attempting to change access mechanism for an unconfigurable property.
+[ERROR - 2020-04-06T09:03:35.060Z] Session [d2b61010-77e3-11ea-8818-8f221a0b1cf8] - page.onError - stack:
+  defineProperty (https://a.msstatic.com/huya/main3/common/polyfill_cef32.js:1)
+  J (https://a.msstatic.com/huya/main3/common/polyfill_cef32.js:1)
+  (anonymous function) (https://a.msstatic.com/huya/hd/cdn_libs/performance_report-min.js?v=2020%E5%B9%B44%E6%9C%886%E6%97%A5:5)
+  (anonymous function) (https://a.msstatic.com/huya/hd/cdn_libs/performance_report-min.js?v=2020%E5%B9%B44%E6%9C%886%E6%97%A5:5)
+[INFO  - 2020-04-06T09:06:35.596Z] SessionManagerReqHand - _cleanupWindowlessSessions - Asynchronous Sessions clean-up phase starting NOW
+[INFO  - 2020-04-06T09:11:35.628Z] SessionManagerReqHand - _cleanupWindowlessSessions - Asynchronous Sessions clean-up phase starting NOW
+[ERROR - 2020-04-06T09:13:42.611Z] Session [d2b61010-77e3-11ea-8818-8f221a0b1cf8] - page.onError - msg: TypeError: Attempting to change access mechanism for an unconfigurable property.
+[ERROR - 2020-04-06T09:13:42.611Z] Session [d2b61010-77e3-11ea-8818-8f221a0b1cf8] - page.onError - stack:
+  defineProperty (https://a.msstatic.com/huya/main3/common/polyfill_cef32.js:1)
+  J (https://a.msstatic.com/huya/main3/common/polyfill_cef32.js:1)
+  (anonymous function) (https://a.msstatic.com/huya/hd/cdn_libs/performance_report-min.js?v=2020%E5%B9%B44%E6%9C%886%E6%97%A5:5)
+  (anonymous function) (https://a.msstatic.com/huya/hd/cdn_libs/performance_report-min.js?v=2020%E5%B9%B44%E6%9C%886%E6%97%A5:5)
+[INFO  - 2020-04-06T09:16:35.664Z] SessionManagerReqHand - _cleanupWindowlessSessions - Asynchronous Sessions clean-up phase starting NOW
+[INFO  - 2020-04-06T09:59:39.465Z] GhostDriver - Main - running on port 24353
+[INFO  - 2020-04-06T09:59:40.431Z] Session [54f07260-77ed-11ea-a75f-6d754497751c] - page.settings - {"XSSAuditingEnabled":false,"javascriptCanCloseWindows":true,"javascriptCanOpenWindows":true,"javascriptEnabled":true,"loadImages":true,"localToRemoteUrlAccessEnabled":false,"userAgent":"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/538.1 (KHTML, like Gecko) PhantomJS/2.1.1 Safari/538.1","webSecurityEnabled":true}
+[INFO  - 2020-04-06T09:59:40.431Z] Session [54f07260-77ed-11ea-a75f-6d754497751c] - page.customHeaders:  - {}
+[INFO  - 2020-04-06T09:59:40.432Z] Session [54f07260-77ed-11ea-a75f-6d754497751c] - Session.negotiatedCapabilities - {"browserName":"phantomjs","version":"2.1.1","driverName":"ghostdriver","driverVersion":"1.2.0","platform":"windows-7-32bit","javascriptEnabled":true,"takesScreenshot":true,"handlesAlerts":false,"databaseEnabled":false,"locationContextEnabled":false,"applicationCacheEnabled":false,"browserConnectionEnabled":false,"cssSelectorsEnabled":true,"webStorageEnabled":false,"rotatable":false,"acceptSslCerts":false,"nativeEvents":true,"proxy":{"proxyType":"direct"}}
+[INFO  - 2020-04-06T09:59:40.432Z] SessionManagerReqHand - _postNewSessionCommand - New Session Created: 54f07260-77ed-11ea-a75f-6d754497751c
+[ERROR - 2020-04-06T10:02:14.301Z] Session [54f07260-77ed-11ea-a75f-6d754497751c] - page.onError - msg: TypeError: Attempting to change access mechanism for an unconfigurable property.
+[ERROR - 2020-04-06T10:02:14.302Z] Session [54f07260-77ed-11ea-a75f-6d754497751c] - page.onError - stack:
+  defineProperty (https://a.msstatic.com/huya/main3/common/polyfill_cef32.js:1)
+  J (https://a.msstatic.com/huya/main3/common/polyfill_cef32.js:1)
+  (anonymous function) (https://a.msstatic.com/huya/hd/cdn_libs/performance_report-min.js?v=2020%E5%B9%B44%E6%9C%886%E6%97%A5:5)
+  (anonymous function) (https://a.msstatic.com/huya/hd/cdn_libs/performance_report-min.js?v=2020%E5%B9%B44%E6%9C%886%E6%97%A5:5)
+[ERROR - 2020-04-06T10:03:43.863Z] Session [54f07260-77ed-11ea-a75f-6d754497751c] - page.onError - msg: TypeError: Attempting to change access mechanism for an unconfigurable property.
+[ERROR - 2020-04-06T10:03:43.863Z] Session [54f07260-77ed-11ea-a75f-6d754497751c] - page.onError - stack:
+  defineProperty (https://a.msstatic.com/huya/hd/cdn_libs/performance_report-min.js?version=1586167200000:5)
+  (anonymous function) (https://a.msstatic.com/huya/hd/cdn_libs/performance_report-min.js?version=1586167200000:5)
+  (anonymous function) (https://a.msstatic.com/huya/hd/cdn_libs/performance_report-min.js?version=1586167200000:5)
+[INFO  - 2020-04-06T10:04:39.452Z] SessionManagerReqHand - _cleanupWindowlessSessions - Asynchronous Sessions clean-up phase starting NOW
+[ERROR - 2020-04-06T10:04:51.849Z] Session [54f07260-77ed-11ea-a75f-6d754497751c] - page.onError - msg: TypeError: Attempting to change access mechanism for an unconfigurable property.
+[ERROR - 2020-04-06T10:04:51.849Z] Session [54f07260-77ed-11ea-a75f-6d754497751c] - page.onError - stack:
+  defineProperty (https://a.msstatic.com/huya/main3/common/polyfill_cef32.js:1)
+  J (https://a.msstatic.com/huya/main3/common/polyfill_cef32.js:1)
+  (anonymous function) (https://a.msstatic.com/huya/hd/cdn_libs/performance_report-min.js?v=2020%E5%B9%B44%E6%9C%886%E6%97%A5:5)
+  (anonymous function) (https://a.msstatic.com/huya/hd/cdn_libs/performance_report-min.js?v=2020%E5%B9%B44%E6%9C%886%E6%97%A5:5)
+[INFO  - 2020-04-06T10:07:53.883Z] GhostDriver - Main - running on port 1806
+[INFO  - 2020-04-06T10:07:54.369Z] Session [7b598e90-77ee-11ea-b185-6f84445a7899] - page.settings - {"XSSAuditingEnabled":false,"javascriptCanCloseWindows":true,"javascriptCanOpenWindows":true,"javascriptEnabled":true,"loadImages":true,"localToRemoteUrlAccessEnabled":false,"userAgent":"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/538.1 (KHTML, like Gecko) PhantomJS/2.1.1 Safari/538.1","webSecurityEnabled":true}
+[INFO  - 2020-04-06T10:07:54.369Z] Session [7b598e90-77ee-11ea-b185-6f84445a7899] - page.customHeaders:  - {}
+[INFO  - 2020-04-06T10:07:54.370Z] Session [7b598e90-77ee-11ea-b185-6f84445a7899] - Session.negotiatedCapabilities - {"browserName":"phantomjs","version":"2.1.1","driverName":"ghostdriver","driverVersion":"1.2.0","platform":"windows-7-32bit","javascriptEnabled":true,"takesScreenshot":true,"handlesAlerts":false,"databaseEnabled":false,"locationContextEnabled":false,"applicationCacheEnabled":false,"browserConnectionEnabled":false,"cssSelectorsEnabled":true,"webStorageEnabled":false,"rotatable":false,"acceptSslCerts":false,"nativeEvents":true,"proxy":{"proxyType":"direct"}}
+[INFO  - 2020-04-06T10:07:54.370Z] SessionManagerReqHand - _postNewSessionCommand - New Session Created: 7b598e90-77ee-11ea-b185-6f84445a7899
+[ERROR - 2020-04-06T10:08:28.880Z] Session [7b598e90-77ee-11ea-b185-6f84445a7899] - page.onError - msg: TypeError: Attempting to change access mechanism for an unconfigurable property.
+[ERROR - 2020-04-06T10:08:28.880Z] Session [7b598e90-77ee-11ea-b185-6f84445a7899] - page.onError - stack:
+  defineProperty (https://a.msstatic.com/huya/main3/common/polyfill_cef32.js:1)
+  J (https://a.msstatic.com/huya/main3/common/polyfill_cef32.js:1)
+  (anonymous function) (https://a.msstatic.com/huya/hd/cdn_libs/performance_report-min.js?v=2020%E5%B9%B44%E6%9C%886%E6%97%A5:5)
+  (anonymous function) (https://a.msstatic.com/huya/hd/cdn_libs/performance_report-min.js?v=2020%E5%B9%B44%E6%9C%886%E6%97%A5:5)
+[ERROR - 2020-04-06T10:09:49.756Z] WebElementLocator - _handleLocateCommand - Element(s) NOT Found: GAVE UP. Search Stop Time: 1586167789690
+[ERROR - 2020-04-06T10:09:50.675Z] WebElementLocator - _handleLocateCommand - Element(s) NOT Found: GAVE UP. Search Stop Time: 1586167790644
+[ERROR - 2020-04-06T10:09:50.763Z] Session [7b598e90-77ee-11ea-b185-6f84445a7899] - page.onError - msg: TypeError: Attempting to change access mechanism for an unconfigurable property.
+[ERROR - 2020-04-06T10:09:50.763Z] Session [7b598e90-77ee-11ea-b185-6f84445a7899] - page.onError - stack:
+  defineProperty (https://a.msstatic.com/huya/hd/cdn_libs/performance_report-min.js?version=1586167200000:5)
+  (anonymous function) (https://a.msstatic.com/huya/hd/cdn_libs/performance_report-min.js?version=1586167200000:5)
+  (anonymous function) (https://a.msstatic.com/huya/hd/cdn_libs/performance_report-min.js?version=1586167200000:5)
+[ERROR - 2020-04-06T10:09:51.503Z] WebElementLocator - _handleLocateCommand - Element(s) NOT Found: GAVE UP. Search Stop Time: 1586167791463
+[ERROR - 2020-04-06T10:09:52.316Z] WebElementLocator - _handleLocateCommand - Element(s) NOT Found: GAVE UP. Search Stop Time: 1586167792277
+[ERROR - 2020-04-06T10:09:58.247Z] Session [7b598e90-77ee-11ea-b185-6f84445a7899] - page.onError - msg: TypeError: Attempting to change access mechanism for an unconfigurable property.
+[ERROR - 2020-04-06T10:09:58.247Z] Session [7b598e90-77ee-11ea-b185-6f84445a7899] - page.onError - stack:
+  defineProperty (https://a.msstatic.com/huya/main3/common/polyfill_cef32.js:1)
+  J (https://a.msstatic.com/huya/main3/common/polyfill_cef32.js:1)
+  (anonymous function) (https://a.msstatic.com/huya/hd/cdn_libs/performance_report-min.js?v=2020%E5%B9%B44%E6%9C%886%E6%97%A5:5)
+  (anonymous function) (https://a.msstatic.com/huya/hd/cdn_libs/performance_report-min.js?v=2020%E5%B9%B44%E6%9C%886%E6%97%A5:5)
+[INFO  - 2020-04-06T10:12:53.882Z] SessionManagerReqHand - _cleanupWindowlessSessions - Asynchronous Sessions clean-up phase starting NOW
+[INFO  - 2020-04-06T10:17:53.915Z] SessionManagerReqHand - _cleanupWindowlessSessions - Asynchronous Sessions clean-up phase starting NOW
+[ERROR - 2020-04-06T10:20:37.642Z] Session [7b598e90-77ee-11ea-b185-6f84445a7899] - page.onError - msg: TypeError: Attempting to change access mechanism for an unconfigurable property.
+[ERROR - 2020-04-06T10:20:37.642Z] Session [7b598e90-77ee-11ea-b185-6f84445a7899] - page.onError - stack:
+  defineProperty (https://a.msstatic.com/huya/main3/common/polyfill_cef32.js:1)
+  J (https://a.msstatic.com/huya/main3/common/polyfill_cef32.js:1)
+  (anonymous function) (https://a.msstatic.com/huya/hd/cdn_libs/performance_report-min.js?v=2020%E5%B9%B44%E6%9C%886%E6%97%A5:5)
+  (anonymous function) (https://a.msstatic.com/huya/hd/cdn_libs/performance_report-min.js?v=2020%E5%B9%B44%E6%9C%886%E6%97%A5:5)
+[INFO  - 2020-04-06T10:22:53.918Z] SessionManagerReqHand - _cleanupWindowlessSessions - Asynchronous Sessions clean-up phase starting NOW
+[INFO  - 2020-04-06T10:27:53.949Z] SessionManagerReqHand - _cleanupWindowlessSessions - Asynchronous Sessions clean-up phase starting NOW
+[ERROR - 2020-04-06T10:30:34.216Z] Session [7b598e90-77ee-11ea-b185-6f84445a7899] - page.onError - msg: TypeError: Attempting to change access mechanism for an unconfigurable property.
+[ERROR - 2020-04-06T10:30:34.216Z] Session [7b598e90-77ee-11ea-b185-6f84445a7899] - page.onError - stack:
+  defineProperty (https://a.msstatic.com/huya/main3/common/polyfill_cef32.js:1)
+  J (https://a.msstatic.com/huya/main3/common/polyfill_cef32.js:1)
+  (anonymous function) (https://a.msstatic.com/huya/hd/cdn_libs/performance_report-min.js?v=2020%E5%B9%B44%E6%9C%886%E6%97%A5:5)
+  (anonymous function) (https://a.msstatic.com/huya/hd/cdn_libs/performance_report-min.js?v=2020%E5%B9%B44%E6%9C%886%E6%97%A5:5)
+[INFO  - 2020-04-06T10:32:53.989Z] SessionManagerReqHand - _cleanupWindowlessSessions - Asynchronous Sessions clean-up phase starting NOW
+[INFO  - 2020-04-17T02:04:00.000Z] GhostDriver - Main - running on port 2546
+[INFO  - 2020-04-17T02:04:00.630Z] Session [b46fd0e0-804f-11ea-87a7-5313949ac4ae] - page.settings - {"XSSAuditingEnabled":false,"javascriptCanCloseWindows":true,"javascriptCanOpenWindows":true,"javascriptEnabled":true,"loadImages":true,"localToRemoteUrlAccessEnabled":false,"userAgent":"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/538.1 (KHTML, like Gecko) PhantomJS/2.1.1 Safari/538.1","webSecurityEnabled":true}
+[INFO  - 2020-04-17T02:04:00.631Z] Session [b46fd0e0-804f-11ea-87a7-5313949ac4ae] - page.customHeaders:  - {}
+[INFO  - 2020-04-17T02:04:00.631Z] Session [b46fd0e0-804f-11ea-87a7-5313949ac4ae] - Session.negotiatedCapabilities - {"browserName":"phantomjs","version":"2.1.1","driverName":"ghostdriver","driverVersion":"1.2.0","platform":"windows-7-32bit","javascriptEnabled":true,"takesScreenshot":true,"handlesAlerts":false,"databaseEnabled":false,"locationContextEnabled":false,"applicationCacheEnabled":false,"browserConnectionEnabled":false,"cssSelectorsEnabled":true,"webStorageEnabled":false,"rotatable":false,"acceptSslCerts":false,"nativeEvents":true,"proxy":{"proxyType":"direct"}}
+[INFO  - 2020-04-17T02:04:00.631Z] SessionManagerReqHand - _postNewSessionCommand - New Session Created: b46fd0e0-804f-11ea-87a7-5313949ac4ae
+[ERROR - 2020-04-17T02:04:03.603Z] Session [b46fd0e0-804f-11ea-87a7-5313949ac4ae] - page.onError - msg: TypeError: Attempting to change access mechanism for an unconfigurable property.
+[ERROR - 2020-04-17T02:04:03.604Z] Session [b46fd0e0-804f-11ea-87a7-5313949ac4ae] - page.onError - stack:
+  defineProperty (https://a.msstatic.com/huya/main3/common/polyfill_cef32.js:1)
+  J (https://a.msstatic.com/huya/main3/common/polyfill_cef32.js:1)
+  (anonymous function) (https://a.msstatic.com/huya/hd/cdn_libs/performance_report-min.js?v=2020%E5%B9%B44%E6%9C%8817%E6%97%A5:5)
+  (anonymous function) (https://a.msstatic.com/huya/hd/cdn_libs/performance_report-min.js?v=2020%E5%B9%B44%E6%9C%8817%E6%97%A5:5)
+[ERROR - 2020-04-17T02:05:13.163Z] Session [b46fd0e0-804f-11ea-87a7-5313949ac4ae] - page.onError - msg: TypeError: Attempting to change access mechanism for an unconfigurable property.
+[ERROR - 2020-04-17T02:05:13.163Z] Session [b46fd0e0-804f-11ea-87a7-5313949ac4ae] - page.onError - stack:
+  defineProperty (https://a.msstatic.com/huya/hd/cdn_libs/performance_report-min.js?version=1587088800000:5)
+  (anonymous function) (https://a.msstatic.com/huya/hd/cdn_libs/performance_report-min.js?version=1587088800000:5)
+  (anonymous function) (https://a.msstatic.com/huya/hd/cdn_libs/performance_report-min.js?version=1587088800000:5)
+[ERROR - 2020-04-17T02:05:18.301Z] Session [b46fd0e0-804f-11ea-87a7-5313949ac4ae] - page.onError - msg: TypeError: Attempting to change access mechanism for an unconfigurable property.
+[ERROR - 2020-04-17T02:05:18.302Z] Session [b46fd0e0-804f-11ea-87a7-5313949ac4ae] - page.onError - stack:
+  defineProperty (https://a.msstatic.com/huya/main3/common/polyfill_cef32.js:1)
+  J (https://a.msstatic.com/huya/main3/common/polyfill_cef32.js:1)
+  (anonymous function) (https://a.msstatic.com/huya/hd/cdn_libs/performance_report-min.js?v=2020%E5%B9%B44%E6%9C%8817%E6%97%A5:5)
+  (anonymous function) (https://a.msstatic.com/huya/hd/cdn_libs/performance_report-min.js?v=2020%E5%B9%B44%E6%9C%8817%E6%97%A5:5)
+[INFO  - 2020-04-17T02:08:59.993Z] SessionManagerReqHand - _cleanupWindowlessSessions - Asynchronous Sessions clean-up phase starting NOW
+[INFO  - 2020-04-17T02:10:51.761Z] Session [b46fd0e0-804f-11ea-87a7-5313949ac4ae] - page.settings - {"XSSAuditingEnabled":false,"javascriptCanCloseWindows":true,"javascriptCanOpenWindows":true,"javascriptEnabled":true,"loadImages":true,"localToRemoteUrlAccessEnabled":false,"userAgent":"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/538.1 (KHTML, like Gecko) PhantomJS/2.1.1 Safari/538.1","webSecurityEnabled":true}
+[INFO  - 2020-04-17T02:10:51.762Z] Session [b46fd0e0-804f-11ea-87a7-5313949ac4ae] - page.customHeaders:  - {}
+[ERROR - 2020-04-17T02:10:52.782Z] Session [b46fd0e0-804f-11ea-87a7-5313949ac4ae] - page.onError - msg: TypeError: Attempting to change access mechanism for an unconfigurable property.
+[ERROR - 2020-04-17T02:10:52.782Z] Session [b46fd0e0-804f-11ea-87a7-5313949ac4ae] - page.onError - stack:
+  defineProperty (https://a.msstatic.com/huya/main3/common/polyfill_cef32.js:1)
+  J (https://a.msstatic.com/huya/main3/common/polyfill_cef32.js:1)
+  (anonymous function) (https://a.msstatic.com/huya/hd/cdn_libs/performance_report-min.js?v=2020%E5%B9%B44%E6%9C%8817%E6%97%A5:5)
+  (anonymous function) (https://a.msstatic.com/huya/hd/cdn_libs/performance_report-min.js?v=2020%E5%B9%B44%E6%9C%8817%E6%97%A5:5)
+[INFO  - 2020-04-17T02:14:00.036Z] SessionManagerReqHand - _cleanupWindowlessSessions - Asynchronous Sessions clean-up phase starting NOW
+Session [d6d0c7c0-804f-11ea-b19f-0fe4aa917d1c] - page.onError - msg: TypeError: Attempting to change access mechanism for an unconfigurable property.
+[ERROR - 2020-04-17T02:07:33.642Z] Session [d6d0c7c0-804f-11ea-b19f-0fe4aa917d1c] - page.onError - stack:
+  defineProperty (https://a.msstatic.com/huya/main3/common/polyfill_cef32.js:1)
+  J (https://a.msstatic.com/huya/main3/common/polyfill_cef32.js:1)
+  (anonymous function) (https://a.msstatic.com/huya/hd/cdn_libs/performance_report-min.js?v=2020%E5%B9%B44%E6%9C%8817%E6%97%A5:5)
+  (anonymous function) (https://a.msstatic.com/huya/hd/cdn_libs/performance_report-min.js?v=2020%E5%B9%B44%E6%9C%8817%E6%97%A5:5)
+[INFO  - 2020-04-17T02:09:57.755Z] SessionManagerReqHand - _cleanupWindowlessSessions - Asynchronous Sessions clean-up phase starting NOW
+[INFO  - 2020-04-17T02:10:51.773Z] Session [d6d0c7c0-804f-11ea-b19f-0fe4aa917d1c] - page.settings - {"XSSAuditingEnabled":false,"javascriptCanCloseWindows":true,"javascriptCanOpenWindows":true,"javascriptEnabled":true,"loadImages":true,"localToRemoteUrlAccessEnabled":false,"userAgent":"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/538.1 (KHTML, like Gecko) PhantomJS/2.1.1 Safari/538.1","webSecurityEnabled":true}
+[INFO  - 2020-04-17T02:10:51.774Z] Session [d6d0c7c0-804f-11ea-b19f-0fe4aa917d1c] - page.customHeaders:  - {}
+[ERROR - 2020-04-17T02:10:52.653Z] Session [d6d0c7c0-804f-11ea-b19f-0fe4aa917d1c] - page.onError - msg: TypeError: Attempting to change access mechanism for an unconfigurable property.
+[ERROR - 2020-04-17T02:10:52.653Z] Session [d6d0c7c0-804f-11ea-b19f-0fe4aa917d1c] - page.onError - stack:
+  defineProperty (https://a.msstatic.com/huya/main3/common/polyfill_cef32.js:1)
+  J (https://a.msstatic.com/huya/main3/common/polyfill_cef32.js:1)
+  (anonymous function) (https://a.msstatic.com/huya/hd/cdn_libs/performance_report-min.js?v=2020%E5%B9%B44%E6%9C%8817%E6%97%A5:5)
+  (anonymous function) (https://a.msstatic.com/huya/hd/cdn_libs/performance_report-min.js?v=2020%E5%B9%B44%E6%9C%8817%E6%97%A5:5)
+[INFO  - 2020-04-17T02:14:57.788Z] SessionManagerReqHand - _cleanupWindowlessSessions - Asynchronous Sessions clean-up phase starting NOW
+[INFO  - 2020-04-17T07:23:38.633Z] GhostDriver - Main - running on port 25914
+[INFO  - 2020-04-17T07:23:39.031Z] Session [5ba7b900-807c-11ea-a7b0-5bc349298f06] - page.settings - {"XSSAuditingEnabled":false,"javascriptCanCloseWindows":true,"javascriptCanOpenWindows":true,"javascriptEnabled":true,"loadImages":true,"localToRemoteUrlAccessEnabled":false,"userAgent":"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/538.1 (KHTML, like Gecko) PhantomJS/2.1.1 Safari/538.1","webSecurityEnabled":true}
+[INFO  - 2020-04-17T07:23:39.031Z] Session [5ba7b900-807c-11ea-a7b0-5bc349298f06] - page.customHeaders:  - {}
+[INFO  - 2020-04-17T07:23:39.032Z] Session [5ba7b900-807c-11ea-a7b0-5bc349298f06] - Session.negotiatedCapabilities - {"browserName":"phantomjs","version":"2.1.1","driverName":"ghostdriver","driverVersion":"1.2.0","platform":"windows-7-32bit","javascriptEnabled":true,"takesScreenshot":true,"handlesAlerts":false,"databaseEnabled":false,"locationContextEnabled":false,"applicationCacheEnabled":false,"browserConnectionEnabled":false,"cssSelectorsEnabled":true,"webStorageEnabled":false,"rotatable":false,"acceptSslCerts":false,"nativeEvents":true,"proxy":{"proxyType":"direct"}}
+[INFO  - 2020-04-17T07:23:39.032Z] SessionManagerReqHand - _postNewSessionCommand - New Session Created: 5ba7b900-807c-11ea-a7b0-5bc349298f06
+[ERROR - 2020-04-17T07:24:20.451Z] Session [5ba7b900-807c-11ea-a7b0-5bc349298f06] - page.onError - msg: TypeError: Attempting to change access mechanism for an unconfigurable property.
+[ERROR - 2020-04-17T07:24:20.451Z] Session [5ba7b900-807c-11ea-a7b0-5bc349298f06] - page.onError - stack:
+  defineProperty (https://a.msstatic.com/huya/main3/common/polyfill_cef32.js:1)
+  J (https://a.msstatic.com/huya/main3/common/polyfill_cef32.js:1)
+  (anonymous function) (https://a.msstatic.com/huya/hd/cdn_libs/performance_report-min.js?v=2020%E5%B9%B44%E6%9C%8817%E6%97%A5:5)
+  (anonymous function) (https://a.msstatic.com/huya/hd/cdn_libs/performance_report-min.js?v=2020%E5%B9%B44%E6%9C%8817%E6%97%A5:5)
+[INFO  - 2020-04-17T07:24:42.043Z] GhostDriver - Main - running on port 39721
+[INFO  - 2020-04-17T07:24:42.638Z] Session [81918880-807c-11ea-ad3a-dfbc2469593d] - page.settings - {"XSSAuditingEnabled":false,"javascriptCanCloseWindows":true,"javascriptCanOpenWindows":true,"javascriptEnabled":true,"loadImages":true,"localToRemoteUrlAccessEnabled":false,"userAgent":"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/538.1 (KHTML, like Gecko) PhantomJS/2.1.1 Safari/538.1","webSecurityEnabled":true}
+[INFO  - 2020-04-17T07:24:42.638Z] Session [81918880-807c-11ea-ad3a-dfbc2469593d] - page.customHeaders:  - {}
+[INFO  - 2020-04-17T07:24:42.638Z] Session [81918880-807c-11ea-ad3a-dfbc2469593d] - Session.negotiatedCapabilities - {"browserName":"phantomjs","version":"2.1.1","driverName":"ghostdriver","driverVersion":"1.2.0","platform":"windows-7-32bit","javascriptEnabled":true,"takesScreenshot":true,"handlesAlerts":false,"databaseEnabled":false,"locationContextEnabled":false,"applicationCacheEnabled":false,"browserConnectionEnabled":false,"cssSelectorsEnabled":true,"webStorageEnabled":false,"rotatable":false,"acceptSslCerts":false,"nativeEvents":true,"proxy":{"proxyType":"direct"}}
+[INFO  - 2020-04-17T07:24:42.638Z] SessionManagerReqHand - _postNewSessionCommand - New Session Created: 81918880-807c-11ea-ad3a-dfbc2469593d
+[ERROR - 2020-04-17T07:25:40.034Z] Session [81918880-807c-11ea-ad3a-dfbc2469593d] - page.onError - msg: TypeError: Attempting to change access mechanism for an unconfigurable property.
+[ERROR - 2020-04-17T07:25:40.034Z] Session [81918880-807c-11ea-ad3a-dfbc2469593d] - page.onError - stack:
+  defineProperty (https://a.msstatic.com/huya/main3/common/polyfill_cef32.js:1)
+  J (https://a.msstatic.com/huya/main3/common/polyfill_cef32.js:1)
+  (anonymous function) (https://a.msstatic.com/huya/hd/cdn_libs/performance_report-min.js?v=2020%E5%B9%B44%E6%9C%8817%E6%97%A5:5)
+  (anonymous function) (https://a.msstatic.com/huya/hd/cdn_libs/performance_report-min.js?v=2020%E5%B9%B44%E6%9C%8817%E6%97%A5:5)

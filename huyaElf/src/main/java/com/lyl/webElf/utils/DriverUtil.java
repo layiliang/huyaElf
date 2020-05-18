@@ -10,6 +10,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.env.Environment;
 
+import com.lyl.webElf.base.context.DriverContext;
+
 public class DriverUtil {
 
 	private static ThreadLocal<WebDriver> localDriver = new ThreadLocal<WebDriver>();
@@ -54,8 +56,9 @@ public class DriverUtil {
 		try {
 			//Class<?> cls = Class.forName(environment.getProperty("demo.defaultWebDriverCreater") );
 			//DriverCreater driverCreater =  (DriverCreater) cls.newInstance();
-			//DriverCreater driverCreater =  new ChromeDriverCreater();
-			DriverCreater driverCreater =  new ChromeHeadLessDriverCreater();
+			DriverCreater driverCreater =  new ChromeDriverCreater();
+			//DriverCreater driverCreater =  new ChromeHeadLessDriverCreater();
+			//DriverCreater driverCreater =  new PhantomjsDriverCreater();
 			WebDriver driver = driverCreater.createDriver();
 			return driver;
 		} catch (Exception e) {
@@ -78,9 +81,10 @@ public class DriverUtil {
 		return driver;
 	}
 
-	public static void open(String url) {
-		defaultDriver.get(url);
-		System.out.println(defaultDriver.getCurrentUrl());
+	public static void open(DriverContext driverContext, String url) {
+		WebDriver driver = driverContext.getDriver();
+		String jsStr = "window.open('"+url+"')";
+		JsUtils.execute(driver, jsStr);
 	}
 
 
@@ -114,6 +118,11 @@ public class DriverUtil {
 		}
 	}
 
+	public static void get(String url) {
+		defaultDriver.get(url);
+		
+	}
+	
 	/*public static Map<String, String> getHandles() {
 		System.out.println(Thread.currentThread().getName());
 		if (localHandles.get() == null) {

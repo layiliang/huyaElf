@@ -105,5 +105,11 @@ public class LiveItem {
 	public void setOnTv(boolean isOnTv) {
 		this.isOnTv = isOnTv;
 	}
+	@Override
+	public String toString() {
+		return "LiveItem [id=" + id + ", num=" + num + ", link=" + link + ", title=" + title + ", isOnTv=" + isOnTv
+				+ ", isGuess=" + isGuess + ", hostName=" + hostName + ", type=" + type + ", url=" + url + ", groupId="
+				+ groupId + "]";
+	}
 	
 }
