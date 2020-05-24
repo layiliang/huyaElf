@@ -78,7 +78,7 @@ public class DigBeanService {
 					((JavascriptExecutor) driver).executeScript(clickJs);
 					
 					treasureHosts.add(hostByshort);
-					DriverUtil.switchToNewWindow(driver,handles);
+					DriverUtil.switchToNewWindow(digDriverContext);
 					handles.put(hostByshort, driver.getWindowHandle());
 					treasureUrls.add(driver.getCurrentUrl());
 					logger.info("主播"+hostByshort);

@@ -10,15 +10,21 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.lyl.webElf.base.context.ChromeHeadLessDriverContext;
 import com.lyl.webElf.base.context.DriverContext;
 import com.lyl.webElf.base.service.WebPageService;
 import com.lyl.webElf.consts.PageNameConsts;
+import com.lyl.webElf.dao.LiveItemMapper;
 import com.lyl.webElf.domain.LiveItem;
 import com.lyl.webElf.domain.LivePage;
 import com.lyl.webElf.domain.PageCommonElement;
+import com.lyl.webElf.utils.DriverUtil;
+import com.lyl.webElf.utils.JsUtils;
 
 @Service
 public class LivePageService extends WebPageService<LivePage> {
@@ -26,16 +32,20 @@ public class LivePageService extends WebPageService<LivePage> {
 		webPage = new LivePage();
 	}
 
-	public void initLivePage(boolean isLogined, boolean isFirstPage) {
-		initLivePage(isLogined, isFirstPage, defaultDriverContext);
+	public void initLivePage(boolean isLogined, int pageNo) {
+		initLivePage(isLogined, pageNo, defaultDriverContext);
 	}
 
-	public void initLivePage(boolean isLogined, boolean isFirstPage, DriverContext driverContext) {
+	public void initLivePage(boolean isLogined, int pageNo, DriverContext driverContext) {
 		WebDriver driver = driverContext.getDriver();
 		Map<String, String> handles = driverContext.getHandles();
 		System.out.println(Thread.currentThread().getName());
 		handles.put(PageNameConsts.LIVE_PAGE, driver.getWindowHandle());
 		driver.switchTo().window(handles.get(PageNameConsts.LIVE_PAGE));
+		if(pageNo != 1){
+			String jsStr = "$($('.laypage_main a')["+(pageNo-2)+"]).click()";
+			JsUtils.execute(driverContext.getDriver(), jsStr);
+		}
 		PageCommonElement pageCommonElement = new PageCommonElement();
 		if (isLogined) {// 登录成功后
 			WebDriverWait wait = new WebDriverWait(driver, 20);
@@ -58,7 +68,7 @@ public class LivePageService extends WebPageService<LivePage> {
 		List<LiveItem> lives = getLives(driverContext);
 		webPage.setLives(lives);
 		webPage.setNextPage(driver.findElement(By.className("laypage_next")));
-		if (isFirstPage == false) {
+		if (pageNo != 1) {
 			webPage.setPrePage(driver.findElement(By.className("laypage_prev")));
 		}
 		webPage.setTitle(driver.getTitle());
@@ -76,21 +86,26 @@ public class LivePageService extends WebPageService<LivePage> {
 		List<LiveItem> lives = new ArrayList<>();
 		List<WebElement> liveList = driver.findElements(By.className("game-live-item"));
 		LiveItem liveItem;
+		try {
+			Thread.sleep(10000);
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		for (WebElement liveItemWebElement : liveList) {
-			liveItem = new LiveItem();
-			liveItem.setLink(liveItemWebElement.findElement(By.className("video-info")));
-			/*
-			 * if (liveItemWebElement.findElements(By.className("tag-leftTop")).
-			 * size() == 0) { liveItem.setOnTv(false); } else {
-			 * liveItem.setOnTv(true); }
-			 */
-			liveItem.setNum(liveItemWebElement.findElement(By.className("js-num")).getText());
-			liveItem.setTitle(liveItemWebElement.findElement(By.className("title")).getText());
-			String hostName = liveItemWebElement.findElement(By.className("nick")).getText();
-			liveItem.setHostName(hostName);
-			// liveItem.setType(liveItemWebElement.findElement(By.className("game-type")).getText());
-			liveItem.setUrl(liveItem.getLink().getAttribute("href"));
-			lives.add(liveItem);
+			try {
+				liveItem = new LiveItem();
+				liveItem.setNum(liveItemWebElement.findElement(By.className("js-num")).getText());
+				liveItem.setTitle(liveItemWebElement.findElement(By.className("title")).getText());
+				String hostName = liveItemWebElement.findElement(By.className("nick")).getText();
+				liveItem.setHostname(hostName);
+				// liveItem.setType(liveItemWebElement.findElement(By.className("game-type")).getText());
+				liveItem.setUrl(liveItemWebElement.findElement(By.className("video-info")).getAttribute("href"));
+				lives.add(liveItem);
+			} catch (Exception e) {
+				e.printStackTrace();
+				continue;
+			}
 		}
 		return lives;
 	}
@@ -110,11 +125,10 @@ public class LivePageService extends WebPageService<LivePage> {
 	}
 
 
-	public List<LiveItem> getLiveItemList() {
-		List<LiveItem> liveItemList = null;
-			liveItemList = webPage.getLives();
+	public List<LiveItem> getLiveItemList(int pageNo,DriverContext driverContext) {
+		initLivePage(false, pageNo,driverContext);
+		List<LiveItem> liveItemList = webPage.getLives();
 		return liveItemList;
-
 	}
 
 	public static void main(String[] args) {
@@ -131,20 +145,17 @@ public class LivePageService extends WebPageService<LivePage> {
 	public void openLoginWindow(DriverContext driverContext) {
 		WebDriver driver = driverContext.getDriver();
 		Map<String, String> handles = driverContext.getHandles();
-		// TODO Auto-generated method stub
 		handles.put(PageNameConsts.LIVE_PAGE, driver.getWindowHandle());
 		driver.switchTo().window(handles.get(PageNameConsts.LIVE_PAGE));
 		try {
 			Thread.sleep(1000);
 		} catch (InterruptedException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		driver.findElement(By.id("nav-login")).click();
 		try {
 			Thread.sleep(1000);
 		} catch (InterruptedException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		driver.switchTo().frame("UDBSdkLgn_iframe");
@@ -152,7 +163,29 @@ public class LivePageService extends WebPageService<LivePage> {
 	}
 
 	public void nextPage() {
-		// TODO Auto-generated method stub
 		webPage.getNextPage().click();
 	}
+	@Autowired
+	private LiveItemMapper lim;
+	public void insertTest() {
+		// TODO Auto-generated method stub
+		int i = 0 ;
+		while(true){
+			LiveItem li = new LiveItem();
+			li.setUrl("ggg");
+			li.setId("1");
+			lim.insert(li );
+			try {
+				Thread.sleep(2000);
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}
+			i++;
+			if(i==10){
+				break;
+			}
+		}
+	}
+
+
 }

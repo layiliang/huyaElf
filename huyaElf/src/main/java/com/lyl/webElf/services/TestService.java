@@ -1,6 +1,5 @@
 package com.lyl.webElf.services;
 
-import java.awt.AWTException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -17,18 +16,15 @@ import org.springframework.stereotype.Service;
 
 import com.lyl.webElf.base.context.DriverContext;
 import com.lyl.webElf.base.service.WebPageService;
-import com.lyl.webElf.dao.GuessDataDao;
+import com.lyl.webElf.dao.GuessDataMapper;
+import com.lyl.webElf.dao.GuessResultMapper;
 import com.lyl.webElf.domain.GuessData;
 import com.lyl.webElf.domain.HostPage;
-import com.lyl.webElf.mapper.GuessDataMapper;
-import com.lyl.webElf.mapper.GuessResultMapper;
 import com.lyl.webElf.utils.DriverUtil;
 import com.lyl.webElf.utils.FileUtil;
 
 @Service
 public class TestService extends WebPageService<HostPage> {
-	@Autowired
-	private GuessDataDao guessDataDao;
 	@Autowired
 	private GuessDataMapper guessDataMapper; 
 	@Autowired
@@ -41,7 +37,6 @@ public class TestService extends WebPageService<HostPage> {
 
 
 	public void guess(List<String> urls,DriverContext driverContext) throws Exception {
-		WebDriver driver = driverContext.getDriver();
 		new Thread(new Runnable(){
 			@Override
 			public void run() {
@@ -67,7 +62,7 @@ public class TestService extends WebPageService<HostPage> {
 		// TODO Auto-generated method stub
 		if(handles.size()!=0){
 			((JavascriptExecutor) driver).executeScript("arguments[0].click();",driver.findElement(By.className("toAnchor")));
-			DriverUtil.switchToNewWindow(driver, handles);
+			DriverUtil.switchToNewWindow(driverContext);
 			System.out.println(driver.getCurrentUrl());
 		}
 		driver.get(url);

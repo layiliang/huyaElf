@@ -15,6 +15,7 @@
 <input type = button value = "全屏" id = "fullscreen" onclick="fullscreen()"></input>
 <!-- <input id = "selector" placeholder = "元素选择器"></input> -->
 <input type = button value = "获取竞猜列表" id = "getGuessList" onclick="getGuessList()"></input>
+<input type = button value = "展示竞猜列表" id = "displayGuessList" onclick="displayGuessList()"></input>
 <input  id = "hostUrl"></input>
 <input type = button value = "竞猜" id = "guess" onclick="guess()"></input>
 <input type = button value = "测试" id = "test2" onclick="testIndex()"></input>
@@ -269,6 +270,43 @@ $.ajax({
     }
 });
 }
+
+function displayGuessList(){
+	jsonData = {};
+$.ajax({
+    //请求方式
+    type : "POST",
+    //请求的媒体类型
+    /* contentType: "application/json;charset=UTF-8", */
+    //请求地址
+    url : "http://localhost:8080/displayGuessList",
+    //数据，json字符串
+    data : JSON.stringify(jsonData),
+    //请求成功
+    success : function(result) {
+    	debugger
+    	$("#guessList").empty()
+    	var innerHtml = "<ul>";
+		for(var i = 0 ; i < result.length;i++){
+			var guessItem = result[i];
+			//var innerHtml  = innerHtml + "<li ><a href='" +guessItem.url +"'>" +
+			var innerHtml  = innerHtml + "<li ><span>"+(i+1)+"</span><a href = '"+guessItem.url+"' target = '_blank'>" +
+			guessItem.url +"</a>&" +
+			guessItem.hostname +"&" +
+			"  </li>";
+		}
+		innerHtml = innerHtml + "</ul>";
+		$("#guessList").append(innerHtml);
+    	alert("获取成功");
+    	
+    },
+    //请求失败，包含具体的错误信息
+    error : function(e){
+        console.log(e.status);
+        console.log(e.responseText);
+    }
+});
+}
 function getGuessList(){
 	jsonData = {};
 	$.ajax({
@@ -282,21 +320,6 @@ function getGuessList(){
         data : JSON.stringify(jsonData),
         //请求成功
         success : function(result) {
-        	debugger
-        	$("#guessList").empty()
-        	var innerHtml = "<ul>";
-			for(var i = 0 ; i < result.length;i++){
-				var guessItem = result[i];
-				//var innerHtml  = innerHtml + "<li ><a href='" +guessItem.url +"'>" +
-				var innerHtml  = innerHtml + "<li ><a href = '"+guessItem.url+"' target = '_blank'>" +
-				guessItem.url +"</a>&" +
-				guessItem.hostName +"&" +
-				"  </li>";
-			}
-			innerHtml = innerHtml + "</ul>";
-			$("#guessList").append(innerHtml);
-        	alert("获取成功");
-        	
         },
         //请求失败，包含具体的错误信息
         error : function(e){

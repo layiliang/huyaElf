@@ -195,6 +195,6 @@ window.buildGuessDatas= async function(i){
 	}	
 }
 window.guessMainBoxsSize = $('.guess-main-box').length;
-//for(let i = 0 ; i < guessMainBoxsSize;i++){
-	buildGuessDatas(0);
-//}
+for(let i = 0 ; i < guessMainBoxsSize;i++){
+	buildGuessDatas(i);
+}

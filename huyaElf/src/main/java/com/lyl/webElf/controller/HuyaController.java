@@ -26,6 +26,12 @@ public class HuyaController {
 	public String huyaElfIndex(){
 		return "huyaElfIndex";
 	}
+	@RequestMapping("testA")
+	@ResponseBody
+	public void testA(){
+		
+		livePageService.insertTest();
+	}
 	
 	/*@RequestMapping("initDriver")
 	@ResponseBody
@@ -39,7 +45,7 @@ public class HuyaController {
 	@ResponseBody
 	public void openHuyaLive(){
 		DriverUtil.get("https://www.huya.com/l");
-		livePageService.initLivePage(false,true);
+		livePageService.initLivePage(false,1);
 	}
 	@RequestMapping("login")
 	@ResponseBody

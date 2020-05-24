@@ -19,11 +19,10 @@ public class ChromeDriverCreater implements DriverCreater {
 		//options.addArguments("user-agent=myAgent");
 		//options.setPageLoadStrategy(PageLoadStrategy.NONE);
         //options.addArguments("--headless");
-        //options.addArguments("–disable-images");
         options.addArguments("–disable-plugins");
         //options.addArguments("–disable-gpu");
 		Map<String, Object> prefs = new HashMap<String, Object>();
-		//prefs.put("profile.managed_default_content_settings.images", 2);
+		prefs.put("profile.managed_default_content_settings.images", 2);
 		//prefs.put("profile.managed_default_content_settings.javascript", 2);
 		options.setExperimentalOption("prefs", prefs);
 		WebDriver driver = new ChromeDriver(options);
