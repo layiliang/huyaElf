@@ -7,11 +7,13 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.UUID;
+import java.util.concurrent.ConcurrentHashMap;
 
 import org.apache.log4j.Logger;
 import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.context.annotation.Scope;
@@ -24,8 +26,10 @@ import com.lyl.webElf.base.service.WebPageService;
 import com.lyl.webElf.consts.HuyaElfConst;
 import com.lyl.webElf.consts.PageNameConsts;
 import com.lyl.webElf.dao.GuessDataMapper;
+import com.lyl.webElf.dao.GuessResultMapper;
 import com.lyl.webElf.dao.LiveItemMapper;
 import com.lyl.webElf.domain.GuessData;
+import com.lyl.webElf.domain.GuessResult;
 import com.lyl.webElf.domain.LiveItem;
 import com.lyl.webElf.domain.LiveItemExample;
 import com.lyl.webElf.domain.User;
@@ -47,12 +51,15 @@ public class HuyaManageService extends WebPageService {
 	private TestService testService;
 	Logger logger = Logger.getLogger(HuyaManageService.class);
 
-	private List<LiveItem> guessItems = new ArrayList<LiveItem>();
+	private ConcurrentHashMap<String,LiveItem> guessItems = new ConcurrentHashMap<String,LiveItem>();
 	@Autowired
 	private LiveItemMapper liveItemMapper;
 
 	@Autowired
 	private GuessDataMapper guessDataMapper;
+
+	@Autowired
+	private GuessResultMapper guessResultMapper;
 	public LivePageService getLivePageService() {
 		return livePageService;
 	}
@@ -77,11 +84,13 @@ public class HuyaManageService extends WebPageService {
 		this.loginWindowService = loginWindowService;
 	}
 
-	public List<LiveItem> getGuessItems() {
+	
+
+	public ConcurrentHashMap<String, LiveItem> getGuessItems() {
 		return guessItems;
 	}
 
-	public void setGuessItems(List<LiveItem> guessItems) {
+	public void setGuessItems(ConcurrentHashMap<String, LiveItem> guessItems) {
 		this.guessItems = guessItems;
 	}
 
@@ -138,7 +147,7 @@ public class HuyaManageService extends WebPageService {
 							liveItem.setIsrecordingguessdata("0");
 							liveItem.setCreatetime(new Date());
 							liveItemMapper.insert(liveItem);
-							guessItems.add(liveItem);
+							guessItems.put(liveItem.getUrl(), liveItem);
 						}else{
 							liveItem.setUpdatetime(new Date());
 							LiveItemExample liveItemExample = new LiveItemExample();
@@ -159,74 +168,131 @@ public class HuyaManageService extends WebPageService {
 		new Thread(new Runnable(){
 			@Override
 			public void run() {
-				for(LiveItem liveItem : guessLiveItems){
-					try {
-						liveItem.setIsrecordingguessdata("1");
-						LiveItemExample liveItemExample = new LiveItemExample(); 
-						liveItemExample.createCriteria().andUrlEqualTo(liveItem.getUrl());
-						liveItemMapper.updateByExample(liveItem, liveItemExample);
-						buildGuessDatas(liveItem,driverContext);
-						Thread.sleep(10000);
-						//buildGuessDatas(driver);
-					} catch (Exception e) {
-						e.printStackTrace();
-					}
+				try {
+					buildGuessDatas(guessLiveItems,driverContext);
+				} catch (Exception e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
 				}
 			}
 		}).start();
+		
 		Thread.sleep(10000);
-		getGuessDataAndRebuildGuessDatas(driverContext);
-	}
-	private void buildGuessDatas(LiveItem liveItem,DriverContext driverContext) throws Exception {
-		String url = liveItem.getUrl();
-		WebDriver driver = driverContext.getDriver();
-		Map<String,String> handles = driverContext.getHandles();
-		if(handles.size()!=0){
-			JsUtils.execute(driverContext.getDriver(), "window.open('"+url+"')");
-			DriverUtil.switchToNewWindow(driverContext);
-			System.out.println(driver.getCurrentUrl());
-		}
-		handles.put(url, driver.getWindowHandle());
-		Thread.sleep(1000);
-		JavascriptExecutor driver_js = ((JavascriptExecutor) driver);
-		String path = this.getClass().getClassLoader().getResource("templates/buildGuessDataBySleep.js").getPath();
-		String buildGuessDatasJs = FileUtil.getTemplateContent(path);
-		driver_js.executeScript(buildGuessDatasJs);
-	}
-	
-	public void getGuessDataAndRebuildGuessDatas(DriverContext driverContext) throws Exception {
-		WebDriver driver = driverContext.getDriver();
-		Map<String,String> handles = driverContext.getHandles();
-		JavascriptExecutor driver_js = ((JavascriptExecutor) driver);
-		for (Entry<String, String> handleMap : handles.entrySet()) {
-			String url = (String) handleMap.getKey();
-			String handle = (String) handleMap.getValue();
-			driver.switchTo().window(handle);
-			for (int i = 0; i < 2; i++) {
-				String getGuessDataJs = "return guessDatas[" + i + "];";
-				List<Map<String, String>> guessDatas = (List<Map<String, String>>) driver_js
-						.executeScript(getGuessDataJs);
-				// JSONObject.fromObject(jsonResult);
-				new Thread(new Runnable() {
+		
+		new Thread(new Runnable(){
 
-					@Override
-					public void run() {
-						try {
-							saveGuessDatas(guessDatas, driver);
-						} catch (Exception e) {
-							e.printStackTrace();
-						}
-					}
-				}).start();
+			@Override
+			public void run() {
+				try {
+					getGuessDataAndRebuildGuessDatas(driverContext);
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+			}
+		});
+	}
+	public void buildGuessDatas(List<LiveItem> guessLiveItems,DriverContext recordGuessDataDriverContext) throws Exception {
+
+		for(LiveItem liveItem : guessLiveItems){
+			try {
+				liveItem.setIsrecordingguessdata("1");
+				LiveItemExample liveItemExample = new LiveItemExample(); 
+				liveItemExample.createCriteria().andUrlEqualTo(liveItem.getUrl());
+				liveItemMapper.updateByExample(liveItem, liveItemExample);
+				Thread.sleep(10000);
+
+				String url = liveItem.getUrl();
+				WebDriver driver = recordGuessDataDriverContext.getDriver();
+				Map<String,String> handles = recordGuessDataDriverContext.getHandles();
+				if(handles.size()!=0){
+					JsUtils.execute(recordGuessDataDriverContext.getDriver(), "window.open('"+url+"')");
+					DriverUtil.switchToNewWindow(recordGuessDataDriverContext);
+					System.out.println(driver.getCurrentUrl());
+				}
+				handles.put(url, driver.getWindowHandle());
+				Thread.sleep(1000);
+				JavascriptExecutor driver_js = ((JavascriptExecutor) driver);
+				String path = this.getClass().getClassLoader().getResource("templates/buildGuessDataBySleep.js").getPath();
+				String buildGuessDatasJs = FileUtil.getTemplateContent(path);
+				driver_js.executeScript(buildGuessDatasJs);
+				//buildGuessDatas(driver);
+			} catch (Exception e) {
+				e.printStackTrace();
 			}
 		}
 		
 	}
 	
-	private void saveGuessDatas(List<Map<String, String>> guessDatas,  WebDriver driver) throws Exception {
+	public void getGuessDataAndRebuildGuessDatas(DriverContext driverContext) throws Exception {
+
+		WebDriver driver = driverContext.getDriver();
+		Map<String,String> handles = driverContext.getHandles();
+		JavascriptExecutor driver_js = ((JavascriptExecutor) driver);
+		while(true){
+			Thread.sleep(30000);
+			for(Entry<String,String> handleMap : handles.entrySet()){
+				String url = (String) handleMap.getKey();
+				String handle = (String) handleMap.getValue();
+				driver.switchTo().window(handle);
+				if(driver.findElements(By.className("guessResult")) !=null && driver.findElements(By.className("guessResult")).size()>0){
+					List<WebElement> guessResults = driver.findElements(By.className("guessResult"));
+					int size = guessResults.size();
+					logger.info(size);
+					for(int i = 0 ; i < size;i++){
+						String idName = guessResults.get(i).getAttribute("id");
+						int index = Integer.parseInt(idName.substring(idName.length()-1, idName.length()));
+						String getGuessDataJs = "return guessDatas["+index+"];";
+						List<Map<String,String>> guessDatas = (List<Map<String,String>>)driver_js.executeScript(getGuessDataJs);
+						//JSONObject.fromObject(jsonResult);
+						String getResultJs = "return $('#guessResult"+index+"').text();";
+						String result = (String)driver_js.executeScript(getResultJs);
+						new Thread(new Runnable(){
+							@Override
+							public void run() {
+								try {
+									saveGuessDatas(guessDatas,result,driver);
+								} catch (Exception e) {
+									e.printStackTrace();
+								}
+							}	
+						}).start();
+						String resetJs = "$('#guessResult"+index+"').remove();";
+						driver_js.executeScript(resetJs);
+						String buildGuessDatasJs2 = "buildGuessDatas("+index+");";
+						driver_js.executeScript(buildGuessDatasJs2);
+						logger.info(result);
+						logger.info(guessDatas);
+						logger.info(guessDatas.size());
+					}
+				}
+				if(driver.findElements(By.className("close")).size()>0){
+					LiveItem liveItem = new LiveItem();
+					liveItem.setEnable("0");
+					LiveItemExample liveItemExample = new LiveItemExample();
+					liveItemExample.createCriteria().andUrlEqualTo(url);
+					liveItemMapper.updateByExample(liveItem,liveItemExample);
+					guessItems.remove(liveItem.getUrl());
+				}
+			}
+		}
+	}
+	private void saveGuessDatas(List<Map<String, String>> guessDatas, String result, WebDriver driver) throws Exception {
 
 		String guessId = UUID.randomUUID().toString();
+		String[] resultArr = result.split(",");
+		GuessResult guessResult = new GuessResult();
 		Date createTime = new Date();
+		guessResult.setCreateTime(createTime);
+		guessResult.setStartTime(new Date(Long.parseLong(resultArr[0])));
+		guessResult.setEndTime(new Date(Long.parseLong(resultArr[1])));
+		guessResult.setHostName(driver.findElement(By.className("host-name")).getText());
+		guessResult.setId(guessId);
+		guessResult.setName1(resultArr[3]);
+		guessResult.setName2(resultArr[4]);
+		guessResult.setResult(resultArr[2]);
+		guessResult.setTitle(resultArr[5]);
+		guessResult.setUrl(driver.getCurrentUrl());
+		guessResultMapper.insert(guessResult);
 		List<GuessData> list = new ArrayList<>();
 		for(int k = 0 ; k <guessDatas.size();k++){
 			String dataId = UUID.randomUUID().toString();
@@ -254,6 +320,7 @@ public class HuyaManageService extends WebPageService {
 			list.add(guessData);
 		}
 	}
+	
 	
 
 	
@@ -304,7 +371,7 @@ public class HuyaManageService extends WebPageService {
 		// 每天竞猜三次
 		int guessNum = 0;
 		if (guessItems.size() > 0) {
-			for (LiveItem liveItem : guessItems) {
+			for (LiveItem liveItem : guessItems.values()) {
 				guessNum = guessNum + dailyGuess(driverContext, liveItem.getUrl());
 				if (guessNum >= 3) {
 					break;

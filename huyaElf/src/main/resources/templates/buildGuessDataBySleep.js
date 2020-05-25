@@ -13,6 +13,7 @@ window.clickGuessBtn = function(index,message){
 	console.log(message + "btnclick" + index)
 	//while($('.choice-color').text()!=name1[i]){
 }
+window.closeFlg=false;
 window.betingFlg=false;
 window.guessDatas=new Array();
 window.index=new Array();
@@ -191,6 +192,9 @@ window.buildGuessDatas= async function(i){
 					'recordTime': recordTime[i]};
 			guessDatas[i].push(guessData[i]);
 			index[i]++;
+		}
+		if(interval[i]%1200==0){
+			
 		}
 	}	
 }
